@@ -1,0 +1,12 @@
+
+
+
+
+@font-face {
+    font-family: 'Bahij';
+    src: url(assets/fonts/Bahij-Nassim-Regular.ttf) format('truetype');
+}
+body, label {
+    font-family: 'Bahij', 'Roboto', sans-serif;
+    font-size: 18px !important;
+}
