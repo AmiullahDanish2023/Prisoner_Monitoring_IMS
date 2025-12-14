@@ -87,22 +87,19 @@
                     <!--begin:Menu link-->
                     <span class="menu-link">
                         <span class="menu-icon">
-                            <!--begin::Svg Icon | path: icons/duotune/communication/com004.svg-->
                             <span class="svg-icon svg-icon-2">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="2" y="2" width="9" height="9" rx="2"
-                                        fill="currentColor" />
-                                    <rect opacity="0.3" x="13" y="2" width="9" height="9" rx="2"
-                                        fill="currentColor" />
-                                    <rect opacity="0.3" x="13" y="13" width="9" height="9" rx="2"
-                                        fill="currentColor" />
-                                    <rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2"
-                                        fill="currentColor" />
-                                </svg> </span>
-                            <!--end::Svg Icon-->
+                                    <path d="M7 22V10M12 22V10M17 22V10" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" />
+                                    <rect x="4" y="2" width="16" height="8" rx="2" stroke="currentColor"
+                                        stroke-width="2" />
+                                    <circle cx="12" cy="6" r="1.5" fill="currentColor" />
+                                </svg>
+                            </span>
                         </span>
                         <span class="menu-title">بخش مظنونین</span>
+
                         <span class="menu-arrow"></span>
                     </span>
                     <!--end:Menu link-->
@@ -117,18 +114,18 @@
                                     <span class="menu-bullet">
                                         <span class="bullet bullet-dot"></span>
                                     </span>
-                                    <span class="menu-title">ثبت مظنون جدید</span>
+                                    <span class="menu-title">د نوی مظنون ثبتول </span>
                                 </a>
                                 <!--end:Menu link-->
                             </div>
                         @endcan
 
                         <!--end:Menu item-->
-                       
+
                     </div>
                     <!--end:Menu sub-->
 
-                       <!--begin:Menu sub-->
+                    <!--begin:Menu sub-->
                     <div class="menu-sub menu-sub-accordion">
                         <!--begin:Menu item-->
                         @can('Create Book or Artical')
@@ -139,14 +136,33 @@
                                     <span class="menu-bullet">
                                         <span class="bullet bullet-dot"></span>
                                     </span>
-                                    <span class="menu-title"> رهایی / انتقال مظنونینو لیست   </span>
+                                    <span class="menu-title">انتقال شوي مظنونینو لیست </span>
                                 </a>
                                 <!--end:Menu link-->
                             </div>
                         @endcan
 
                         <!--end:Menu item-->
-                       
+
+                    </div>
+                    <!--end:Menu sub-->
+
+
+                    <!--begin:Menu sub-->
+                    <div class="menu-sub menu-sub-accordion">
+                        <!--begin:Menu item-->
+                        <div class="menu-item">
+                            <a class="menu-link {{ request()->routeIs('release-sources.*') ? 'active' : '' }}"
+                                href="{{ route('release-sources.index') }}">
+                                <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                                <span class="menu-title">د مراجعو اضافه کول</span>
+                            </a>
+                        </div>
+
+
+
+                        <!--end:Menu item-->
+
                     </div>
                     <!--end:Menu sub-->
                 </div>
@@ -154,7 +170,91 @@
 
                 <!--end:Menu item-->
 
-               
+                {{-- ---------------------------report part--------------------- --}}
+
+                <!--end:Menu item-->
+                <!--begin:Menu item-->
+                <div class="menu-item pt-5">
+                    <!--begin:Menu content-->
+                    <div class="menu-content">
+                        <span class="menu-heading fw-bold text-uppercase ">بخش مدیریت راپورها</span>
+                    </div>
+                    <!--end:Menu content-->
+                </div>
+                <!--end:Menu item-->
+                <!--begin:Menu item-->
+                <div data-kt-menu-trigger="click"
+                    class="menu-item {{ Request::is('contents*') ? 'here show' : '' }} menu-accordion">
+                    <!--begin:Menu link-->
+                    <span class="menu-link">
+                        <span class="menu-icon">
+                            <span class="svg-icon svg-icon-2">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="3" y="10" width="4" height="10" rx="1"
+                                        fill="currentColor" />
+                                    <rect x="10" y="6" width="4" height="14" rx="1" opacity="0.5"
+                                        fill="currentColor" />
+                                    <rect x="17" y="3" width="4" height="17" rx="1"
+                                        fill="currentColor" opacity="0.3" />
+                                </svg>
+                            </span>
+                        </span>
+                        <span class="menu-title">بخش راپورها</span>
+
+
+                        <span class="menu-arrow"></span>
+                    </span>
+                    <!--end:Menu link-->
+                    <!--begin:Menu sub-->
+                    <div class="menu-sub menu-sub-accordion">
+                        <!--begin:Menu item-->
+                        @can('Create Book or Artical')
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link {{ Route::currentRouteName() == 'suspects.index' ? 'active' : '' }}"
+                                    href="{{ route('suspects.index') }}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                    <span class="menu-title">د مظنونینو عمومی راپور </span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                        @endcan
+
+                        <!--end:Menu item-->
+
+                    </div>
+                    <!--end:Menu sub-->
+
+                    <!--begin:Menu sub-->
+                    <div class="menu-sub menu-sub-accordion">
+                        <!--begin:Menu item-->
+                        @can('Create Book or Artical')
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link {{ Route::currentRouteName() == 'suspects.release' ? 'active' : '' }}"
+                                    href="{{ route('suspects.release') }}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                    <span class="menu-title"> د مظنونینو د موجودی راپور </span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                        @endcan
+
+                        <!--end:Menu item-->
+
+                    </div>
+                    <!--end:Menu sub-->
+
+                </div>
+                <!--end:Menu item-->
+
+                <!--end:Menu item-->
+                {{-- -----------------------------end report part--------------------------------- --}}
 
 
 
@@ -179,23 +279,22 @@
                     @can('Create Users')
                         <span class="menu-link">
                             <span class="menu-icon">
-                                <!--begin::Svg Icon | path: icons/duotune/communication/com004.svg-->
                                 <span class="svg-icon svg-icon-2">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
-                                        <rect x="2" y="2" width="9" height="9" rx="2"
-                                            fill="currentColor" />
-                                        <rect opacity="0.3" x="13" y="2" width="9" height="9" rx="2"
-                                            fill="currentColor" />
-                                        <rect opacity="0.3" x="13" y="13" width="9" height="9" rx="2"
-                                            fill="currentColor" />
-                                        <rect opacity="0.3" x="2" y="13" width="9" height="9" rx="2"
-                                            fill="currentColor" />
+                                        <circle cx="9" cy="7" r="4" stroke="currentColor"
+                                            stroke-width="2" />
+                                        <path d="M2 20c0-4 3.5-7 7-7s7 3 7 7" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" />
+                                        <circle cx="17" cy="9" r="3" stroke="currentColor"
+                                            stroke-width="2" opacity="0.5" />
+                                        <path d="M21 20c0-3-2-5-4-6" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" opacity="0.5" />
                                     </svg>
                                 </span>
-                                <!--end::Svg Icon-->
                             </span>
                             <span class="menu-title">{{ __('translate.user management') }}</span>
+
                             <span class="menu-arrow"></span>
                         </span>
                     @endcan
@@ -235,7 +334,7 @@
                         <!--end:Menu item-->
                     </div>
                     <!--end:Menu sub-->
-                  
+
                 </div>
                 <!--end:Menu item-->
 

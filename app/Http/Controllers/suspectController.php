@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Province;
+use App\Models\ReleaseSuspect;
 use App\Models\suspect;
+use App\Models\ReleaseSource;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
@@ -14,13 +16,17 @@ class suspectController extends Controller
   public function index()
   {
     $province = Province::all();
-    return view('suspects.index', compact('province'));
+    $releaseOptions = ReleaseSource::all();
+    return view('suspects.index', compact('province', 'releaseOptions'));
   }
   public function show()
   {
-    $data = suspect::join('provinces', 'suspects.province', '=', 'provinces.id')
+    $data = Suspect::leftJoin('release_suspects', 'suspects.id', '=', 'release_suspects.suspect_id')
+      ->join('provinces', 'suspects.province', '=', 'provinces.id')
+      ->whereNull('release_suspects.suspect_id')   // ✔ hide released suspects
       ->select('suspects.*', 'provinces.name_da as province_name')
       ->get();
+
 
     return datatables()->of($data)
       ->addIndexColumn()
@@ -63,7 +69,6 @@ class suspectController extends Controller
                 <path d='M7 11V7a5 5 0 0 1 10-3'/>
             </svg>
         </a>";
-
 
 
         return $btn;
@@ -195,27 +200,4 @@ class suspectController extends Controller
     return view('suspects.details', compact('suspect'));
   }
 
-  public function release(Request $request)
-  {
-    $request->validate([
-      'suspect_id'   => 'required|exists:suspects,id',
-      'released_by'  => 'required',
-      'release_date' => 'required|date',
-      'release_type' => 'nullable|string'
-    ]);
-
-    $suspect = Suspect::find($request->suspect_id);
-
-    // Save release information
-    $suspect->release_type   = $request->release_type;
-    $suspect->released_by    = $request->released_by;
-    $suspect->release_date   = $request->release_date;
-  
-    $suspect->save();
-
-    return response()->json([
-      'status'  => true,
-      'message' => 'مظنون په بریالیتوب سره رها / انتقال شو.'
-    ]);
-  }
 }

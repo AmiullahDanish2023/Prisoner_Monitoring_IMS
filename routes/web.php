@@ -4,8 +4,9 @@ use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\ReleaseController;
 use App\Http\Controllers\Frontend\WelcomeController;
-
+use App\Http\Controllers\ReleaseSourceController;
 use App\Http\Controllers\suspectController;
 use Illuminate\Support\Facades\Auth;
 /*
@@ -65,8 +66,27 @@ Route::get('suspects/edit/{id}', [SuspectController::class, 'edit'])->name('susp
 Route::post('suspects/update/{id}', [SuspectController::class, 'update'])->name('suspects.update')->middleware(['auth', 'setlocale']);
 Route::get('suspects/destroy/{id}', [SuspectController::class, 'destroy'])->name('suspects.destroy')->middleware(['auth', 'setlocale']);
 Route::get('/suspects/details/{id}', [SuspectController::class, 'details'])->name('details')->middleware(['auth', 'setlocale']);
-Route::post('/suspects/release', [SuspectController::class, 'release'])->name('suspects.release')->middleware(['auth', 'setlocale']);
-  
+
+
+//Release Routes
+Route::get('/suspects/release', [ReleaseController::class, 'releaseSuspect'])->name('suspects.release')->middleware(['auth', 'setlocale']);
+Route::get('release/list', [ReleaseController::class, 'show'])->name('release.list')->middleware(['auth', 'setlocale']);
+Route::post('/suspects/release/store', [ReleaseController::class, 'release'])->name('release.store')->middleware(['auth', 'setlocale']);
+Route::get('release/destroy/{id}', [ReleaseController::class, 'destroy'])->name('release.destroy')->middleware(['auth', 'setlocale']);
+Route::get('/release/details/{id}', [ReleaseController::class, 'details'])->name('release_details')->middleware(['auth', 'setlocale']);   
+    
+Route::middleware(['auth'])->group(function () {
+
+    Route::resource('release-sources', ReleaseSourceController::class)
+        ->only(['index', 'create', 'store']);
+
+});
+
+    Route::get('release-sources/show', [ReleaseSourceController::class, 'show'])
+     ->name('release-sources.show');
+
+    
+
  
 
 

@@ -24,10 +24,11 @@
                     <table class="table table-striped table-bordered text-center">
                         <thead style="background-color: #e3f2fd;"> <!-- light header color -->
                             <tr>
+                                 <th>جنسیت</th>
                                 <th>نوم</th>
                                 <th>د پلار نوم</th>
                                 <th>د نیکه نوم</th>
-                                <th>جنسیت</th>
+                               
                                @if($suspect->children_with_mother)
                                 <th>د مور سره ماشومان </th>
                                @endif
@@ -37,10 +38,11 @@
                         </thead>
                         <tbody>
                             <tr>
+                                <td>{{ $suspect->gender }}</td>
                                 <td>{{ $suspect->suspect_name }}</td>
                                 <td>{{ $suspect->father_name }}</td>
                                 <td>{{ $suspect->grandfather_name }}</td>
-                                <td>{{ $suspect->gender }}</td>
+                                
                                 @if ($suspect->children_with_mother)
                                     <td>{{ $suspect->children_with_mother }}</td>
                                 @endif

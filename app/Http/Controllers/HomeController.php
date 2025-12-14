@@ -24,9 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $books             = Content::where('type', 1)->get()->count();
-        $academic_articals = Content::where('type', 2)->get()->count();
-        $research_articals = Content::where('type', 3)->get()->count();
+     
 
         if(Session::get('locale') == 'en')
         {
@@ -38,6 +36,6 @@ class HomeController extends Controller
         else {
             $setting  = Setting::where('language_id', 3)->first();
         }
-        return view('home', compact('books', 'academic_articals', 'research_articals', 'setting'));
+        return view('home', compact( 'setting'));
     }
 }

@@ -12,4 +12,10 @@ class suspect extends Model
     {
         return $this->belongsTo(Province::class, 'province'); 
     }
+
+    public function release()
+{
+    return $this->hasOne(ReleaseSuspect::class, 'suspect_id');
+}
+
 }

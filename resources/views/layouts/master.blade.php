@@ -19,6 +19,14 @@ direction="rtl" dir="rtl" style="direction: rtl;" @endif>
 
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
 
+
+
+
+
+
+
+
+    
     <link href="{{ asset('assets/plugins/global/plugins.bundle.rtl.css') }}" rel="stylesheet" type="text/css" />
     <!--begin::Vendor Stylesheets(used by this page)-->
     <link href="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.rtl.css') }}" rel="stylesheet"

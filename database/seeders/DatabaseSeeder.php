@@ -20,9 +20,9 @@ class DatabaseSeeder extends Seeder
             ProvinceSeeder::class,
             DistrictSeeder::class,
             LanguageSeeder::class,
-            AboutSeeder::class,
+          
             SettingSeeder::class,
-            AnnouncementSeeder::class,
+           
         ]);
     }
 }

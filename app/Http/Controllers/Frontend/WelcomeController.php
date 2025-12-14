@@ -9,11 +9,9 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
-use App\Models\About;
-use App\Models\Doctor;
-use App\Models\Content;
+
 use App\Models\Setting;
-use App\Models\Announcement;
+
 
 class WelcomeController extends Controller
 {
@@ -102,33 +100,28 @@ class WelcomeController extends Controller
 
         }
 
-        $doctors = Doctor::limit(4)->orderBy('id', 'desc')->get();
+  
 
         if(Session::get('locale') == 'en')
         {
-            $about   = About::where('language_id', 1)->first();
+            
             $setting = Setting::where('language_id', 1)->first();
-            $announcemet = Announcement::where('language_id', 1)->first();
+            
         }
         else if(Session::get('locale') == 'pa'){
-            $about   = About::where('language_id', 2)->first();
+          
             $setting = Setting::where('language_id', 2)->first();
-            $announcemet = Announcement::where('language_id', 2)->first();
         }
         else if(Session::get('locale') == 'fa')
         {
-            $about   = About::where('language_id', 3)->first();
+      
             $setting = Setting::where('language_id', 3)->first();
-            $announcemet = Announcement::where('language_id', 3)->first();
+       
 
         }
+ 
 
-        $all_doctors = Doctor::get()->count();
-        $all_books   = Content::where('type', 1)->get()->count();
-        $all_articals = Content::whereIn('type', [2, 3])->count();
-
-
-        return view('welcome', compact('about', 'doctors', 'setting', 'all_doctors', 'all_books', 'all_articals', 'announcemet'));
+        return view('welcome', compact('setting'));
     }
 
 
@@ -200,7 +193,7 @@ class WelcomeController extends Controller
 
     public function show($id)
     {
-        $content = Content::where('id', $id)->first();
+
 
         if(Session::get('locale') == 'en')
         {
@@ -218,6 +211,6 @@ class WelcomeController extends Controller
 
         }
 
-        return view('frontend.pages.book_details', compact('content', 'setting'));
+        return view('frontend.pages.book_details', compact('setting'));
 }
 }

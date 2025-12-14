@@ -94,7 +94,25 @@
                     opacity: 1;
                     bottom: 135%;
                 }
+
+                .swal2-title,
+                .swal2-html-container {
+                    font-family: 'Bahij', sans-serif !important;
+                    font-weight: 700 !important;
+                    /* bold */
+                    font-size: 18px !important;
+                }
+
+                #releaseDropdownBtn.form-control {
+                    cursor: pointer;
+                }
+
+                #releaseDropdownBtn.form-control:focus {
+                    box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25);
+                    border-color: #86b7fe;
+                }
             </style>
+
         </div>
 
         <div class="card-body">
@@ -297,11 +315,6 @@
                                 @endforeach
                             </select>
                         </div>
-                        {{-- <div class="col-md-4">
-                            <label class="form-label">ولایت</label>
-                            <input type="text" name="province" id="edit_province"
-                                class="form-control form-control-sm">
-                        </div> --}}
 
                         <div class="col-md-4">
                             <label class="form-label">ناحیه</label>
@@ -329,47 +342,114 @@
             </div>
         </div>
     </div>
-
     <!-- Release Modal -->
     <div class="modal fade" id="releaseModal" tabindex="-1" aria-labelledby="releaseModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                   <h5 class="modal-title text-center w-100" id="releaseModalLabel">رهایی / انتقال مظنون</h5>
+                    <h5 class="modal-title text-center w-100" id="releaseModalLabel">رهایی / انتقال مظنون</h5>
 
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="releaseForm">
+                    @csrf
+
                     <div class="modal-body">
                         <input type="hidden" name="suspect_id" id="release_suspect_id">
 
                         <div class="mb-3">
-                            <label for="release_type" class="form-label">صادره رهایی و یا انتقال</label>
-                            <input type="text" class="form-control" id="release_type" name="release_type" readonly>
+                            <label for="issued_or_transferred_number" class="form-label">صادره رهایی و یا انتقال</label>
+                            <input type="text" class="form-control" id="issued_or_transferred_number"
+                                name="issued_or_transferred_number">
                         </div>
 
-                        <div class="mb-3">
+
+                        {{-- <div class="mb-3">
                             <label for="released_by" class="form-label">مرجع رها کننده</label>
                             <select class="form-select" id="released_by" name="released_by" required>
                                 <option value="" selected disabled>یو اختیار انتخاب کړئ</option>
-                                <option value="1">انتقال به توقیف </option>
-                                <option value="2">رها شد</option>
-                                <option value="3">انتقال به مراجع مختلف</option>
-                                <option value="4">به حکم محکه</option>
+                                <option value="به توقیف انتقال شد">به توقیف انتقال شد </option>
+                                <option value="رها شد">رها شد</option>
+
                             </select>
+                        </div> --}}
+
+                        <div class="mb-3">
+                            <label class="form-label">مرجع رها کننده</label>
+
+                            <div class="dropdown w-100">
+                                <button class="form-control text-start d-flex justify-content-between align-items-center"
+                                    type="button" id="releaseDropdownBtn" data-bs-toggle="dropdown">
+                                    <span id="releaseDropdownLabel">یو اختیار انتخاب کړئ</span>
+                                    <i class="bi bi-caret-down-fill"></i>
+                                </button>
+
+                                <div class="dropdown-menu p-3 w-100" style="max-width:350px;">
+
+                                    {{-- 3 STATIC OPTIONS --}}
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input main-opt" type="radio" name="main_option"
+                                            value="انتقال به توقیف" id="main_opt_1" data-key="detention">
+                                        <label class="form-check-label" for="main_opt_1">انتقال به توقیف</label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input main-opt" type="radio" name="main_option"
+                                            value="انتقال به مراجع مختلف" id="main_opt_2" data-key="multi">
+                                        <label class="form-check-label" for="main_opt_2">انتقال به مراجع مختلف</label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input main-opt" type="radio" name="main_option"
+                                            value="مظنونین رهایی" id="main_opt_3" data-key="release">
+                                        <label class="form-check-label" for="main_opt_3">مظنونین رهایی</label>
+                                    </div>
+
+                                    <hr>
+
+                                    {{-- DB OPTIONS (HIDDEN INITIALLY) --}}
+                                    <div id="db_options_wrapper" style="display:none;">
+                                        @foreach ($releaseOptions as $opt)
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input db-opt" type="checkbox"
+                                                    value="{{ $opt->name_da }}" id="db_opt_{{ $opt->id }}">
+                                                <label class="form-check-label" for="db_opt_{{ $opt->id }}">
+                                                    {{ $opt->name_da }}
+                                                </label>
+                                            </div>
+                                        @endforeach
+                                    </div>
+
+                                </div>
+                            </div>
+                            <input type="hidden" name="main_option_key" id="main_option_key">
+                            <input type="hidden" name="db_source_name" id="db_source_name">
+
                         </div>
+
+
+
+
+
+
+
 
                         <div class="mb-3">
                             <label for="release_date" class="form-label">تاریخ رهایی یا انتقال</label>
                             <input type="date" class="form-control" id="release_date" name="release_date" required>
                         </div>
 
+                        <div class="col-md-12">
+                            <label class="form-label">فایل</label>
+                            <input type="file" name="file" class="form-control form-control-sm">
+                        </div>
                     </div>
-                    
-                           <div class="modal-footer d-flex justify-content-between mb-0">
+
+
+                    <div class="modal-footer d-flex justify-content-between mb-0">
                         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">بندول</button>
-                        <button class="btn btn-success btn-sm">ثبتول</button>
-                   
+                        <button type="submit" class="btn btn-success btn-sm">ثبتول</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -378,6 +458,7 @@
 
 
 @section('scripts')
+    <script src="{{ asset('perisanDatePicker/js/persianDatepicker.js') }}"></script>
     <script>
         $('#store_form').validate({
             ignore: [],
@@ -576,7 +657,7 @@
                                 $('#store_form')[0].reset();
                                 toggleChildrenField(); // reset
                                 location.assign("{{ route('suspects.index') }}");
-                            }, 1500); // delay to show success popup
+                            }, 500); // delay to show success popup
 
                         } else {
                             $.each(response, function(field, msg) {
@@ -802,6 +883,104 @@
             let suspectId = $(this).data('id');
             $('#release_suspect_id').val(suspectId);
             $('#releaseModal').modal('show');
+        });
+        $('#releaseForm').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: "{{ route('release.store') }}",
+                method: 'POST',
+                data: new FormData(this),
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+
+                success: function(res) {
+                    if (res.status == true) {
+
+                        $('#releaseModal').modal('hide');
+                        $('#releaseForm')[0].reset();
+
+                        // Refresh Released List Page
+                        $('#suspects_table').DataTable().ajax.reload(null, false);
+
+
+                        Swal.fire({
+                            icon: 'success',
+                            text: res.message,
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+    <!-- JS: behavior & sync label -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let mainOptions = document.querySelectorAll(".main-opt");
+            let dbWrapper = document.getElementById("db_options_wrapper");
+            let dbOptions = document.querySelectorAll(".db-opt");
+            let label = document.getElementById("releaseDropdownLabel");
+
+            // Hidden fields
+            let mainKey = document.getElementById("main_option_key");
+            let dbName = document.getElementById("db_source_name");
+            let dropdownBtn = document.getElementById("releaseDropdownBtn");
+
+            // Reset both hidden fields
+            function resetDB() {
+                dbOptions.forEach(x => x.checked = false);
+                dbName.value = "";
+            }
+
+            // MAIN OPTION logic
+            mainOptions.forEach(opt => {
+                opt.addEventListener("change", function() {
+
+                    let key = this.dataset.key; // detention, multi, release
+                    let title = this.value;
+
+                    // set main option key
+                    mainKey.value = key;
+
+                    resetDB(); // reset DB list
+
+                    if (key === "detention") {
+                        dbWrapper.style.display = "none";
+                        dbName.value = null;
+
+                        label.textContent = title;
+
+                        bootstrap.Dropdown.getInstance(dropdownBtn).hide();
+                        return;
+                    }
+
+                    if (key === "multi" || key === "release") {
+                        dbWrapper.style.display = "block";
+
+                        // Label shows only main category until DB selected
+                        label.textContent = title;
+                    }
+                });
+            });
+
+            // DB option selected
+            dbOptions.forEach(opt => {
+                opt.addEventListener("change", function() {
+
+                    // Single select only
+                    dbOptions.forEach(x => {
+                        if (x !== this) x.checked = false;
+                    });
+
+                    dbName.value = this.value; // store DB name
+
+                    label.textContent = this.value;
+
+                    bootstrap.Dropdown.getInstance(dropdownBtn).hide();
+                });
+            });
         });
     </script>
 @endsection

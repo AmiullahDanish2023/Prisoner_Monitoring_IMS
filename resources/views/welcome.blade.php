@@ -40,12 +40,12 @@ style="background-image: url('{{ asset('frontend/assets/img/hero-bg1.jpg') }}')"
 
             <div class="row">
                 <div class="col-lg-4 d-flex align-items-stretch">
-                    <div class="content">
+                    {{-- <div class="content">
                         <span style="font-size: 25px;">{{ $announcemet->title }}</span>
                         <p>
                             {{ $announcemet->description }}
                         </p>
-                    </div>
+                    </div> --}}
                 </div>
                 <div class="col-lg-8 d-flex align-items-stretch">
                     <div class="icon-boxes d-flex flex-column justify-content-center">
@@ -86,7 +86,7 @@ style="background-image: url('{{ asset('frontend/assets/img/hero-bg1.jpg') }}')"
         <div class="container">
 
             <div class="row">
-                <div class="col-xl-5 col-lg-6  d-flex justify-content-center align-items-stretch position-relative">
+                {{-- <div class="col-xl-5 col-lg-6  d-flex justify-content-center align-items-stretch position-relative">
                     <img src="{{ asset($about->image) }}" alt="" width="100%" height="auto">
                     <a href="{{ $about->video_link }}" class="glightbox play-btn mb-4"></a>
                 </div>
@@ -95,7 +95,7 @@ style="background-image: url('{{ asset('frontend/assets/img/hero-bg1.jpg') }}')"
                     <span class="me-auto why-us text-center m-2" style="font-size: 25px">{{ $about->title }}</span>
                     <p>{{ $about->description }} </p>
 
-                </div>
+                </div> --}}
             </div>
 
         </div>
@@ -105,7 +105,7 @@ style="background-image: url('{{ asset('frontend/assets/img/hero-bg1.jpg') }}')"
     <section id="counts" class="counts">
         <div class="container">
 
-            <div class="row">
+            {{-- <div class="row">
 
                 <div class="col-lg-3 col-md-6">
                     <div class="count-box">
@@ -144,7 +144,7 @@ style="background-image: url('{{ asset('frontend/assets/img/hero-bg1.jpg') }}')"
                     </div>
                 </div>
 
-            </div>
+            </div> --}}
 
         </div>
     </section>
@@ -160,7 +160,7 @@ style="background-image: url('{{ asset('frontend/assets/img/hero-bg1.jpg') }}')"
                 <h2>{{ __('translate.doctors') }}</h2>
 
             </div>
-
+{{-- 
             <div class="row">
                 @foreach ($doctors as $doctor)
                     <div class="col-lg-6  mt-4">
@@ -192,7 +192,7 @@ style="background-image: url('{{ asset('frontend/assets/img/hero-bg1.jpg') }}')"
                     </div>
                 @endforeach
 
-            </div>
+            </div> --}}
 
         </div>
     </section>
