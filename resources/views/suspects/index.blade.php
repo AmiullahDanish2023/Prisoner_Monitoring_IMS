@@ -364,16 +364,6 @@
                         </div>
 
 
-                        {{-- <div class="mb-3">
-                            <label for="released_by" class="form-label">مرجع رها کننده</label>
-                            <select class="form-select" id="released_by" name="released_by" required>
-                                <option value="" selected disabled>یو اختیار انتخاب کړئ</option>
-                                <option value="به توقیف انتقال شد">به توقیف انتقال شد </option>
-                                <option value="رها شد">رها شد</option>
-
-                            </select>
-                        </div> --}}
-
                         <div class="mb-3">
                             <label class="form-label">مرجع رها کننده</label>
 
@@ -426,11 +416,6 @@
                             <input type="hidden" name="db_source_name" id="db_source_name">
 
                         </div>
-
-
-
-
-
 
 
 
@@ -878,6 +863,7 @@
             });
         });
     </script>
+
     <script>
         $(document).on('click', '.release-btn', function() {
             let suspectId = $(this).data('id');
@@ -914,7 +900,27 @@
                 }
             });
         });
+
+        // --- Reset modal when closed ---
+        $('#releaseModal').on('hidden.bs.modal', function() {
+            let modal = $(this);
+            modal.find('label.error').remove();
+            modal.find('.invalid-feedback').remove();
+            modal.find('.is-invalid').removeClass('is-invalid');
+            modal.find('.error').removeClass('error');
+            $('#releaseForm')[0].reset();
+
+        });
+
+        // --- Clear form errors function ---
+        function clearFormErrors() {
+            $('#releaseForm').find('.error').removeClass('error');
+            $('#releaseForm').find('[aria-invalid="true"]').attr('aria-invalid', false);
+            $('#releaseForm').find('label.error').remove();
+            $('#releaseForm').find('label.error').remove();
+        }
     </script>
+
     <!-- JS: behavior & sync label -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {

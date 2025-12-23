@@ -14,6 +14,7 @@ class ReleaseSourceController extends Controller
         return view('release_sources.index', compact('sources'));
     }
 
+
     // Show create page
     public function create()
     {
@@ -34,5 +35,13 @@ class ReleaseSourceController extends Controller
 
         return redirect()->route('release-sources.index')
             ->with('success', 'مرجع په بریالیتوب سره اضافه شوه');
+    }
+
+    // Delete suspect
+    public function deleteSource($id)
+    {
+        $deleteSource = ReleaseSource::findOrFail($id);
+        $deleteSource->delete();
+        return response()->json(['status' => true, 'message' => 'ریکارډ حذف شو']);
     }
 }

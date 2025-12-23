@@ -7,6 +7,7 @@ use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ReleaseController;
 use App\Http\Controllers\Frontend\WelcomeController;
 use App\Http\Controllers\ReleaseSourceController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\suspectController;
 use Illuminate\Support\Facades\Auth;
 /*
@@ -73,19 +74,29 @@ Route::get('/suspects/release', [ReleaseController::class, 'releaseSuspect'])->n
 Route::get('release/list', [ReleaseController::class, 'show'])->name('release.list')->middleware(['auth', 'setlocale']);
 Route::post('/suspects/release/store', [ReleaseController::class, 'release'])->name('release.store')->middleware(['auth', 'setlocale']);
 Route::get('release/destroy/{id}', [ReleaseController::class, 'destroy'])->name('release.destroy')->middleware(['auth', 'setlocale']);
-Route::get('/release/details/{id}', [ReleaseController::class, 'details'])->name('release_details')->middleware(['auth', 'setlocale']);   
-    
+Route::get('/release/details/{id}', [ReleaseController::class, 'details'])->name('release_details')->middleware(['auth', 'setlocale']);
+
+
+//Release Source Routes
 Route::middleware(['auth'])->group(function () {
 
-    Route::resource('release-sources', ReleaseSourceController::class)
-        ->only(['index', 'create', 'store']);
-
+  Route::resource('release-sources', ReleaseSourceController::class)->only(['index', 'create', 'store']);
+    
 });
 
-    Route::get('release-sources/show', [ReleaseSourceController::class, 'show'])
-     ->name('release-sources.show');
+Route::get('release-sources/show', [ReleaseSourceController::class, 'show'])->name('release-sources.show');
+Route::get('release-sources/delete/{id}', [ReleaseSourceController::class, 'deleteSource'])->name('release-sources.delete');
 
-    
+  
+
+//Release report routes 
+
+Route::get('general/report', [ReportController::class, 'generalReport'])->middleware(['auth', 'setlocale'])->name('report.general');
+  
+// Generate PDF of the report
+Route::post('general/report/pdf', [ReportController::class, 'createGeneralReport'])->middleware(['auth', 'setlocale'])->name('report.general.pdf');
+  
+  
 
  
 

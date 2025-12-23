@@ -41,10 +41,4 @@
 
 </script>
 
-<script>
-     
-
-
-
-</script>
 @endsection

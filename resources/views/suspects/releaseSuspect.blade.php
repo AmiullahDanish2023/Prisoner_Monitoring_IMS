@@ -90,6 +90,14 @@
                     opacity: 1;
                     bottom: 135%;
                 }
+
+                .swal2-title,
+                .swal2-html-container {
+                    font-family: 'Bahij', sans-serif !important;
+                    font-weight: 700 !important;
+                    /* bold */
+                    font-size: 18px !important;
+                }
             </style>
         </div>
 

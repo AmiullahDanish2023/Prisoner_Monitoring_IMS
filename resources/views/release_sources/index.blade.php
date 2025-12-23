@@ -97,6 +97,14 @@
                     opacity: 1;
                     bottom: 140%;
                 }
+
+                .swal2-title,
+                .swal2-html-container {
+                    font-family: 'Bahij', sans-serif !important;
+                    font-weight: 700 !important;
+                    /* bold */
+                    font-size: 18px !important;
+                }
             </style>
         </div>
 
@@ -104,7 +112,7 @@
         <div class="card-body">
 
             <div class="table-responsive">
-                <table class="table table-bordered table-striped align-middle">
+                <table class="table table-bordered table-striped align-middle" id="source_table">
                     <thead>
                         <tr>
                             <th>نمبر</th>
@@ -130,36 +138,75 @@
                                         </a>
 
                                         <!-- Delete -->
-                                        <a " class="delete-btn" data-title="حذف">
-                                        
+                                        <a href="{{ route('release-sources.delete', $src->id) }}" class=" delete-btn"
+                                            data-id="{{ $src->id }}" data-title="حذف">
                                             🗑️
                                         </a>
-                                  </div>
+                                    </div>
                                 </td>
-                             </tr>
-                         @endforeach
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
 
     </div>
-
-    <!-- Delete Script -->
-    <script>
-        function deleteSource(id) {
-            if (confirm("ایا تاسو ډاډه یاست چې دا ریکارډ حذف کړئ؟")) {
-                window.location.href = "/release-sources/" + id + "/delete";
-            }
-        }
-    </script>
 @endsection
-{{-- <!-- Edit -->
-<a href="{{ route('release-sources.edit', $src->id) }}" class="edit-btn" data-title="ایډیټ">
-    ✏️
-</a>
+@section('scripts')
+     
+    <!-- Delete Script -->
+   <script>
+        $(document).on('click', '.delete-btn', function() {
+            var suspectId = $(this).data('id');
+            event.preventDefault();
 
-<!-- Delete -->
-<a href="#" onclick="deleteSource({{ $src->id }})" class="delete-btn" data-title="حذف">
-    🗑️
-</a> --}}
+            Swal.fire({
+                title: 'ایا تاسې ډاډه یاست؟',
+                text: 'تاسې به دا معلومات حذف کړئ!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: ' هو',
+                cancelButtonText: 'نه!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "{{ route('release-sources.delete', '') }}/" + suspectId,
+                        type: 'GET',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            if (response.status === true) {
+                                Swal.fire(
+                                    'حذف شو!',
+                                    'معلومات په بریالیتوب سره حذف شول.',
+                                    'success'
+                                );
+                                window.location.reload();
+
+                            } else {
+                                Swal.fire(
+                                    'خطا!',
+                                    'د معلوماتو د حذف کولو پر مهال ستونزه رامنځته شوه.',
+                                    'error'
+                                );
+                            }
+                        },
+                        error: function() {
+                            Swal.fire(
+                                'خطا!',
+                                'د معلوماتو د حذف کولو پر مهال ستونزه رامنځته شوه.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+@endsection
+

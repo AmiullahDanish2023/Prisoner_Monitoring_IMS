@@ -212,8 +212,8 @@
                         @can('Create Book or Artical')
                             <div class="menu-item">
                                 <!--begin:Menu link-->
-                                <a class="menu-link {{ Route::currentRouteName() == 'suspects.index' ? 'active' : '' }}"
-                                    href="{{ route('suspects.index') }}">
+                                <a class="menu-link {{ Route::currentRouteName() == 'report.general' ? 'active' : '' }}"
+                                    href="{{ route('report.general') }}">
                                     <span class="menu-bullet">
                                         <span class="bullet bullet-dot"></span>
                                     </span>
