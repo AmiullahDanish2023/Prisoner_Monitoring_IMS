@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "896bb4851c08685aed7476ea215071c2",
+    "content-hash": "70be522f09c61f2a129cb7efcd3c4337",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2666,16 +2666,16 @@
         },
         {
             "name": "niklasravnsborg/laravel-pdf",
-            "version": "v4.0.0",
+            "version": "v4.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/niklasravnsborg/laravel-pdf.git",
-                "reference": "80cce12a3d9048759ec0d2ca87c57a56b4b4950f"
+                "reference": "a5f5c22dd5e10d8f536102cec01c21282e18ebae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/niklasravnsborg/laravel-pdf/zipball/80cce12a3d9048759ec0d2ca87c57a56b4b4950f",
-                "reference": "80cce12a3d9048759ec0d2ca87c57a56b4b4950f",
+                "url": "https://api.github.com/repos/niklasravnsborg/laravel-pdf/zipball/a5f5c22dd5e10d8f536102cec01c21282e18ebae",
+                "reference": "a5f5c22dd5e10d8f536102cec01c21282e18ebae",
                 "shasum": ""
             },
             "require": {
@@ -2714,10 +2714,10 @@
             ],
             "support": {
                 "issues": "https://github.com/niklasravnsborg/laravel-pdf/issues",
-                "source": "https://github.com/niklasravnsborg/laravel-pdf/tree/v4.0.0"
+                "source": "https://github.com/niklasravnsborg/laravel-pdf/tree/v4.1.0"
             },
             "abandoned": true,
-            "time": "2020-02-01T15:02:57+00:00"
+            "time": "2021-06-08T11:07:13+00:00"
         },
         {
             "name": "opis/closure",

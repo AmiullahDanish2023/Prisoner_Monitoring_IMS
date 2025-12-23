@@ -17,7 +17,7 @@
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
         "morilog/jalali": "3.*",
-        "niklasravnsborg/laravel-pdf": "4.0",
+        "niklasravnsborg/laravel-pdf": "*",
         "simplesoftwareio/simple-qrcode": "^4.2",
         "spatie/laravel-activitylog": "^3.17",
         "spatie/laravel-permission": "^5.7",
