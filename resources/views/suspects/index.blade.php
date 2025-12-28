@@ -1,5 +1,7 @@
 @extends('layouts.master')
 @section('content')
+    <link rel="stylesheet" href="{{ asset('assets/persian-date/persian-datepicker.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('perisanDatePicker/css/persianDatepicker-default.css') }}" />
     <div class="card shadow-sm">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h4 class="card-title mb-0">لست مظنونین / زندانیان</h4>
@@ -201,18 +203,17 @@
 
                         <div class="col-md-4">
                             <label class="form-label">د څارنې نیټه</label>
-                            <input type="date" name="monitoring_date" class="form-control form-control-sm"
+                            <input type="text" name="monitoring_date" class="form-control form-control-sm farsi-date"
                                 placeholder="د نظارت نیټه">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">ولایت</label>
-                            <select name="province" id="province" class="form-select form-select-sm form-select-solid ">
-                                <option selected disabled>ولایت انتخاب کړئ</option>
-                                @foreach ($province as $prov)
-                                    <option value="{{ $prov->id }}">{{ $prov->name_da }}</option>
+                            <select class="form-select "  data-placeholder="انتخاب کنید">
+                                <option value="">انتخاب ولایت</option>
+                                @foreach ($province as $pro)
+                                    <option value="{{ $pro->id }}">{{ $pro->name_da }}</option>
                                 @endforeach
                             </select>
-
                         </div>
 
                         <div class="col-md-4">
@@ -222,7 +223,8 @@
 
                         <div class="col-md-4">
                             <label class="form-label">منطقه</label>
-                            <input type="text" name="area" class="form-control form-control-sm" placeholder="منطقه">
+                            <input type="text" name="area" class="form-control form-control-sm"
+                                placeholder="منطقه">
                         </div>
 
                         <div class="col-md-12">
@@ -392,7 +394,7 @@
                                     <div class="form-check mb-2">
                                         <input class="form-check-input main-opt" type="radio" name="main_option"
                                             value="مظنونین رهایی" id="main_opt_3" data-key="release">
-                                        <label class="form-check-label" for="main_opt_3">مظنونین رهایی</label>
+                                        <label class="form-check-label" for="main_opt_3">مظنون رها شد</label>
                                     </div>
 
                                     <hr>
@@ -444,6 +446,27 @@
 
 @section('scripts')
     <script src="{{ asset('perisanDatePicker/js/persianDatepicker.js') }}"></script>
+    <script src="{{ asset('perisanDatePicker/js/persianDatepicker.js') }}"></script>
+
+    <script>
+        $('.select2').select2({
+            width: '100%',
+        });
+
+
+        $(function() {
+            $('.farsi-date').persianDatepicker({
+                format: 'YYYY/MM/DD',
+                initialValue: false,
+                autoClose: true,
+                calendar: {
+                    persian: {
+                        locale: 'fa'
+                    }
+                }
+            });
+        });
+    </script>
     <script>
         $('#store_form').validate({
             ignore: [],

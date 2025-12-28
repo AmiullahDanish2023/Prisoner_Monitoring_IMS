@@ -26,7 +26,7 @@ direction="rtl" dir="rtl" style="direction: rtl;" @endif>
 
 
 
-    
+
     <link href="{{ asset('assets/plugins/global/plugins.bundle.rtl.css') }}" rel="stylesheet" type="text/css" />
     <!--begin::Vendor Stylesheets(used by this page)-->
     <link href="{{ asset('assets/plugins/custom/fullcalendar/fullcalendar.bundle.rtl.css') }}" rel="stylesheet"
@@ -46,6 +46,7 @@ direction="rtl" dir="rtl" style="direction: rtl;" @endif>
     <link rel="stylesheet" href="{{ asset('assets/plugins/custom/loader/css/preloader.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/icons.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/font-awesome.css') }}">
+    <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet">
 
     {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" /> --}}
 
@@ -63,6 +64,38 @@ direction="rtl" dir="rtl" style="direction: rtl;" @endif>
         </style>
     @endif
     @yield('css')
+    <style>
+        .select2-container {
+            width: 100% !important;
+            font-size: 14px;
+        }
+
+
+        .is-invalid .select2-selection,
+        .needs-validation~span>.select2-dropdown {
+            border-color: red !important;
+        }
+
+
+        .select2-container--bootstrap-5 .select2-selection {
+            min-height: 38px;
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+
+        .select2-container--bootstrap-5 .select2-selection--single {
+            line-height: 24px;
+        }
+
+        .select2-container--bootstrap-5 .select2-selection__arrow {
+            height: 38px;
+        }
+
+        .select2-container--bootstrap-5 .select2-dropdown {
+            font-size: 14px;
+            direction: rtl;
+        }
+    </style>
 </head>
 <!--end::Head-->
 <!--begin::Body-->
@@ -137,6 +170,7 @@ direction="rtl" dir="rtl" style="direction: rtl;" @endif>
         var hostUrl = "assets/";
     </script>
 
+
     <!--begin::Global Javascript Bundle(used by all pages)-->
     <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
     <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
@@ -166,6 +200,7 @@ direction="rtl" dir="rtl" style="direction: rtl;" @endif>
     <script src="{{ asset('assets/plugins/custom/ckeditor/ckeditor-classic.bundle.js') }}"></script>
 
 
+
     <script src="{{ asset('datepicker/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('datepicker/bootstrap-datepicker.fa.min.js') }}"></script>
 
@@ -177,6 +212,10 @@ direction="rtl" dir="rtl" style="direction: rtl;" @endif>
     <script src="{{ asset('assets/js/custom/sweetalert.js') }}"></script>
 
     <script>
+        $('.select2').select2({
+            width: '100%',
+        });
+
         function success(msg) {
 
             Swal.fire({

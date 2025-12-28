@@ -1,11 +1,7 @@
 @extends('layouts.master')
-@section('content')
-@section('header-menu')
-
-@endsection
 
 @section('content')
-    <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.rtl.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('assets/persian-date/persian-datepicker.min.css') }}">
     <link rel="stylesheet" href="{{ asset('perisanDatePicker/css/persianDatepicker-default.css') }}" />
 
     <div class="card">
@@ -14,7 +10,7 @@
                 style="background: #f8f8f8; border: 1px solid #e9ebee;">
                 @csrf
 
-                <p class="text-primary m-0 text-center" style="font-size: 1.6rem; font-weight:bold">
+                <p class="text-primary text-center" style="font-size: 1.6rem; font-weight:bold">
                     راپور عمومی مظنونین
                 </p>
                 <hr>
@@ -22,41 +18,40 @@
                 <div class="row">
 
                     <!-- ولایت -->
-                    <div class="col-md-3">
-                        <label for="province_id" class="form-label">ولایت</label>
-                        <select name="province_id" id="province_id" class="form-control select2" required>
-                            <option selected disabled>ولایت انتخاب کړئ</option>
-                            @foreach ($province as $prov)
-                                <option value="{{ $prov->id }}">{{ $prov->name_da }}</option>
+                    <div class="col-md-4">
+                        <label class="form-label">ولایت</label>
+                        <select class="form-select " data-control="" data-placeholder="انتخاب کنید">
+                            <option value="">--انتخاب ولایت--</option>
+                            @foreach ($province as $pro)
+                                <option value="{{ $pro->id }}">{{ $pro->name_da }}</option>
                             @endforeach
                         </select>
                     </div>
 
+
                     <!-- تاریخ شروع -->
-                    <div class="col-md-3">
-                        <label for="start_date" class="form-label">تاریخ شروع</label>
-                        <input type="date" name="start_date" id="start_date" class="form-control farsi-date-picker"
-                            placeholder="از تاریخ" autocomplete="off" required>
+                    <div class="col-md-4">
+                        <label class="form-label">تاریخ شروع</label>
+                        <input type="text" name="start_date" class="form-control farsi-date" placeholder="از تاریخ"
+                            autocomplete="off" value="">
                     </div>
 
                     <!-- تاریخ ختم -->
-                    <div class="col-md-3">
-                        <label for="end_date" class="form-label">تاریخ ختم</label>
-                        <input type="date" name="end_date" id="end_date" class="form-control farsi-date-picker"
-                            placeholder="تا تاریخ" autocomplete="off" required>
+                    <div class="col-md-4">
+                        <label class="form-label">تاریخ ختم</label>
+                        <input type="text" name="end_date" class="form-control farsi-date" placeholder="تا تاریخ"
+                            autocomplete="off" value="">
                     </div>
+
 
                 </div>
 
                 <br>
 
-                <div class="modal-footer d-flex justify-content-between">
-                    <div class="row" style="float: left;">
-                        <button type="submit" id="submitBtn"
-                            class="btn btn-success btn-sm">
-                             راپور جوړول
-                        </button>
-                    </div>
+                <div class="text-end">
+                    <button type="submit" class="btn btn-success btn-sm">
+                        راپور جوړول
+                    </button>
                 </div>
 
             </form>
@@ -65,23 +60,24 @@
 @endsection
 
 @section('scripts')
+    <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
     <script src="{{ asset('perisanDatePicker/js/persianDatepicker.js') }}"></script>
-    <script>
-        $(document).ready(function() {
-            // Initialize Farsi date picker
-            $(".farsi-date-picker").persianDatepicker({
-                format: "YYYY/MM/DD",
-                autoClose: true,
-                initialValue: false,
-            });
 
-            // Form validation
-            document.querySelector('form').addEventListener('submit', function(e) {
-                let start = document.getElementById('start_date');
-                let end = document.getElementById('end_date');
-                if (!start.value || !end.value) {
-                    e.preventDefault();
-                    alert('لطفاً هر دو تاریخ شروع و ختم را انتخاب کنید.');
+    <script>
+        $('.select2').select2({
+            width: '100%',
+        });
+
+
+        $(function() {
+            $('.farsi-date').persianDatepicker({
+                format: 'YYYY/MM/DD',
+                initialValue: false,
+                autoClose: true,
+                calendar: {
+                    persian: {
+                        locale: 'fa'
+                    }
                 }
             });
         });
