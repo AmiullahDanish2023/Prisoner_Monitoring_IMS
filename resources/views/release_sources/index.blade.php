@@ -5,7 +5,7 @@
 
         <!-- Header -->
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h4 class="card-title mb-0">د مراجعو لیست</h4>
+            <h4 class="card-title mb-0 fw-bold text-align-center">د مراجعو لیست</h4>
 
             <a href="{{ route('release-sources.create') }}" class="btn btn-primary btn-sm">
                 نوې مرجع اضافه کړئ
@@ -127,7 +127,8 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $src->name_da }}</td>
-                                <td>{{ $src->created_at->format('Y-m-d') }}</td>
+                                <td>{{ jdate($src->created_at)->format('Y/m/d') }}</td>
+
 
                                 <td>
                                     <div class="action-buttons">

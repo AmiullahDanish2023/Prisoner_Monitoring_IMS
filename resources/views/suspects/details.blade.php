@@ -24,14 +24,14 @@
                     <table class="table table-striped table-bordered text-center">
                         <thead style="background-color: #e3f2fd;"> <!-- light header color -->
                             <tr>
-                                 <th>جنسیت</th>
+                                <th>جنسیت</th>
                                 <th>نوم</th>
                                 <th>د پلار نوم</th>
                                 <th>د نیکه نوم</th>
-                               
-                               @if($suspect->children_with_mother)
-                                <th>د مور سره ماشومان </th>
-                               @endif
+
+                                @if ($suspect->children_with_mother)
+                                    <th>د مور سره ماشومان </th>
+                                @endif
                                 <th>جرم</th>
                                 <th>رالیږونکې مرجع</th>
                             </tr>
@@ -42,7 +42,7 @@
                                 <td>{{ $suspect->suspect_name }}</td>
                                 <td>{{ $suspect->father_name }}</td>
                                 <td>{{ $suspect->grandfather_name }}</td>
-                                
+
                                 @if ($suspect->children_with_mother)
                                     <td>{{ $suspect->children_with_mother }}</td>
                                 @endif
@@ -64,6 +64,10 @@
                                 <th>منطقه</th>
                                 <th>د نظارت نیټه</th>
                                 <th>د فایل لیدل</th>
+
+                                @if (!empty($suspect->notes) && trim($suspect->notes) !== '0')
+                                    <th>د مظنون سره موجود وسایل</th>
+                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -78,7 +82,25 @@
                                     @else
                                         ---
                                     @endif
+
                                 </td>
+
+                                @if (!empty($suspect->notes) && trim($suspect->notes) !== '0')
+                                    <td>
+                                        {{ \Illuminate\Support\Str::limit($suspect->notes, 22, '...') }}
+
+                                        @if (strlen($suspect->notes) > 22)
+                                            <button class="btn btn-link btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#notesModal{{ $suspect->id }}">
+                                                More
+                                            </button>
+                                        @endif
+                                    </td>
+                                @endif
+
+
+
+
                             </tr>
                         </tbody>
                     </table>
@@ -89,6 +111,36 @@
                 </div>
 
             </div>
+        </div>
+    </div>
+
+    <!-- Notes Modal -->
+    <div class="modal fade" id="notesModal{{ $suspect->id }}" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title text-center w-100"> له مظنون سره موجود وسایلو تفصیل</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <p style="white-space: pre-wrap;">
+                        {{ $suspect->notes }}
+                    </p>
+                </div>
+                    
+                    <div class="modal-footer d-flex justify-content-between mb-0">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">بندول</button>
+                
+                <a href="{{ route('suspects.notes.pdf', $suspect->id) }}" target="_blank"
+                    class="btn btn-primary btn-sm">
+                    پرینټ 
+                </a>
+            </div>
+            </div>
+           
+
         </div>
     </div>
 @endsection

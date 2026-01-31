@@ -3,18 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Models\Province;
-use App\Models\ReleaseSuspect;
 use App\Models\suspect;
 use App\Models\ReleaseSource;
+use App\Models\ReleaseSuspect;
 use Illuminate\Http\Request;
-use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
-use Carbon\Carbon;
+use Morilog\Jalali\Jalalian;
+use Morilog\Jalali\CalendarUtils;
+use PDF;
+
 
 class suspectController extends Controller
 {
+  public function to_esawi_date($date)
+  {
+    return Jalalian::fromFormat('Y-m-d', $date)->toCarbon();
+  }
+
+  public function to_dari_date($date)
+  {
+    return CalendarUtils::strftime('Y-m-d', strtotime($date));
+  }
+
   public function index()
   {
+
     $province = Province::all();
     $releaseOptions = ReleaseSource::all();
     return view('suspects.index', compact('province', 'releaseOptions'));
@@ -63,7 +76,7 @@ class suspectController extends Controller
                     </a>";
 
         // Release Button
-        $btn .= "<a class='release-btn btn btn-sm btn-outline-success' data-title='مظنون خلاصول' data-id='{$row->id}' style='cursor:pointer; display:inline-flex; align-items:center; gap:6px;'>
+        $btn .= "<a class='release-btn btn btn-sm btn-outline-success' data-title='مظنون خلاصول' data-id='{$row->id}' data-notes='" . e($row->notes) . "' style='cursor:pointer; display:inline-flex; align-items:center; gap:6px;'>
             <svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
                 <rect x='3' y='11' width='18' height='11' rx='2'/>
                 <path d='M7 11V7a5 5 0 0 1 10-3'/>
@@ -73,12 +86,13 @@ class suspectController extends Controller
 
         return $btn;
       })
+      ->addColumn('monitoring_date', function ($row) {
+        return $this->to_dari_date($row->monitoring_date);
+      })
       ->escapeColumns([])
       ->rawColumns(['action'])
       ->make(true);
   }
-
-
 
   public function store(Request $request)
   {
@@ -108,10 +122,11 @@ class suspectController extends Controller
     $suspectStore->children_with_mother = $request->children_with_mother;
     $suspectStore->crime_type = $request->crime_type;
     $suspectStore->referring_authority = $request->referring_authority;
-    $suspectStore->monitoring_date = $request->monitoring_date;
+    $suspectStore->monitoring_date = $this->to_esawi_date($request->monitoring_date);
     $suspectStore->province = $request->province;
     $suspectStore->district = $request->district;
     $suspectStore->area = $request->area;
+    $suspectStore->notes = $request->notes;
 
     if ($request->hasFile('file')) {
       $file = $request->file('file');
@@ -131,6 +146,10 @@ class suspectController extends Controller
       ->select('suspects.*', 'provinces.id as province_id', 'provinces.name_da as province_name')
       ->where('suspects.id', $id)
       ->first();
+
+    if (!empty($suspect->monitoring_date)) {
+      $suspect->monitoring_date = $this->to_dari_date($suspect->monitoring_date);
+    }
 
     return response()->json($suspect);
   }
@@ -152,7 +171,7 @@ class suspectController extends Controller
       'province' => 'required',
       'district' => 'required',
       'area' => 'required',
-      'file' => 'nullable|file',
+
     ]);
 
 
@@ -163,10 +182,11 @@ class suspectController extends Controller
     $suspect->children_with_mother = $request->children_with_mother;
     $suspect->crime_type = $request->crime_type;
     $suspect->referring_authority = $request->referring_authority;
-    $suspect->monitoring_date = $request->monitoring_date;
+    $suspect->monitoring_date = $this->to_esawi_date($request->monitoring_date);
     $suspect->province = $request->province;
     $suspect->district = $request->district;
     $suspect->area = $request->area;
+    $suspect->notes = $request->notes;
 
     if ($request->hasFile('file')) {
       $file = $request->file('file');
@@ -183,7 +203,6 @@ class suspectController extends Controller
     ]);
   }
 
-
   // Delete suspect
   public function destroy($id)
   {
@@ -194,10 +213,73 @@ class suspectController extends Controller
 
   public function details($id)
   {
+    $suspect = Suspect::join('provinces', 'suspects.province', '=', 'provinces.id')
+      ->select(
+        'suspects.*',
+        'provinces.id as province_id',
+        'provinces.name_da as province_name'
+      )
+      ->where('suspects.id', $id)
+      ->firstOrFail();
 
-    $suspect = Suspect::with(['provinceRelation'])->findOrFail($id);
+    if (!empty($suspect->monitoring_date)) {
+      $suspect->monitoring_date = $this->to_dari_date($suspect->monitoring_date);
+    }
 
     return view('suspects.details', compact('suspect'));
   }
 
+
+
+  public function notesPdf($id)
+  {
+    $suspect = Suspect::with(['provinceRelation', 'release'])
+      ->findOrFail($id);
+
+    // د نظارت نیټه جلالي/دري ته اړول
+    if (!empty($suspect->monitoring_date)) {
+      $suspect->monitoring_date =
+        CalendarUtils::strftime(
+          'Y-m-d',
+          strtotime($suspect->monitoring_date)
+        );
+    }
+
+    return PDF::loadView(
+      'suspects.notes_pdf',
+      compact('suspect'),
+      [],
+      [
+        'orientation' => 'P',   // ✅ عمودی (Portrait)
+        'defaultFont' => 'dejavusans',
+      ]
+    )->stream('Suspect_Notes_Report.pdf');
+  }
+
+  
+//  PDF of release notes
+  public function releaseNotesPdf($id)
+  {
+    $suspect = Suspect::with(['provinceRelation', 'release'])
+      ->findOrFail($id);
+
+    // د نظارت نیټه جلالي/دري ته اړول
+    if (!empty($suspect->monitoring_date)) {
+      $suspect->monitoring_date =
+        CalendarUtils::strftime(
+          'Y-m-d',
+          strtotime($suspect->monitoring_date)
+        );
+    }
+
+    return PDF::loadView(
+      'suspects.release_notes_pdf',
+      compact('suspect'),
+      [],
+      [
+        'orientation' => 'P',   // ✅ عمودی (Portrait)
+        'defaultFont' => 'dejavusans',
+      ]
+    )->stream('Suspect_Release_Notes_Report.pdf');
+  }
 }

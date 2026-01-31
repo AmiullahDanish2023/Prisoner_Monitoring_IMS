@@ -15,7 +15,7 @@ class CreateSuspectsTable extends Migration
     {
         Schema::create('suspects', function (Blueprint $table) {
             $table->id();
-            $table->string('gender')->nullable();
+            $table->string('gender');
             $table->string('suspect_name');
             $table->string('father_name');
             $table->string('grandfather_name')->nullable();
@@ -26,7 +26,9 @@ class CreateSuspectsTable extends Migration
             $table->integer('province');
             $table->string('district')->nullable();
             $table->string('area')->nullable();
+            $table->string('notes')->nullable();
             $table->string('file')->nullable();
+            $table->enum('status', ['prisoner', 'released'])->default('prisoner');
             $table->timestamps();
         });
     }

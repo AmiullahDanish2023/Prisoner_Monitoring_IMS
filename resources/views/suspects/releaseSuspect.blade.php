@@ -1,9 +1,10 @@
 @extends('layouts.master')
 @section('content')
     <div class="card shadow-sm">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h4 class="card-title mb-0"> د خلاص /انتقال شویو مظنونینو لیست </h4>
-
+        <div class="card-header d-flex justify-content-center align-items-center">
+            <h4 class="card-title mb-0 fw-bold">
+                د خلاص / انتقال شویو مظنونینو لیست
+            </h4>
             <style>
                 /* ---------- Action Buttons Container ---------- */
                 .action-buttons {

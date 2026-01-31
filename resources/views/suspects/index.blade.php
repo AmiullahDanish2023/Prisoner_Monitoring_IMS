@@ -124,6 +124,7 @@
                     <thead style="background-color:#c1effa;">
                         <tr class="bg-primary-o-10">
                             <th>شماره</th>
+                            <th> مظنون نظارت ورځې </th>
                             <th>نوم</th>
                             <th>د پلار نوم</th>
                             <th>جرم</th>
@@ -168,7 +169,7 @@
                         <div class="col-md-4">
                             <label class="form-label">نوم مظنون</label>
                             <input type="text" name="suspect_name" class="form-control form-control-sm"
-                                placeholder="د مظنون نوم">
+                                placeholder=" مظنون نوم">
                         </div>
 
                         <div class="col-md-4">
@@ -208,12 +209,13 @@
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">ولایت</label>
-                            <select class="form-select "  data-placeholder="انتخاب کنید">
+                            <select name="province" class="form-select">
                                 <option value="">انتخاب ولایت</option>
                                 @foreach ($province as $pro)
                                     <option value="{{ $pro->id }}">{{ $pro->name_da }}</option>
                                 @endforeach
                             </select>
+
                         </div>
 
                         <div class="col-md-4">
@@ -223,13 +225,18 @@
 
                         <div class="col-md-4">
                             <label class="form-label">منطقه</label>
-                            <input type="text" name="area" class="form-control form-control-sm"
-                                placeholder="منطقه">
+                            <input type="text" name="area" class="form-control form-control-sm" placeholder="منطقه">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">ملاحظات </label>
+                            <textarea name="notes" class="form-control form-control-sm" rows="3" placeholder="ملاحظات"></textarea>
                         </div>
 
                         <div class="col-md-12">
                             <label class="form-label">فایل</label>
-                            <input type="file" name="file" class="form-control form-control-sm">
+                            <input type="file" name="file" class="form-control form-control-sm"
+                                accept=".jpg,.jpeg,.png,.pdf,.doc,.docx">
+
                         </div>
 
                     </div>
@@ -249,7 +256,7 @@
         <div class="modal-dialog modal-dialog-centered mw-50">
             <div class="modal-content">
                 <div class="modal-header d-flex justify-content-center" style="background-color:#dff5fa; color:white;">
-                    <h5 class="modal-title text-center w-100">د مظنون معلومات تغیرول</h5>
+                    <h5 class="modal-title text-center w-100">${row} معلومات تغیرول</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
@@ -305,8 +312,8 @@
 
                         <div class="col-md-4">
                             <label class="form-label">د څارنې نیټه</label>
-                            <input type="date" name="monitoring_date" id="edit_monitoring_date"
-                                class="form-control form-control-sm">
+                            <input type="text" name="monitoring_date" class="form-control form-control-sm farsi-date"
+                                id="edit_monitoring_date" placeholder="د نظارت نیټه">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">ولایت</label>
@@ -328,6 +335,10 @@
                             <label class="form-label">منطقه</label>
                             <input type="text" name="area" id="edit_area" class="form-control form-control-sm">
                         </div>
+                        <div class="col-md-4">
+                            <label class="form-label">ملاحظات </label>
+                            <textarea name="notes" id="edit_notes" class="form-control form-control-sm" rows="3"></textarea>
+                        </div>
 
                         <div class="col-md-12">
                             <label class="form-label">فایل</label>
@@ -344,6 +355,8 @@
             </div>
         </div>
     </div>
+
+
     <!-- Release Modal -->
     <div class="modal fade" id="releaseModal" tabindex="-1" aria-labelledby="releaseModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -400,9 +413,17 @@
                                     <hr>
 
                                     {{-- DB OPTIONS (HIDDEN INITIALLY) --}}
-                                    <div id="db_options_wrapper" style="display:none;">
+                                    {{-- Search DB Options --}}
+                                    <div id="db_search_wrapper" style="display:none;" class="mb-2">
+                                        <input type="text" id="db_option_search" class="form-control form-control-sm"
+                                            placeholder="جستجو مرجع...">
+                                    </div>
+
+                                    <div id="db_options_wrapper"
+                                        style="display:none; max-height:220px; overflow-y:auto; border:1px solid #dee2e6; padding:8px; border-radius:6px;">
+
                                         @foreach ($releaseOptions as $opt)
-                                            <div class="form-check mb-2">
+                                            <div class="form-check mb-2 db-option-item">
                                                 <input class="form-check-input db-opt" type="checkbox"
                                                     value="{{ $opt->name_da }}" id="db_opt_{{ $opt->id }}">
                                                 <label class="form-check-label" for="db_opt_{{ $opt->id }}">
@@ -410,6 +431,7 @@
                                                 </label>
                                             </div>
                                         @endforeach
+
                                     </div>
 
                                 </div>
@@ -419,19 +441,28 @@
 
                         </div>
 
-
-
                         <div class="mb-3">
                             <label for="release_date" class="form-label">تاریخ رهایی یا انتقال</label>
-                            <input type="date" class="form-control" id="release_date" name="release_date" required>
+                            <input type="text" class="form-control farsi-date" id="release_date" name="release_date"
+                                required placeholder="تاریخ رهایی یا انتقال">
+                        </div>
+                        <div class="mb-3" id="itemsStatusWrapper">
+                            <label class="form-label">د وسایلو حالت</label>
+
+                            <select name="items_status" class="form-select">
+                                <option value="">-- حالت انتخاب کړئ --</option>
+                                <option value="confiscated">وسایل تسلیم شول</option>
+                                <option value="not_confiscated">وسایل تسلیم نه شول</option>
+                            </select>
                         </div>
 
                         <div class="col-md-12">
                             <label class="form-label">فایل</label>
-                            <input type="file" name="file" class="form-control form-control-sm">
+                            <input type="file" name="file" class="form-control form-control-sm"
+                                accept=".jpg,.jpeg,.png,.pdf,.doc,.docx">
                         </div>
-                    </div>
 
+                    </div>
 
                     <div class="modal-footer d-flex justify-content-between mb-0">
                         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">بندول</button>
@@ -446,7 +477,7 @@
 
 @section('scripts')
     <script src="{{ asset('perisanDatePicker/js/persianDatepicker.js') }}"></script>
-    <script src="{{ asset('perisanDatePicker/js/persianDatepicker.js') }}"></script>
+
 
     <script>
         $('.select2').select2({
@@ -472,100 +503,205 @@
             ignore: [],
             rules: {
                 gender: {
-                    required: true,
+                    required: true
                 },
                 suspect_name: {
-                    required: true,
+                    required: true
                 },
                 father_name: {
-                    required: true,
+                    required: true
                 },
                 grandfather_name: {
-                    required: true,
+                    required: true
                 },
                 children_with_mother: {
-                    required: true,
+                    required: true
                 },
                 crime_type: {
-                    required: true,
+                    required: true
                 },
                 referring_authority: {
-                    required: true,
+                    required: true
                 },
                 monitoring_date: {
-                    required: true,
+                    required: true
                 },
                 province: {
-                    required: true,
+                    required: true
                 },
                 district: {
-                    required: true,
+                    required: true
                 },
                 area: {
-                    required: true,
+                    required: true
                 },
+
                 file: {
                     required: true,
-                    accept: "image/jpeg,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    accept: "jpg,jpeg,png,pdf,doc,docx"
                 }
             },
             messages: {
-
                 gender: {
-                    required: '<span class="text-danger" style="font-size:12px; font-weight:bold;float:left">جنسیت انتخاب کړئ</span>',
+                    required: 'جنسیت انتخاب کړئ'
                 },
                 suspect_name: {
-                    required: '<span class="text-danger" style="font-size:12px; font-weight:bold;float:left">د مظنون نوم ولیکئ</span>',
+                    required: ' نوم ولیکئ'
                 },
                 father_name: {
-                    required: '<span class="text-danger" style="font-size:12px; font-weight:bold;float:left">د پلار نوم ولیکئ</span>',
+                    required: 'د پلار نوم ولیکئ'
                 },
                 grandfather_name: {
-                    required: '<span class="text-danger" style="font-size:12px; font-weight:bold;float:left">د نیکه نوم ولیکئ</span>',
+                    required: 'د نیکه نوم ولیکئ'
                 },
                 children_with_mother: {
-                    required: '<span class="text-danger" style="font-size:12px; font-weight:bold;float:left">د مور سره د ماشومانو شمېره ولیکئ</span>',
+                    required: 'د مور سره د ماشومانو شمېره ولیکئ'
                 },
                 crime_type: {
-                    required: '<span class="text-danger" style="font-size:12px; font-weight:bold;float:left">د جرم ډول ولیکئ</span>',
+                    required: 'د جرم ډول ولیکئ'
                 },
                 referring_authority: {
-                    required: '<span class="text-danger" style="font-size:12px; font-weight:bold;float:left">رالیږونکې اداره ولیکئ</span>',
+                    required: 'رالیږونکې اداره ولیکئ'
                 },
                 monitoring_date: {
-                    required: '<span class="text-danger" style="font-size:12px; font-weight:bold;float:left">د څارنې نیټه ولیکئ</span>',
+                    required: 'د څارنې نیټه ولیکئ'
                 },
                 province: {
-                    required: '<span class="text-danger" style="font-size:12px; font-weight:bold;float:left">ولایت ولیکئ</span>',
+                    required: 'ولایت ولیکئ'
                 },
                 district: {
-                    required: '<span class="text-danger" style="font-size:12px; font-weight:bold;float:left">ناحیه ولیکئ</span>',
+                    required: 'ناحیه ولیکئ'
                 },
                 area: {
-                    required: '<span class="text-danger" style="font-size:12px; font-weight:bold;float:left">منطقه ولیکئ</span>',
+                    required: 'منطقه ولیکئ'
                 },
+
                 file: {
-                    required: '<span class="text-danger" style="font-size:12px; font-weight:bold;float:left">فایل انتخاب کړئ</span>',
-                    accept: '<span class="text-danger" style="font-size:12px; font-weight:bold;float:left">فایل باید jpg, pdf, doc, docx بڼه ولري</span>'
+                    required: 'فایل انتخاب کړئ',
+                    accept: 'فایل باید jpg, png, pdf, doc, docx وي'
                 }
-
             },
-
-
+            submitHandler: function(form) {
+                form.submit();
+            }
         });
     </script>
 
+
     <script>
         $(document).ready(function() {
+            function gregorianToJalali(gy, gm, gd) {
+                let g_d_m = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+                let jy = (gy <= 1600) ? 0 : 979;
+                gy -= (gy <= 1600) ? 621 : 1600;
 
-            // --- DataTable initialization ---
+                let gy2 = (gm > 2) ? (gy + 1) : gy;
+                let days = 365 * gy + Math.floor((gy2 + 3) / 4) - Math.floor((gy2 + 99) / 100) + Math.floor((gy2 +
+                    399) / 400) - 80 + gd + g_d_m[gm - 1];
+
+                jy += 33 * Math.floor(days / 12053);
+                days %= 12053;
+                jy += 4 * Math.floor(days / 1461);
+                days %= 1461;
+
+                if (days > 365) {
+                    jy += Math.floor((days - 1) / 365);
+                    days = (days - 1) % 365;
+                }
+
+                let jm = (days < 186) ? 1 + Math.floor(days / 31) : 7 + Math.floor((days - 186) / 30);
+                let jd = 1 + ((days < 186) ? (days % 31) : ((days - 186) % 30));
+
+                return {
+                    jy,
+                    jm,
+                    jd
+                };
+            }
+
+            function getDifferenceInDays(date1, date2) {
+                const oneDay = 24 * 60 * 60 * 1000;
+                const firstDate = new Date(date1);
+                const secondDate = new Date(date2);
+                return Math.round((secondDate - firstDate) / oneDay);
+            }
+
             $('#suspects_table').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('suspects.list') }}",
                 columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex'
+                        "data": 'id',
+                        render: function(data, type, row, meta) {
+                            // Get current Gregorian date
+                            const now = new Date();
+                            const currentDate = gregorianToJalali(now.getFullYear(), now
+                                .getMonth() + 1, now.getDate());
+
+                            // Format as "1404-10-21"
+                            const jalaliString =
+                                `${currentDate.jy}-${currentDate.jm}-${currentDate.jd}`;
+                            const diffInDays = getDifferenceInDays(row.monitoring_date,
+                                jalaliString);
+
+                            if (diffInDays < 9) {
+                                return `<span class="badge badge-success">${meta.row + meta.settings._iDisplayStart + 1}</span>`;
+                            } else if (diffInDays === 9) {
+                                return `<span class="badge badge-warning">${meta.row + meta.settings._iDisplayStart + 1}</span>`;
+                            } else {
+                                return `<span class="badge badge-danger">${meta.row + meta.settings._iDisplayStart + 1}</span>`;
+                            }
+                        }
+                    },
+                    {
+                        data: null,
+                        render: function(data, type, row, meta) {
+
+                            // Current Gregorian date → Jalali
+                            const now = new Date();
+                            const currentDate = gregorianToJalali(
+                                now.getFullYear(),
+                                now.getMonth() + 1,
+                                now.getDate()
+                            );
+
+                            const todayJalali =
+                                currentDate.jy + '-' +
+                                currentDate.jm + '-' +
+                                currentDate.jd;
+
+                            // Difference in days
+                            const diffInDays = getDifferenceInDays(row.monitoring_date,
+                                todayJalali);
+
+                            let badgeClass = 'badge-success';
+                            let message = '';
+
+
+                            if (diffInDays === 0) {
+                                message = `مظنون  لــــومــــړۍ ورځ ده`;
+                            } else if (diffInDays === 1) {
+                                message = `مظنون  (۱) ورځ تیره شوې`;
+                            } else {
+                                message = `مظنون (${diffInDays}) ورځې تېرې شوي`;
+                            }
+
+                            // ✅ Badge color
+                            if (diffInDays < 9) {
+                                badgeClass = 'badge-success';
+                            } else if (diffInDays === 9) {
+                                badgeClass = 'badge-warning';
+                            } else {
+                                badgeClass = 'badge-danger';
+                            }
+
+                            return `
+                             <span class="badge ${badgeClass}">
+                                 ${message}
+                             </span>`;
+                        }
+
+
                     },
                     {
                         data: 'suspect_name',
@@ -719,9 +855,7 @@
     <script>
         $(document).ready(function() {
 
-            // -------------------------------
-            // Toggle Children Field on Gender
-            // -------------------------------
+
             function toggleEditChildrenField() {
                 if ($('#edit_gender').val() === 'ښځینه') {
                     $('#edit_childrenWithMotherDiv').show();
@@ -732,10 +866,6 @@
 
             $('#edit_gender').on('change', toggleEditChildrenField);
 
-
-            // -------------------------------
-            // Load Edit Modal With Data
-            // -------------------------------
             $(document).on('click', '.edit-btn', function() {
                 let id = $(this).data('id');
 
@@ -759,6 +889,7 @@
 
                         $('#edit_district').val(data.district);
                         $('#edit_area').val(data.area);
+                        $('#edit_notes').val(data.notes);
 
                         // Show existing file link if available
                         if (data.file) {
@@ -946,6 +1077,9 @@
 
     <!-- JS: behavior & sync label -->
     <script>
+        document.getElementById('db_search_wrapper').style.display = 'block';
+
+
         document.addEventListener("DOMContentLoaded", function() {
             let mainOptions = document.querySelectorAll(".main-opt");
             let dbWrapper = document.getElementById("db_options_wrapper");
@@ -1010,6 +1144,38 @@
                     bootstrap.Dropdown.getInstance(dropdownBtn).hide();
                 });
             });
+        });
+
+        // Search functionality
+        document.getElementById('db_option_search').addEventListener('keyup', function() {
+            let searchValue = this.value.toLowerCase();
+            let items = document.querySelectorAll('.db-option-item');
+
+            items.forEach(function(item) {
+                let text = item.innerText.toLowerCase();
+                item.style.display = text.includes(searchValue) ? '' : 'none';
+            });
+        });
+    </script>
+    {{--  suspect release modal notes showing properly --}}
+    <script>
+        $(document).on('click', '.release-btn', function() {
+
+            let suspectId = $(this).data('id');
+            let notes = $(this).data('notes');
+
+            // set hidden input
+            $('#release_suspect_id').val(suspectId);
+
+            if (!notes || notes.trim() === '') {
+               
+                $('#itemsStatusWrapper').hide();
+            } else {
+            
+                $('#itemsStatusWrapper').show();
+            }
+
+            $('#releaseModal').modal('show');
         });
     </script>
 @endsection

@@ -6,9 +6,11 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ReleaseController;
 use App\Http\Controllers\Frontend\WelcomeController;
+use App\Http\Controllers\LivelihoodPlanController;
 use App\Http\Controllers\ReleaseSourceController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\suspectController;
+
 use Illuminate\Support\Facades\Auth;
 /*
 |--------------------------------------------------------------------------
@@ -68,43 +70,66 @@ Route::post('suspects/update/{id}', [SuspectController::class, 'update'])->name(
 Route::get('suspects/destroy/{id}', [SuspectController::class, 'destroy'])->name('suspects.destroy')->middleware(['auth', 'setlocale']);
 Route::get('/suspects/details/{id}', [SuspectController::class, 'details'])->name('details')->middleware(['auth', 'setlocale']);
 
+Route::get('/suspects/{id}/notes-pdf',[SuspectController::class, 'notesPdf'])->name('suspects.notes.pdf');
+Route::get('/suspects/{id}/release/notes-pdf',[SuspectController::class, 'releaseNotesPdf'])->name('suspects.release.notes.pdf');  
+  
 
 //Release Routes
 Route::get('/suspects/release', [ReleaseController::class, 'releaseSuspect'])->name('suspects.release')->middleware(['auth', 'setlocale']);
 Route::get('release/list', [ReleaseController::class, 'show'])->name('release.list')->middleware(['auth', 'setlocale']);
 Route::post('/suspects/release/store', [ReleaseController::class, 'release'])->name('release.store')->middleware(['auth', 'setlocale']);
 Route::get('release/destroy/{id}', [ReleaseController::class, 'destroy'])->name('release.destroy')->middleware(['auth', 'setlocale']);
-Route::get('/release/details/{id}', [ReleaseController::class, 'details'])->name('release_details')->middleware(['auth', 'setlocale']);
+ Route::get('/release/details/{id}', [ReleaseController::class, 'details'])->name('release_details')->middleware(['auth', 'setlocale']);
+
+
 
 
 //Release Source Routes
 Route::middleware(['auth'])->group(function () {
 
   Route::resource('release-sources', ReleaseSourceController::class)->only(['index', 'create', 'store']);
-    
 });
 
 Route::get('release-sources/show', [ReleaseSourceController::class, 'show'])->name('release-sources.show');
 Route::get('release-sources/delete/{id}', [ReleaseSourceController::class, 'deleteSource'])->name('release-sources.delete');
 
-  
+
 
 //Release report routes 
-
 Route::get('general/report', [ReportController::class, 'generalReport'])->middleware(['auth', 'setlocale'])->name('report.general');
-  
+
 // Generate PDF of the report
 Route::post('general/report/pdf', [ReportController::class, 'createGeneralReport'])->middleware(['auth', 'setlocale'])->name('report.general.pdf');
-  
-  
 
- 
+//Existing suspects PDF Report
+Route::get('reports/existing-suspects/pdf', [ReportController::class, 'existingSuspectPdf'])->name('reports.existing.pdf');
+
+//release\transferred suspects PDF Report
+Route::get('reports/released-suspects/pdf', [ReportController::class, 'releasedSuspectPdf'])->name('reports.released.pdf');
+
+// monthly suspects PDF Report
+Route::get('reports/monthly-suspects/pdf', [ReportController::class, 'monthlySuspectPdf'])->name('reports.monthly.pdf');
 
 
-
-
-
-
-   
-  
 # --------------------------------- End suspects Routes ------------------------------------------------------------------
+
+
+#--------------------------------- livelihood plan Routes -------------------------------------------------------------------
+Route::middleware(['auth', 'setlocale'])->group(function () {
+
+  Route::get(
+    'livelihood/plan',
+    [LivelihoodPlanController::class, 'livelihoodPlan']
+  )->name('livelihood.plan');
+
+  Route::post(
+    'livelihood/store',
+    [LivelihoodPlanController::class, 'store']
+  )->name('livelihood.store');
+
+  Route::put(
+    'livelihood/update/{id}',
+    [LivelihoodPlanController::class, 'update']
+  )->name('livelihood.update');
+});
+#--------------------------------- End livelihood plan Routes -------------------------------------------------------------------

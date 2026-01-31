@@ -136,7 +136,7 @@
                                     <span class="menu-bullet">
                                         <span class="bullet bullet-dot"></span>
                                     </span>
-                                    <span class="menu-title">انتقال شوي مظنونینو لیست </span>
+                                    <span class="menu-title">رهایی / انتقال مظنونینو لیست</span>
                                 </a>
                                 <!--end:Menu link-->
                             </div>
@@ -209,19 +209,19 @@
                     <!--begin:Menu sub-->
                     <div class="menu-sub menu-sub-accordion">
                         <!--begin:Menu item-->
-                        @can('Create Book or Artical')
-                            <div class="menu-item">
-                                <!--begin:Menu link-->
-                                <a class="menu-link {{ Route::currentRouteName() == 'report.general' ? 'active' : '' }}"
-                                    href="{{ route('report.general') }}">
-                                    <span class="menu-bullet">
-                                        <span class="bullet bullet-dot"></span>
-                                    </span>
-                                    <span class="menu-title">د مظنونینو عمومی راپور </span>
-                                </a>
-                                <!--end:Menu link-->
-                            </div>
-                        @endcan
+
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link {{ Route::currentRouteName() == 'report.general' ? 'active' : '' }}"
+                                href="{{ route('report.general') }}">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                <span class="menu-title">د مظنونینو عمومی راپور </span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+
 
                         <!--end:Menu item-->
 
@@ -231,19 +231,60 @@
                     <!--begin:Menu sub-->
                     <div class="menu-sub menu-sub-accordion">
                         <!--begin:Menu item-->
-                        @can('Create Book or Artical')
-                            <div class="menu-item">
-                                <!--begin:Menu link-->
-                                <a class="menu-link {{ Route::currentRouteName() == 'suspects.release' ? 'active' : '' }}"
-                                    href="{{ route('suspects.release') }}">
-                                    <span class="menu-bullet">
-                                        <span class="bullet bullet-dot"></span>
-                                    </span>
-                                    <span class="menu-title"> د مظنونینو د موجودی راپور </span>
-                                </a>
-                                <!--end:Menu link-->
-                            </div>
-                        @endcan
+
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link {{ Route::currentRouteName() == 'reports.existing.pdf' ? 'active' : '' }}"
+                                href="{{ route('reports.existing.pdf') }}">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                <span class="menu-title"> د مظنونینو د موجودی راپور </span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+
+
+                        <!--end:Menu item-->
+
+                    </div>
+                    <!--end:Menu sub-->
+
+                    <!--begin:Menu sub-->
+                    <div class="menu-sub menu-sub-accordion">
+                        <!--begin:Menu item-->
+
+                        <div class="menu-item">
+                            <a class="menu-link" href="#" data-bs-toggle="modal"
+                                data-bs-target="#releasedReportModal">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                <span class="menu-title"> د رهایی / انتقال مظنونینو راپور </span>
+                            </a>
+                        </div>
+
+
+
+                        <!--end:Menu item-->
+
+                    </div>
+                    <!--end:Menu sub-->
+
+                    <!--begin:Menu sub-->
+                    <div class="menu-sub menu-sub-accordion">
+                        <!--begin:Menu item-->
+
+                        <div class="menu-item">
+                            <a class="menu-link" href="#" data-bs-toggle="modal"
+                                data-bs-target="#monthlySuspectModal">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                <span class="menu-title"> د مظنونینو میاشتنی راپور </span>
+                            </a>
+                        </div>
+
 
                         <!--end:Menu item-->
 
@@ -255,6 +296,79 @@
 
                 <!--end:Menu item-->
                 {{-- -----------------------------end report part--------------------------------- --}}
+
+
+
+
+
+                {{-- ---------------------------start livelihood plan part--------------------- --}}
+
+                <!--end:Menu item-->
+                <!--begin:Menu item-->
+                <div class="menu-item pt-5">
+                    <!--begin:Menu content-->
+                    <div class="menu-content">
+                        <span class="menu-heading fw-bold text-uppercase ">بخش مدیریت اعاشه</span>
+                    </div>
+                    <!--end:Menu content-->
+                </div>
+                <!--end:Menu item-->
+                <!--begin:Menu item-->
+                <div data-kt-menu-trigger="click"
+                    class="menu-item {{ Request::is('contents*') ? 'here show' : '' }} menu-accordion">
+                    <!--begin:Menu link-->
+                    <span class="menu-link">
+                        <span class="menu-icon">
+                            <span class="svg-icon svg-icon-2">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+
+                                    <!-- Person -->
+                                    <circle cx="12" cy="6" r="3" fill="currentColor" />
+                                    <path d="M6 20C6 15.6 8.7 13 12 13C15.3 13 18 15.6 18 20" fill="currentColor"
+                                        opacity="0.3" />
+
+                                    <!-- Livelihood / Planning bars -->
+                                    <rect x="4" y="14" width="2" height="6" rx="1"
+                                        fill="currentColor" opacity="0.4" />
+                                    <rect x="18" y="11" width="2" height="9" rx="1"
+                                        fill="currentColor" opacity="0.6" />
+
+                                </svg>
+                            </span>
+                        </span>
+
+                        <span class="menu-title">مدیریت اعاشه</span>
+                        <span class="menu-arrow"></span>
+                    </span>
+                    <!--end:Menu link-->
+
+                    <!--begin:Menu sub-->
+                    <div class="menu-sub menu-sub-accordion">
+                        <!--begin:Menu item-->
+
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link {{ Route::currentRouteName() == 'livelihood.plan' ? 'active' : '' }}"
+                                href="{{ route('livelihood.plan') }}">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                <span class="menu-title">پلان اعاشه </span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+
+
+                        <!--end:Menu item-->
+
+                    </div>
+                    <!--end:Menu sub-->
+                </div>
+                <!--end:Menu item-->
+
+                <!--end:Menu item-->
+                {{-- -----------------------------end livelihood plan part--------------------------------- --}}
 
 
 
@@ -367,3 +481,189 @@
     </div>
     <!--end::Footer-->
 </div>
+
+
+@section('content')
+    <link rel="stylesheet" href="{{ asset('assets/persian-date/persian-datepicker.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('perisanDatePicker/css/persianDatepicker-default.css') }}" />
+
+<style>
+    .modal-content {
+        border-radius: 10px;
+    }
+
+    .modal-header {
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    .modal-footer {
+        border-top: 1px solid #dee2e6;
+    }
+</style>
+<div class="modal fade" id="releasedReportModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content shadow">
+
+            {{-- Header --}}
+            <div class="modal-header justify-content-center position-relative">
+                <h5 class="modal-title fw-bold">
+                    انتخاب نوع راپور
+                </h5>
+
+                {{-- Close button fixed to right --}}
+                <button type="button" class="btn-close position-absolute end-0 me-2" data-bs-dismiss="modal"
+                    aria-label="Close">
+                </button>
+            </div>
+
+            <form method="GET" action="{{ route('reports.released.pdf') }}" target="_blank">
+
+                {{-- Body --}}
+                <div class="modal-body px-4">
+
+                    <div class="mb-3 ">
+                        <label class="form-label fw-bold mb-2">
+                            انتخاب جنسیت مظنون
+                        </label>
+
+                        <select name="gender" class="form-select " required>
+                            <option value=""> انتخاب نمایید </option>
+                            <option value="all">عمومی (ذکور و اناث)</option>
+                            <option value="نارینه">مظنونین ذکور </option>
+                            <option value="ښځینه"> مظنونین اناث</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                {{-- Footer --}}
+                <div class="modal-footer d-flex justify-content-between mb-0">
+                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"
+                        onclick="this.closest('form').reset()">
+                        بندول
+                    </button>
+
+                    <button type="submit" class="btn btn-primary btn-sm"> راپور لیدل</button>
+
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{{-- -----------------monthly suspect report modal ----------------------- --}}
+
+
+<div class="modal fade" id="monthlySuspectModal" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title text-align-center">د مظنونینو میاشتنی راپور</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <form method="GET" action="{{ route('reports.monthly.pdf') }}" target="_blank">
+
+                <div class="modal-body">
+
+                    <!-- تاریخ شروع -->
+                    <div class="mb-3">
+                        <label class="form-label">تاریخ شروع</label>
+                        <input type="text" name="start_date" class="form-control farsi-date"
+                            placeholder="از تاریخ" autocomplete="off" value="">
+                    </div>
+
+                    <!-- تاریخ ختم -->
+                    <div class="mb-3">
+                        <label class="form-label">تاریخ ختم</label>
+                        <input type="text" name="end_date" class="form-control farsi-date" placeholder="تا تاریخ"
+                            autocomplete="off" value="">
+                    </div>
+
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">راپور جوړول </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section('scripts')
+    <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
+
+    <script src="{{ asset('perisanDatePicker/js/persianDatepicker.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+
+            // --- Initialize Persian Datepicker ---
+            $('.farsi-date').persianDatepicker({
+                format: 'YYYY/MM/DD',
+                initialValue: false,
+                autoClose: true,
+                calendar: {
+                    persian: {
+                        locale: 'fa'
+                    }
+                }
+            });
+
+            // --- Auto reset form on page load ---
+            $('#generalReportForm')[0].reset();
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const modalEl = document.getElementById('monthlySuspectModal');
+            const formEl = modalEl.querySelector('form');
+
+            formEl.addEventListener('submit', function() {
+
+                // Close modal
+                const modalInstance = bootstrap.Modal.getInstance(modalEl);
+                if (modalInstance) {
+                    modalInstance.hide();
+                }
+
+
+                // Reset form after short delay (ensures submit still works)
+                setTimeout(() => {
+                    formEl.reset();
+                }, 300);
+            });
+
+        });
+    </script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const modalEl = document.getElementById('releasedReportModal');
+            const formEl = modalEl.querySelector('form');
+
+            formEl.addEventListener('submit', function() {
+
+                // Close modal
+                const modalInstance = bootstrap.Modal.getInstance(modalEl);
+                if (modalInstance) {
+                    modalInstance.hide();
+                }
+
+
+                // Reset form after short delay (ensures submit still works)
+                setTimeout(() => {
+                    formEl.reset();
+                }, 300);
+            });
+
+        });
+    </script>
+@endsection

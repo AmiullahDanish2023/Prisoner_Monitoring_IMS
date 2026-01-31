@@ -25,6 +25,10 @@ class CreateReleaseSuspectsTable extends Migration
             $table->string('release_date');
             $table->string('file')->nullable();
 
+            $table->enum('items_status', ['confiscated', 'not_confiscated'])->nullable();
+                
+
+
             $table->timestamps();
         });
     }

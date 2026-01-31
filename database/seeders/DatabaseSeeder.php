@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             ProvinceSeeder::class,
             DistrictSeeder::class,
             LanguageSeeder::class,
-          
+            WeekDaySeeder::class,
             SettingSeeder::class,
            
         ]);
