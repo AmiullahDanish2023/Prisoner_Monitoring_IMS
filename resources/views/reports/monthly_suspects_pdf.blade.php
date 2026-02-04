@@ -70,12 +70,12 @@
                 <img src="{{ public_path('assets/moi.png') }}" width="100">
             </td>
             <td style="text-align:center">
-                <p class="header-label">امـــــارت اســـــلامی افغــــانــستان</p>
-                <p class="header-label">وزارت امـــــــور داخـــــــــلــه</p>
-                <p class="header-label">معینیت ارشد امــــور امنیتــی</p>
-                <p class="header-label">قومنـدانی امنیه ولایت کابل</p>
-                <p class="header-label">معاونـــــیت امــــور امــنیتــی</p>
-                <p class="header-label">آمــریت نـظارت خــانه</p>
+ <p class="header-label" style="font-size: 100% ;">امـــــارت اســـــلامــی افغـــــــانـــــــستان</p>
+                <p class="header-label" style="font-size: 100%;">وزارت امـــــــــــور داخـــــــــلــــــــه</p>
+                <p class="header-label" style="font-size: 100%">معینیت ارشد امـــــور امنیتــی</p>
+                <p class="header-label" style="font-size: 100%">قومنـدانی امنیه ولایت کابل</p>
+                <p class="header-label" style="font-size: 100%">معاونیت امـور امنیتــی</p>
+                <p class="header-label" style="font-size: 100%">آمریت نظارت خانه</p>
             </td>
             <td style="text-align:right">
                 <img src="{{ public_path('assets/logo.png') }}" width="90">

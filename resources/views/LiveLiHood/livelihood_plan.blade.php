@@ -23,15 +23,22 @@
         </div>
 
         <div class="card-body">
+            <form method="POST" action="{{ route('livelihood.store') }}" id="livelihoodForm">
+                @csrf
 
-            <form method="POST" action="{{ route('livelihood.store') }}" id="livelihoodForm"> @csrf {{-- ================== معلومات عمومی ================== --}} <h5
-                    class="fw-bolder pb-2 mb-3 section-title">معلومات عمومی</h5>
+                {{-- ================== معلومات عمومی ================== --}}
+                <h5 class="fw-bolder pb-2 mb-3 section-title">معلومات عمومی</h5>
                 <div class="row row-cols-1 row-cols-md-3 row-cols-xl-3 g-3 mb-4">
-                    <div> <label class="form-label">تاریخ </label> <input type="text" name="livelihoodDate"
-                            class="form-control farsi-date" placeholder="تاریخ">
+
+                    <div class="col">
+                        <label class="form-label">تاریخ</label>
+                        <input type="text" name="livelihoodDate" class="form-control farsi-date" placeholder="تاریخ">
                         <div class="error-msg" data-error-for="livelihoodDate"></div>
                     </div>
-                    <div> <label class="form-label">روز هفته</label> <select name="week_day_id" class="form-select">
+
+                    <div class="col">
+                        <label class="form-label">روز هفته</label>
+                        <select name="week_day_id" class="form-select">
                             <option value="" selected disabled>روز هفته را انتخاب کنید</option>
                             @foreach ($weekDays as $day)
                                 <option value="{{ $day->id }}">{{ $day->name }}</option>
@@ -40,47 +47,125 @@
                         <div class="error-msg" data-error-for="week_day_id"></div>
                     </div>
 
-
-                    <div> <label class="form-label">مبلغ (افغانی)</label>
+                    <div class="col">
+                        <label class="form-label">مبلغ (افغانی)</label>
                         <input type="number" name="amount" class="form-control" min="0">
                         <div class="error-msg" data-error-for="amount"></div>
                     </div>
-                </div> {{-- ================== حبوبات و مواد اولیه ================== --}} <h5 class="fw-bold pb-2 mb-3 section-title">حبوبات و مواد اولیه</h5>
-                <div class="row row-cols-1 row-cols-md-3 row-cols-xl-5 g-3 mb-4"> @php $foodFields = ['rice' => 'برنج سیله (کیلوگرام)', 'sugar' => 'بوره میده (کیلوگرام)', 'green_tea' => 'چای سبز (گرام)', 'beans' => 'لوبیا (کیلوگرام)', 'chickpeas' => 'نخود خام (کیلوگرام)']; @endphp @foreach ($foodFields as $name => $label)
-                        <div> <label class="form-label">{{ $label }}</label> <input type="number"
-                                name="{{ $name }}" class="form-control" step="0.001" min="0">
+
+                </div>
+
+                {{-- ================== حبوبات و مواد اولیه ================== --}}
+                <h5 class="fw-bold pb-2 mb-3 section-title">حبوبات و مواد اولیه</h5>
+                @php
+                    $foodFields = [
+                        'rice' => 'برنج سیله (کیلوگرام)',
+                        'sugar' => 'بوره میده (کیلوگرام)',
+                        'green_tea' => 'چای سبز (گرام)',
+                        'beans' => 'لوبیا (کیلوگرام)',
+                        'chickpeas' => 'نخود خام (کیلوگرام)',
+                    ];
+                @endphp
+
+                <div class="row row-cols-1 row-cols-md-3 row-cols-xl-5 g-3 mb-4">
+                    @foreach ($foodFields as $name => $label)
+                        <div class="col">
+                            <label class="form-label">{{ $label }}</label>
+                            <input type="number" name="{{ $name }}" class="form-control" step="0.001"
+                                min="0">
                             <div class="error-msg" data-error-for="{{ $name }}"></div>
                         </div>
                     @endforeach
-                </div> {{-- ================== لبنیات، پروتئین و گوشت ================== --}} <h5 class="fw-bolder pb-2 mb-3 section-title">لبنیات،
-                    پروتئین و گوشت</h5>
-                @php $proteinFields = ['milk_powder' => 'شیرخشک (کیلوگرام)', 'eggs' => 'تخم مرغ (عدد)', 'oil' => 'روغن مایع (کیلوگرام)', 'mutton' => 'گوشت گوسفند (کیلوگرام)', 'chicken' => 'گوشت مرغ (کیلوگرام)', 'beef' => 'گوشت گاو (کیلوگرام)', 'cake' => 'کیک (کیلوگرام)', 'yogurt_drink' => 'دوغ (کیلوگرام)', 'dates' => 'خرما (کیلوگرام)', 'sweets' => 'شیرینی (کیلوگرام)']; @endphp <div class="row row-cols-1 row-cols-md-3 row-cols-xl-5 g-3 mb-4">
+                </div>
+
+                {{-- ================== لبنیات، پروتئین و گوشت ================== --}}
+                <h5 class="fw-bolder pb-2 mb-3 section-title">لبنیات، پروتئین و گوشت</h5>
+                @php
+                    $proteinFields = [
+                        'milk_powder' => 'شیرخشک (کیلوگرام)',
+                        'eggs' => 'تخم مرغ (عدد)',
+                        'oil' => 'روغن مایع (کیلوگرام)',
+                        'mutton' => 'گوشت گوسفند (کیلوگرام)',
+                        'chicken' => 'گوشت مرغ (کیلوگرام)',
+                        'beef' => 'گوشت گاو (کیلوگرام)',
+                        'cake' => 'کیک (کیلوگرام)',
+                        'yogurt_drink' => 'دوغ (کیلوگرام)',
+                        'dates' => 'خرما (کیلوگرام)',
+                        'sweets' => 'شیرینی (کیلوگرام)',
+                    ];
+                @endphp
+
+                <div class="row row-cols-1 row-cols-md-3 row-cols-xl-5 g-3 mb-4">
                     @foreach ($proteinFields as $name => $label)
-                        <div> <label class="form-label">{{ $label }}</label> <input type="number"
-                                name="{{ $name }}" class="form-control" step="0.001" min="0">
+                        <div class="col">
+                            <label class="form-label">{{ $label }}</label>
+                            <input type="number" name="{{ $name }}" class="form-control" step="0.001"
+                                min="0">
                             <div class="error-msg" data-error-for="{{ $name }}"></div>
                         </div>
                     @endforeach
-                </div> {{-- ================== سبزیجات ================== --}} <h5 class="fw-bolder pb-2 mb-3 section-title">سبزیجات</h5>
-                @php $vegFields = ['eggplant' => 'بانجان سیاه (کیلوگرام)', 'zucchini' => 'کدوک (کیلوگرام)', 'potato' => 'کچالو (کیلوگرام)', 'potato_cooked' => 'کچالو جوشک (کیلوگرام)', 'fasila' => 'فاصیله (کیلوگرام)', 'onion' => 'پیاز (کیلوگرام)', 'tomato' => 'رومی تازه (کیلوگرام)', 'cucumber' => 'بادرنگ (کیلوگرام)', 'salad' => 'سلات مکس (کیلوگرام)', 'lemon' => 'لیمو (کیلوگرام)']; @endphp
+                </div>
+
+                {{-- ================== سبزیجات ================== --}}
+                <h5 class="fw-bolder pb-2 mb-3 section-title">سبزیجات</h5>
+                @php
+                    $vegFields = [
+                        'eggplant' => 'بانجان سیاه (کیلوگرام)',
+                        'zucchini' => 'کدوک (کیلوگرام)',
+                        'potato' => 'کچالو (کیلوگرام)',
+                        'potato_cooked' => 'کچالو جوشک (کیلوگرام)',
+                        'fasila' => 'فاصیله (کیلوگرام)',
+                        'onion' => 'پیاز (کیلوگرام)',
+                        'tomato' => 'رومی تازه (کیلوگرام)',
+                        'cucumber' => 'بادرنگ (کیلوگرام)',
+                        'salad' => 'سلات مکس (کیلوگرام)',
+                        'lemon' => 'لیمو (کیلوگرام)',
+                    ];
+                @endphp
+
                 <div class="row row-cols-1 row-cols-md-3 row-cols-xl-5 g-3 mb-4">
                     @foreach ($vegFields as $name => $label)
-                        <div> <label class="form-label">{{ $label }}</label> <input type="number"
-                                name="{{ $name }}" class="form-control" step="0.001" min="0">
+                        <div class="col">
+                            <label class="form-label">{{ $label }}</label>
+                            <input type="number" name="{{ $name }}" class="form-control" step="0.001"
+                                min="0">
                             <div class="error-msg" data-error-for="{{ $name }}"></div>
                         </div>
                     @endforeach
-                </div> {{-- ================== مواد متفرقه ================== --}} <h5 class="fw-bold pb-2 mb-3 section-title">مواد متفرقه</h5> @php $miscFields = ['salt' => 'نمک (کیلوگرام)', 'raisin_rice' => 'کشمش پلو (کیلوگرام)', 'dry_bread' => 'نان خشک (کیلوگرام)', 'spice_pot' => 'مساله دیگ (گرام)', 'gas' => 'گاز مایع (کیلوگرام)']; @endphp
+                </div>
+
+                {{-- ================== مواد متفرقه ================== --}}
+                <h5 class="fw-bold pb-2 mb-3 section-title">مواد متفرقه</h5>
+                @php
+                    $miscFields = [
+                        'salt' => 'نمک (کیلوگرام)',
+                        'raisin_rice' => 'کشمش پلو (کیلوگرام)',
+                        'dry_bread' => 'نان خشک (کیلوگرام)',
+                        'spice_pot' => 'مساله دیگ (گرام)',
+                        'gas' => 'گاز مایع (کیلوگرام)',
+                    ];
+                @endphp
+
                 <div class="row row-cols-1 row-cols-md-3 row-cols-xl-5 g-3 mb-4">
                     @foreach ($miscFields as $name => $label)
-                        <div> <label class="form-label">{{ $label }}</label> <input type="number"
-                                name="{{ $name }}" class="form-control" step="0.001" min="0">
+                        <div class="col">
+                            <label class="form-label">{{ $label }}</label>
+                            <input type="number" name="{{ $name }}" class="form-control" step="0.001"
+                                min="0">
                             <div class="error-msg" data-error-for="{{ $name }}"></div>
                         </div>
                     @endforeach
-                </div> {{-- ================== Submit ================== --}} <div class="d-flex justify-content-start mt-4"> <button type="submit"
-                        class="btn btn-primary px-5 fw-bold">ثبت معلومات</button> </div>
+                </div>
+
+                {{-- ================== Submit ================== --}}
+                <div class="d-flex justify-content-start mt-4">
+                    <button type="submit" class="btn btn-primary px-5 fw-bold">
+                        ثبت معلومات
+                    </button>
+                </div>
+
             </form>
+
 
         </div>
     </div>

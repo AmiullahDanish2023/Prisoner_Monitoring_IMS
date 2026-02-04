@@ -1,41 +1,73 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Content;
-use App\Models\Setting;
+
+use App\Models\Suspect;
+use App\Models\Livelihood;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('auth');
     }
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
     public function index()
     {
-     
+        /* ================= KPI CARDS ================= */
 
-        if(Session::get('locale') == 'en')
-        {
-            $setting  = Setting::where('language_id', 1)->first();
-        } else if (Session::get('locale') == 'pa')
-        {
-            $setting  = Setting::where('language_id', 2)->first();
-        }
-        else {
-            $setting  = Setting::where('language_id', 3)->first();
-        }
-        return view('home', compact( 'setting'));
+        // Active prisoners (not released)
+        $totalPrisoners = Suspect::where('status', 'prisoner')->count();
+
+        $maleCount = Suspect::where('status', 'prisoner')
+            ->where('gender', 'نارینه')->count();
+
+        $femaleCount = Suspect::where('status', 'prisoner')
+            ->where('gender', 'ښځینه')->count();
+
+        $childrenCount = Suspect::where('status', 'prisoner')
+            ->sum('children_with_mother');
+
+        /* ================= STATUS BAR ================= */
+
+        $releasedCount = Suspect::where('status', 'released')->count();
+        $detainedCount = Suspect::where('status', 'prisoner')->count();
+
+        /* ================= GENDER DONUT ================= */
+
+        $genderChart = [
+            $maleCount,
+            $femaleCount,
+            $childrenCount
+        ];
+
+        /* ================= LIVELIHOOD LINE ================= */
+
+        $livelihoodData = Livelihood::select(
+                DB::raw('DATE(livelihoodDate) as date'),
+                DB::raw('SUM(amount) as total')
+            )
+            ->groupBy('date')
+            ->orderBy('date', 'desc')
+            ->limit(7)
+            ->get()
+            ->reverse();
+
+        $livelihoodLabels = $livelihoodData->pluck('date');
+        $livelihoodTotals = $livelihoodData->pluck('total');
+
+        return view('home', compact(
+            'totalPrisoners',
+            'maleCount',
+            'femaleCount',
+            'childrenCount',
+            'releasedCount',
+            'detainedCount',
+            'genderChart',
+            'livelihoodLabels',
+            'livelihoodTotals'
+        ));
     }
 }

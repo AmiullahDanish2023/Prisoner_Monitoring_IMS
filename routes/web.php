@@ -44,6 +44,8 @@ Route::get('site/pa', [WelcomeController::class, 'pa'])->name('site.pa');
 
 
 Route::get('/home', [HomeController::class, 'index'])->middleware(['auth', 'setlocale'])->name('home');
+// Route::get('/home', [HomeController::class, 'indexe'])->name('homee');
+
 
 
 
@@ -117,19 +119,19 @@ Route::get('reports/monthly-suspects/pdf', [ReportController::class, 'monthlySus
 #--------------------------------- livelihood plan Routes -------------------------------------------------------------------
 Route::middleware(['auth', 'setlocale'])->group(function () {
 
-  Route::get(
-    'livelihood/plan',
-    [LivelihoodPlanController::class, 'livelihoodPlan']
-  )->name('livelihood.plan');
+  Route::get('livelihood/plan',[LivelihoodPlanController::class, 'livelihoodPlan'])->name('livelihood.plan');
+  Route::post('livelihood/store',[LivelihoodPlanController::class, 'store'])->name('livelihood.store');
+  Route::get('livelihood/show', [LivelihoodPlanController::class, 'livelihoodShow'])->name('livelihood.list.show'); 
+  // Livelihood List (DataTable)
+Route::get('livelihood/week/report', [LivelihoodPlanController::class, 'weeklyReport'])
+    ->name('livelihood.week.report');
 
-  Route::post(
-    'livelihood/store',
-    [LivelihoodPlanController::class, 'store']
-  )->name('livelihood.store');
+// Weekly PDF
+Route::get('livelihood/week/{week_day_id}/pdf', [LivelihoodPlanController::class, 'weeklyReportPdf'])
+    ->name('livelihood.week.pdf');
 
-  Route::put(
-    'livelihood/update/{id}',
-    [LivelihoodPlanController::class, 'update']
-  )->name('livelihood.update');
+  
+
+
 });
 #--------------------------------- End livelihood plan Routes -------------------------------------------------------------------

@@ -70,12 +70,12 @@
                 <img src="{{ public_path('assets/moi.png') }}" width="100">
             </td>
             <td style="text-align:center">
-                <p class="header-label">امـــــارت اســـــلامی افغــــانــستان</p>
-                <p class="header-label">وزارت امـــــــور داخـــــــــلــه</p>
-                <p class="header-label">معینیت ارشد امــــور امنیتــی</p>
-                <p class="header-label">قومنـدانی امنیه ولایت کابل</p>
-                <p class="header-label">معاونـــــیت امــــور امــنیتــی</p>
-                <p class="header-label">آمــریت نـظارت خــانه</p>
+                <p>امـــــارت اســـــلامی افغــــانــستان</p>
+                <p>وزارت امــــــــــور داخـــــــــلــــه</p>
+                <p>معینیت ارشد امــــور امنیتــی</p>
+                <p>قومنـدانی امنیه ولایت کابل</p>
+                <p>معاونیت امــور امنیتی</p>
+                <p>آمریت نظارت خانه</p>
             </td>
             <td style="text-align:right">
                 <img src="{{ public_path('assets/logo.png') }}" width="90">
@@ -147,12 +147,12 @@
 
             <tr>
                 <th style="text-align:center; margin-bottom:10px; font-size:16px; font-weight:bold;"> میزان عمومی</th>
-                <th>{{ $GeneralTotalOldSuspects}}</th>
+                <th>{{ $GeneralTotalOldSuspects }}</th>
                 <th>{{ $GeneralTotalNewSuspects }}</th>
-                <th>{{ $GeneralTotalReleasedSuspects}}</th>
-                <th>{{ $GeneralTotalTransferredSuspects}}</th>
-                <th>{{ $GeneralTotalDetainedSuspects}}</th>
-                <th>{{ $GrandTotalOfSuspects}}</th>
+                <th>{{ $GeneralTotalReleasedSuspects }}</th>
+                <th>{{ $GeneralTotalTransferredSuspects }}</th>
+                <th>{{ $GeneralTotalDetainedSuspects }}</th>
+                <th>{{ $GrandTotalOfSuspects }}</th>
             </tr>
 
         </tbody>

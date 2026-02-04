@@ -83,12 +83,12 @@
             </td>
 
             <td style="font-size: 115% ; text-align:center; line-height:1.3;">
-                <p class="header-label" style="font-size: 100% ;">امـــــارت اســـــلامی افغــــانــستان</p>
-                <p class="header-label" style="font-size: 100%;">وزارت امـــــــور داخـــــــــلــه</p>
-                <p class="header-label" style="font-size: 100%">معینیت ارشد امــــور امنیتــی</p>
+              <p class="header-label" style="font-size: 100% ;">امـــــارت اســـــلامــی افغـــــــانـــــــستان</p>
+                <p class="header-label" style="font-size: 100%;">وزارت امـــــــــــور داخـــــــــلــــــــه</p>
+                <p class="header-label" style="font-size: 100%">معینیت ارشد امـــــور امنیتــی</p>
                 <p class="header-label" style="font-size: 100%">قومنـدانی امنیه ولایت کابل</p>
-                <p class="header-label" style="font-size: 100%">معاونـــــیت امــــور امــنیتــی</p>
-                <p class="header-label" style="font-size: 100%">آمــریت نـظارت خــانه</p>
+                <p class="header-label" style="font-size: 100%">معاونیت امـور امنیتــی</p>
+                <p class="header-label" style="font-size: 100%">آمریت نظارت خانه</p>
             </td>
 
             <td style="text-align:right">

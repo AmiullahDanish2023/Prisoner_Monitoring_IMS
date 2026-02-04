@@ -450,7 +450,7 @@
                             <label class="form-label">د وسایلو حالت</label>
 
                             <select name="items_status" class="form-select">
-                                <option value="">-- حالت انتخاب کړئ --</option>
+                                <option value=""> حالت انتخاب کړئ </option>
                                 <option value="confiscated">وسایل تسلیم شول</option>
                                 <option value="not_confiscated">وسایل تسلیم نه شول</option>
                             </select>

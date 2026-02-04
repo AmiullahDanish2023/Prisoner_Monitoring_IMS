@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->id();
 
             /* ================== معلومات عمومی ================== */
-            $table->string('livelihoodDate'); // Persian date
+            $table->string('livelihoodDate');
 
             $table->unsignedBigInteger('week_day_id');
             $table->foreign('week_day_id')

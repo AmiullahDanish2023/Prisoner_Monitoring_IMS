@@ -364,6 +364,29 @@
 
                     </div>
                     <!--end:Menu sub-->
+
+
+                    <!--begin:Menu sub-->
+                    <div class="menu-sub menu-sub-accordion">
+                        <!--begin:Menu item-->
+
+                        <div class="menu-item">
+                            <!--begin:Menu link-->
+                            <a class="menu-link {{ Route::currentRouteName() == 'livelihood.list.show' ? 'active' : '' }}"
+                                href="{{ route('livelihood.list.show') }}">
+                                <span class="menu-bullet">
+                                    <span class="bullet bullet-dot"></span>
+                                </span>
+                                <span class="menu-title"> لیست  و  راپور اعاشه </span>
+                            </a>
+                            <!--end:Menu link-->
+                        </div>
+
+
+                        <!--end:Menu item-->
+
+                    </div>
+                    <!--end:Menu sub-->
                 </div>
                 <!--end:Menu item-->
 
@@ -487,113 +510,113 @@
     <link rel="stylesheet" href="{{ asset('assets/persian-date/persian-datepicker.min.css') }}">
     <link rel="stylesheet" href="{{ asset('perisanDatePicker/css/persianDatepicker-default.css') }}" />
 
-<style>
-    .modal-content {
-        border-radius: 10px;
-    }
+    <style>
+        .modal-content {
+            border-radius: 10px;
+        }
 
-    .modal-header {
-        border-bottom: 1px solid #dee2e6;
-    }
+        .modal-header {
+            border-bottom: 1px solid #dee2e6;
+        }
 
-    .modal-footer {
-        border-top: 1px solid #dee2e6;
-    }
-</style>
-<div class="modal fade" id="releasedReportModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-sm modal-dialog-centered">
-        <div class="modal-content shadow">
+        .modal-footer {
+            border-top: 1px solid #dee2e6;
+        }
+    </style>
+    <div class="modal fade" id="releasedReportModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content shadow">
 
-            {{-- Header --}}
-            <div class="modal-header justify-content-center position-relative">
-                <h5 class="modal-title fw-bold">
-                    انتخاب نوع راپور
-                </h5>
+                {{-- Header --}}
+                <div class="modal-header justify-content-center position-relative">
+                    <h5 class="modal-title fw-bold">
+                        انتخاب نوع راپور
+                    </h5>
 
-                {{-- Close button fixed to right --}}
-                <button type="button" class="btn-close position-absolute end-0 me-2" data-bs-dismiss="modal"
-                    aria-label="Close">
-                </button>
-            </div>
-
-            <form method="GET" action="{{ route('reports.released.pdf') }}" target="_blank">
-
-                {{-- Body --}}
-                <div class="modal-body px-4">
-
-                    <div class="mb-3 ">
-                        <label class="form-label fw-bold mb-2">
-                            انتخاب جنسیت مظنون
-                        </label>
-
-                        <select name="gender" class="form-select " required>
-                            <option value=""> انتخاب نمایید </option>
-                            <option value="all">عمومی (ذکور و اناث)</option>
-                            <option value="نارینه">مظنونین ذکور </option>
-                            <option value="ښځینه"> مظنونین اناث</option>
-                        </select>
-                    </div>
-
-                </div>
-
-                {{-- Footer --}}
-                <div class="modal-footer d-flex justify-content-between mb-0">
-                    <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"
-                        onclick="this.closest('form').reset()">
-                        بندول
+                    {{-- Close button fixed to right --}}
+                    <button type="button" class="btn-close position-absolute end-0 me-2" data-bs-dismiss="modal"
+                        aria-label="Close">
                     </button>
-
-                    <button type="submit" class="btn btn-primary btn-sm"> راپور لیدل</button>
-
                 </div>
-            </form>
 
-        </div>
-    </div>
-</div>
+                <form method="GET" action="{{ route('reports.released.pdf') }}" target="_blank">
 
-{{-- -----------------monthly suspect report modal ----------------------- --}}
+                    {{-- Body --}}
+                    <div class="modal-body px-4">
 
+                        <div class="mb-3 ">
+                            <label class="form-label fw-bold mb-2">
+                                انتخاب جنسیت مظنون
+                            </label>
 
-<div class="modal fade" id="monthlySuspectModal" tabindex="-1">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
+                            <select name="gender" class="form-select " required>
+                                <option value=""> انتخاب نمایید </option>
+                                <option value="all">عمومی (ذکور و اناث)</option>
+                                <option value="نارینه">مظنونین ذکور </option>
+                                <option value="ښځینه"> مظنونین اناث</option>
+                            </select>
+                        </div>
 
-            <div class="modal-header">
-                <h5 class="modal-title text-align-center">د مظنونینو میاشتنی راپور</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    {{-- Footer --}}
+                    <div class="modal-footer d-flex justify-content-between mb-0">
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"
+                            onclick="this.closest('form').reset()">
+                            بندول
+                        </button>
+
+                        <button type="submit" class="btn btn-primary btn-sm"> راپور لیدل</button>
+
+                    </div>
+                </form>
+
             </div>
-
-            <form method="GET" action="{{ route('reports.monthly.pdf') }}" target="_blank">
-
-                <div class="modal-body">
-
-                    <!-- تاریخ شروع -->
-                    <div class="mb-3">
-                        <label class="form-label">تاریخ شروع</label>
-                        <input type="text" name="start_date" class="form-control farsi-date"
-                            placeholder="از تاریخ" autocomplete="off" value="">
-                    </div>
-
-                    <!-- تاریخ ختم -->
-                    <div class="mb-3">
-                        <label class="form-label">تاریخ ختم</label>
-                        <input type="text" name="end_date" class="form-control farsi-date" placeholder="تا تاریخ"
-                            autocomplete="off" value="">
-                    </div>
-
-
-                </div>
-
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">راپور جوړول </button>
-                </div>
-
-            </form>
-
         </div>
     </div>
-</div>
+
+    {{-- -----------------monthly suspect report modal ----------------------- --}}
+
+
+    <div class="modal fade" id="monthlySuspectModal" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title text-align-center">د مظنونینو میاشتنی راپور</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <form method="GET" action="{{ route('reports.monthly.pdf') }}" target="_blank">
+
+                    <div class="modal-body">
+
+                        <!-- تاریخ شروع -->
+                        <div class="mb-3">
+                            <label class="form-label">تاریخ شروع</label>
+                            <input type="text" name="start_date" class="form-control farsi-date"
+                                placeholder="از تاریخ" autocomplete="off" value="">
+                        </div>
+
+                        <!-- تاریخ ختم -->
+                        <div class="mb-3">
+                            <label class="form-label">تاریخ ختم</label>
+                            <input type="text" name="end_date" class="form-control farsi-date" placeholder="تا تاریخ"
+                                autocomplete="off" value="">
+                        </div>
+
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">راپور جوړول </button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
 
 @section('scripts')
     <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
