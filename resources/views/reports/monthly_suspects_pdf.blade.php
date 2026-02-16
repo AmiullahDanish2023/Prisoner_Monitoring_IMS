@@ -70,7 +70,7 @@
                 <img src="{{ public_path('assets/moi.png') }}" width="100">
             </td>
             <td style="text-align:center">
- <p class="header-label" style="font-size: 100% ;">امـــــارت اســـــلامــی افغـــــــانـــــــستان</p>
+       <p class="header-label" style="font-size: 100% ;">امـــــارت اســـــلامــی افغـــــــانـــــــستان</p>
                 <p class="header-label" style="font-size: 100%;">وزارت امـــــــــــور داخـــــــــلــــــــه</p>
                 <p class="header-label" style="font-size: 100%">معینیت ارشد امـــــور امنیتــی</p>
                 <p class="header-label" style="font-size: 100%">قومنـدانی امنیه ولایت کابل</p>

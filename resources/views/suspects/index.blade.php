@@ -1,5 +1,7 @@
 @extends('layouts.master')
 @section('content')
+    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"> --}}
+   
     <link rel="stylesheet" href="{{ asset('assets/persian-date/persian-datepicker.min.css') }}">
     <link rel="stylesheet" href="{{ asset('perisanDatePicker/css/persianDatepicker-default.css') }}" />
     <div class="card shadow-sm">
@@ -113,6 +115,22 @@
                     box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25);
                     border-color: #86b7fe;
                 }
+
+                /* Validation error text */
+                label.error {
+                    color: #dc3545;
+                    /* Bootstrap red */
+                    font-size: 13px;
+                    margin-top: 4px;
+                    display: block;
+                }
+
+                /* Input border when error */
+                input.error,
+                select.error,
+                textarea.error {
+                    border-color: #dc3545 !important;
+                }
             </style>
 
         </div>
@@ -225,7 +243,8 @@
 
                         <div class="col-md-4">
                             <label class="form-label">منطقه</label>
-                            <input type="text" name="area" class="form-control form-control-sm" placeholder="منطقه">
+                            <input type="text" name="area" class="form-control form-control-sm"
+                                placeholder="منطقه">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">ملاحظات </label>
@@ -361,64 +380,78 @@
     <div class="modal fade" id="releaseModal" tabindex="-1" aria-labelledby="releaseModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title text-center w-100" id="releaseModalLabel">رهایی / انتقال مظنون</h5>
 
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header">
+                    <h5 class="modal-title text-center w-100" id="releaseModalLabel">
+                        د مظنون رهايي / انتقال
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بندول"></button>
                 </div>
+
                 <form id="releaseForm">
                     @csrf
 
                     <div class="modal-body">
                         <input type="hidden" name="suspect_id" id="release_suspect_id">
 
+                        {{-- Issue / Transfer Number --}}
                         <div class="mb-3">
-                            <label for="issued_or_transferred_number" class="form-label">صادره رهایی و یا انتقال</label>
+                            <label for="issued_or_transferred_number" class="form-label">
+                                د رهايي یا انتقال د صادرې شمېر
+                            </label>
                             <input type="text" class="form-control" id="issued_or_transferred_number"
                                 name="issued_or_transferred_number">
                         </div>
 
-
+                        {{-- Releasing Authority --}}
                         <div class="mb-3">
-                            <label class="form-label">مرجع رها کننده</label>
+                            <label class="form-label">
+                                د رهايي یا انتقال مرجع
+                            </label>
 
                             <div class="dropdown w-100">
-                                <button class="form-control text-start d-flex justify-content-between align-items-center"
-                                    type="button" id="releaseDropdownBtn" data-bs-toggle="dropdown">
-                                    <span id="releaseDropdownLabel">یو اختیار انتخاب کړئ</span>
-                                    <i class="bi bi-caret-down-fill"></i>
+                                <button class="form-control text-start dropdown-toggle" type="button"
+                                    id="releaseDropdownBtn" data-bs-toggle="dropdown">
+                                    <span id="releaseDropdownLabel">یوه مرجع وټاکئ</span>
                                 </button>
+
 
                                 <div class="dropdown-menu p-3 w-100" style="max-width:350px;">
 
-                                    {{-- 3 STATIC OPTIONS --}}
+                                    {{-- STATIC OPTIONS --}}
                                     <div class="form-check mb-2">
                                         <input class="form-check-input main-opt" type="radio" name="main_option"
                                             value="انتقال به توقیف" id="main_opt_1" data-key="detention">
-                                        <label class="form-check-label" for="main_opt_1">انتقال به توقیف</label>
+                                        <label class="form-check-label" for="main_opt_1">
+                                            توقیف‌خانې ته انتقال
+                                        </label>
                                     </div>
 
                                     <div class="form-check mb-2">
                                         <input class="form-check-input main-opt" type="radio" name="main_option"
                                             value="انتقال به مراجع مختلف" id="main_opt_2" data-key="multi">
-                                        <label class="form-check-label" for="main_opt_2">انتقال به مراجع مختلف</label>
+                                        <label class="form-check-label" for="main_opt_2">
+                                            بېلابېلو مراجعو ته انتقال
+                                        </label>
                                     </div>
 
                                     <div class="form-check mb-2">
                                         <input class="form-check-input main-opt" type="radio" name="main_option"
                                             value="مظنونین رهایی" id="main_opt_3" data-key="release">
-                                        <label class="form-check-label" for="main_opt_3">مظنون رها شد</label>
+                                        <label class="form-check-label" for="main_opt_3">
+                                            د مظنون رهايي
+                                        </label>
                                     </div>
 
                                     <hr>
 
-                                    {{-- DB OPTIONS (HIDDEN INITIALLY) --}}
-                                    {{-- Search DB Options --}}
+                                    {{-- SEARCH DB OPTIONS --}}
                                     <div id="db_search_wrapper" style="display:none;" class="mb-2">
                                         <input type="text" id="db_option_search" class="form-control form-control-sm"
-                                            placeholder="جستجو مرجع...">
+                                            placeholder="مرجع ولټوئ...">
                                     </div>
 
+                                    {{-- DB OPTIONS --}}
                                     <div id="db_options_wrapper"
                                         style="display:none; max-height:220px; overflow-y:auto; border:1px solid #dee2e6; padding:8px; border-radius:6px;">
 
@@ -436,38 +469,53 @@
 
                                 </div>
                             </div>
+
                             <input type="hidden" name="main_option_key" id="main_option_key">
                             <input type="hidden" name="db_source_name" id="db_source_name">
-
                         </div>
 
+                        {{-- Release / Transfer Date --}}
                         <div class="mb-3">
-                            <label for="release_date" class="form-label">تاریخ رهایی یا انتقال</label>
+                            <label for="release_date" class="form-label">
+                                د رهايي یا انتقال نېټه
+                            </label>
                             <input type="text" class="form-control farsi-date" id="release_date" name="release_date"
-                                required placeholder="تاریخ رهایی یا انتقال">
+                                required placeholder="د رهايي یا لېږد نېټه وټاکئ">
                         </div>
-                        <div class="mb-3" id="itemsStatusWrapper">
-                            <label class="form-label">د وسایلو حالت</label>
 
+                        {{-- Items Status --}}
+                        <div class="mb-3" id="itemsStatusWrapper">
+                            <label class="form-label">
+                                د وسایلو وضعیت
+                            </label>
                             <select name="items_status" class="form-select">
-                                <option value=""> حالت انتخاب کړئ </option>
+                                <option value="">حالت وټاکئ</option>
                                 <option value="confiscated">وسایل تسلیم شول</option>
                                 <option value="not_confiscated">وسایل تسلیم نه شول</option>
                             </select>
                         </div>
 
+                        {{-- File --}}
                         <div class="col-md-12">
-                            <label class="form-label">فایل</label>
+                            <label class="form-label">
+                                ضمیمه فایل
+                            </label>
                             <input type="file" name="file" class="form-control form-control-sm"
                                 accept=".jpg,.jpeg,.png,.pdf,.doc,.docx">
                         </div>
 
                     </div>
 
+                    {{-- Footer --}}
                     <div class="modal-footer d-flex justify-content-between mb-0">
-                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">بندول</button>
-                        <button type="submit" class="btn btn-success btn-sm">ثبتول</button>
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+                            بندول
+                        </button>
+                        <button type="submit" class="btn btn-success btn-sm">
+                            ثبت کول
+                        </button>
                     </div>
+
                 </form>
             </div>
         </div>
@@ -501,6 +549,9 @@
     <script>
         $('#store_form').validate({
             ignore: [],
+            errorClass: 'error',
+            errorElement: 'label',
+
             rules: {
                 gender: {
                     required: true
@@ -535,18 +586,18 @@
                 area: {
                     required: true
                 },
-
                 file: {
                     required: true,
                     accept: "jpg,jpeg,png,pdf,doc,docx"
                 }
             },
+
             messages: {
                 gender: {
                     required: 'جنسیت انتخاب کړئ'
                 },
                 suspect_name: {
-                    required: ' نوم ولیکئ'
+                    required: 'نوم ولیکئ'
                 },
                 father_name: {
                     required: 'د پلار نوم ولیکئ'
@@ -575,17 +626,26 @@
                 area: {
                     required: 'منطقه ولیکئ'
                 },
-
                 file: {
                     required: 'فایل انتخاب کړئ',
                     accept: 'فایل باید jpg, png, pdf, doc, docx وي'
                 }
             },
+
+            highlight: function(element) {
+                $(element).addClass('error');
+            },
+
+            unhighlight: function(element) {
+                $(element).removeClass('error');
+            },
+
             submitHandler: function(form) {
                 form.submit();
             }
         });
     </script>
+
 
 
     <script>
@@ -1168,10 +1228,10 @@
             $('#release_suspect_id').val(suspectId);
 
             if (!notes || notes.trim() === '') {
-               
+
                 $('#itemsStatusWrapper').hide();
             } else {
-            
+
                 $('#itemsStatusWrapper').show();
             }
 

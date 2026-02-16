@@ -5,12 +5,25 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Suspect;
 use App\Models\Province;
+use App\Models\ReleaseSource;
 use PDF;
 use Carbon\Carbon;
 use Morilog\Jalali\Jalalian;
+use Morilog\Jalali\CalendarUtils;
 
 class ReportController extends Controller
 {
+
+  public function to_esawi_date($date)
+  {
+    return Jalalian::fromFormat('Y-m-d', $date)->toCarbon();
+  }
+
+  public function to_dari_date($date)
+  {
+    return CalendarUtils::strftime('Y-m-d', strtotime($date));
+  }
+
     public function generalReport()
     {
         $province = Province::all();
@@ -267,23 +280,80 @@ class ReportController extends Controller
         )->stream('Existing_Suspects_Summary.pdf');
     }
 
-    // Released/Transferred Suspect PDF Report
-    public function releasedSuspectPdf(Request $request)
-    {
-        $suspects = Suspect::with(['provinceRelation', 'release'])
-            ->whereHas('release')
-            ->when($request->gender && $request->gender !== 'all', function ($query) use ($request) {
-                $query->where('gender', $request->gender);
-            })
-            ->get();
 
-        return PDF::loadView(
-            'reports.released_suspects_pdf',
-            compact('suspects'),
-            [],
-            ['orientation' => 'L']
-        )->stream('Released_Transferred_Suspects_Report.pdf');
+    // Released/Transferred Suspects index view
+    public function releasedSuspectReport()
+    {
+        $province = Province::all();
+        $releaseSources = ReleaseSource::all();
+
+        $crimeTypes = Suspect::whereNotNull('crime_type')
+            ->distinct()
+            ->pluck('crime_type');
+
+        return view('reports.released_suspects_report', compact(
+            'province',
+            'releaseSources',
+            'crimeTypes'
+        ));
     }
+
+
+    // Released/Transferred Suspect PDF Report
+public function releasedSuspectPdf(Request $request)
+{
+    $query = Suspect::with([
+            'provinceRelation',
+            'release.releaseSource'
+        ])
+        ->whereHas('release');
+
+    // 1️⃣ Gender Filter
+    if ($request->filled('gender') && $request->gender !== 'all') {
+        $query->where('gender', $request->gender);
+    }
+
+    // 2️⃣ Province Filter
+    if ($request->filled('province_id')) {
+        $query->where('province', $request->province_id);
+    }
+
+    // 3️⃣ Crime Type Filter
+    if ($request->filled('crime_type')) {
+        $query->where('crime_type', $request->crime_type);
+    }
+
+    // 4️⃣ Release Source Filter
+    if ($request->filled('release_source_id')) {
+        $query->whereHas('release', function ($q) use ($request) {
+            $q->where('release_source_id', $request->release_source_id);
+        });
+    }
+
+    // 5️⃣ Date Range Filter
+ if ($request->filled('start_date') && $request->filled('end_date')) {
+
+    $start = $this->to_esawi_date($request->start_date);
+    $end   = $this->to_esawi_date($request->end_date);
+
+    $query->whereHas('release', function ($q) use ($start, $end) {
+        $q->whereBetween('release_date', [$start, $end]);
+    });
+}
+
+
+    $suspects = $query->orderByDesc('created_at')->get();
+
+    return PDF::loadView(
+        'reports.released_suspects_pdf',
+        compact('suspects'),
+        [],
+        ['orientation' => 'L']
+    )->stream('Released_Suspects_Report.pdf');
+}
+
+
+
 
     //=================================================================
     // Monthly Suspect PDF Report

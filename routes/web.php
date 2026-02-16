@@ -97,7 +97,7 @@ Route::get('release-sources/delete/{id}', [ReleaseSourceController::class, 'dele
 
 
 
-//Release report routes 
+//general report routes 
 Route::get('general/report', [ReportController::class, 'generalReport'])->middleware(['auth', 'setlocale'])->name('report.general');
 
 // Generate PDF of the report
@@ -106,8 +106,11 @@ Route::post('general/report/pdf', [ReportController::class, 'createGeneralReport
 //Existing suspects PDF Report
 Route::get('reports/existing-suspects/pdf', [ReportController::class, 'existingSuspectPdf'])->name('reports.existing.pdf');
 
+//released suspects route
+Route::get('released/suspects', [ReportController::class, 'releasedSuspectReport'])->name('release.suspect.report');
+
 //release\transferred suspects PDF Report
-Route::get('reports/released-suspects/pdf', [ReportController::class, 'releasedSuspectPdf'])->name('reports.released.pdf');
+Route::post('reports/released-suspects/pdf', [ReportController::class, 'releasedSuspectPdf'])->name('reports.released.pdf');
 
 // monthly suspects PDF Report
 Route::get('reports/monthly-suspects/pdf', [ReportController::class, 'monthlySuspectPdf'])->name('reports.monthly.pdf');
@@ -123,14 +126,38 @@ Route::middleware(['auth', 'setlocale'])->group(function () {
   Route::post('livelihood/store',[LivelihoodPlanController::class, 'store'])->name('livelihood.store');
   Route::get('livelihood/show', [LivelihoodPlanController::class, 'livelihoodShow'])->name('livelihood.list.show'); 
   // Livelihood List (DataTable)
-Route::get('livelihood/week/report', [LivelihoodPlanController::class, 'weeklyReport'])
-    ->name('livelihood.week.report');
+Route::get('livelihood/monthly/report', [LivelihoodPlanController::class, 'monthlyReport'])
+    ->name('livelihood.monthly.report');
+    //livelihood weekly report
+Route::get(
+    'livelihood/weekly/report/{id}',
+    [LivelihoodPlanController::class, 'weeklyReportPdf']
+)->name('livelihood.weekly.report.pdf');
 
-// Weekly PDF
-Route::get('livelihood/week/{week_day_id}/pdf', [LivelihoodPlanController::class, 'weeklyReportPdf'])
-    ->name('livelihood.week.pdf');
 
-  
+  Route::get('/livelihood/month/{month}', 
+    [LivelihoodPlanController::class, 'monthlyDetails']
+)->name('livelihood.month.details');
+
+Route::delete('/livelihood/month/{month}', 
+    [LivelihoodPlanController::class, 'deleteMonth']
+)->name('livelihood.month.delete');
+
+// Edit single livelihood record
+Route::get('livelihood/{id}/edit', 
+    [LivelihoodPlanController::class, 'edit']
+)->name('livelihood.edit');
+
+Route::put('livelihood/{id}', 
+    [LivelihoodPlanController::class, 'update']
+)->name('livelihood.update');
+
+Route::get(
+    '/livelihood/month/{month}/pdf',
+    [LivelihoodPlanController::class, 'monthlyLivelihoodPdf']
+)->name('livelihood.month.pdf');
+
+
 
 
 });

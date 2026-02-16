@@ -83,7 +83,7 @@
             </td>
 
             <td style="font-size: 115% ; text-align:center; line-height:1.3;">
-              <p class="header-label" style="font-size: 100% ;">امـــــارت اســـــلامــی افغـــــــانـــــــستان</p>
+                <p class="header-label" style="font-size: 100% ;">امـــــارت اســـــلامــی افغـــــــانـــــــستان</p>
                 <p class="header-label" style="font-size: 100%;">وزارت امـــــــــــور داخـــــــــلــــــــه</p>
                 <p class="header-label" style="font-size: 100%">معینیت ارشد امـــــور امنیتــی</p>
                 <p class="header-label" style="font-size: 100%">قومنـدانی امنیه ولایت کابل</p>
@@ -109,6 +109,10 @@
                 @php
                     $gender = request('gender');
                 @endphp
+                @if (request('crime_type'))
+                    نوع جرم: {{ request('crime_type') }}
+                @endif
+
 
                 @if ($gender === 'ښځینه')
                     مظنونین طبقه اناثیه
@@ -179,8 +183,11 @@
                     <td>{{ $suspect->area ?? '-' }}</td>
 
                     <td>{{ $suspect->crime_type ?? '-' }}</td>
-                    <td>{{ $suspect->referring_authority ?? '-' }}</td>
-                    <td>{{ $suspect->monitoring_date ?? '-' }}</td>
+                   <td>{{ $suspect->referring_authority ?? '-' }}</td>
+
+
+                    <td>{{ $suspect->monitoring_date_dari ?? '-' }}</td>
+
 
                     <td>{{ $suspect->release->issued_or_transferred_number ?? '---' }}</td>
 
@@ -206,7 +213,8 @@
                         {{ $finalSource }}
                     </td>
 
-                    <td>{{ $suspect->release->release_date ?? '---' }}</td>
+                    <td>{{ $suspect->release->release_date_dari ?? '---' }}</td>
+
                 </tr>
             @empty
                 <tr>
@@ -222,9 +230,9 @@
         <tr>
             <td style="font-weight:bold; font-size:16px;">قرار شرح فوق جدول هذا ترتیب وصحت است</td>
         </tr>
-          <tr>
+        <tr>
             <td style="text-align:center; font-size:14px; padding-top:6px;">
-               
+
                 <br>
                 آمر نظارت خانه
             </td>

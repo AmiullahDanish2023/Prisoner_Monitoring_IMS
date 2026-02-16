@@ -116,7 +116,7 @@
                             <th>ولایت</th>
                             <th>ناحیه</th>
                             <th>منطقه</th>
-                            <th>د نظارت نیټه</th>
+                            <th>د رهایی نیټه</th>
                             <th>عملیات</th>
                         </tr>
                     </thead>
@@ -180,8 +180,8 @@
                     //     name: 'released_by'
                     // },
                     {
-                        data: 'monitoring_date',
-                        name: 'monitoring_date'
+                        data: 'release_date',
+                        name: 'release_date'
                     },
                     {
                         data: 'action',

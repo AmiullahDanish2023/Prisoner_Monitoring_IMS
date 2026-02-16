@@ -80,8 +80,8 @@ class ReleaseController extends Controller
 
                 return $btn;
             })
-            ->addColumn('monitoring_date', function ($row) {
-                return $this->to_dari_date($row->monitoring_date);
+            ->addColumn('release_date', function ($row) {
+                return $this->to_dari_date($row->release_date);
             })
             ->rawColumns(['action'])
             ->make(true);
@@ -89,12 +89,17 @@ class ReleaseController extends Controller
 
     public function details($id)
     {
+        $release = ReleaseSuspect::all();
         $suspect = Suspect::with(['provinceRelation', 'release'])
             ->findOrFail($id);
-            
+
         if (!empty($suspect->monitoring_date)) {
             $suspect->monitoring_date = $this->to_dari_date($suspect->monitoring_date);
         }
+        if (!empty($suspect->release->release_date)) {
+            $suspect->release->release_date = $this->to_dari_date($suspect->release->release_date);
+        }
+      
 
         return view('suspects.releaseDetails', compact('suspect'));
     }
@@ -115,7 +120,7 @@ class ReleaseController extends Controller
             'issued_or_transferred_number'  => 'required',
             'main_option_key' => 'required',     // required
             'release_date' => 'required',
-             
+
         ]);
 
         $release = new ReleaseSuspect();
@@ -124,7 +129,7 @@ class ReleaseController extends Controller
         $release->issued_or_transferred_number = $request->issued_or_transferred_number;
         $release->main_option_key = $request->main_option_key;
         $release->db_source_name = $request->db_source_name;
-        $release->release_date = $request->release_date;
+        $release->release_date = $this->to_esawi_date($request->release_date);
         $release->items_status = $request->items_status;
 
         // status update in suspects table

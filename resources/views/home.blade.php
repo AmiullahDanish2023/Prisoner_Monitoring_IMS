@@ -74,7 +74,7 @@
                 {{-- Livelihood --}}
                 <div class="card shadow-sm">
                     <div class="card-body">
-                        <h6 class="mb-3"> مصرف بدل اعاشه</h6>
+                        <h6 class="mb-3">   بدل اعاشه میاشتني مصرف</h6>
                         <div class="chart-box">
                             <canvas id="livelihoodChart"></canvas>
                         </div>
@@ -118,7 +118,7 @@
             new Chart(document.getElementById('statusChart'), {
                 type: 'bar',
                 data: {
-                    labels: ['مظنونین در نظارت', 'مظنونین رهای شده'],
+                    labels: ['په نظارت کې مظنونین', 'خلاص شوي مظنونین'],
                     datasets: [{
                         label: 'شمېر',
                         data: [{{ $detainedCount }}, {{ $releasedCount }}],

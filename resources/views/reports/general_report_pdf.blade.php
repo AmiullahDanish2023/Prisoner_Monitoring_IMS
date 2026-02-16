@@ -147,7 +147,9 @@
                     <td>{{ $suspect->area ?? '-' }}</td>
                     <td>{{ $suspect->crime_type ?? '-' }}</td>
                     <td>{{ $suspect->referring_authority ?? '-' }}</td>
-                    <td>{{ $suspect->monitoring_date ?? '-' }}</td>
+
+                   <td>{{ $suspect->monitoring_date_dari ?? '-' }}</td>
+
 
                 </tr>
             @empty

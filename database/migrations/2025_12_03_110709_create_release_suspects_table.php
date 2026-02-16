@@ -14,6 +14,8 @@ class CreateReleaseSuspectsTable extends Migration
     public function up()
     {
         Schema::create('release_suspects', function (Blueprint $table) {
+
+
             $table->id();
 
             $table->foreignId('suspect_id')
@@ -26,7 +28,10 @@ class CreateReleaseSuspectsTable extends Migration
             $table->string('file')->nullable();
 
             $table->enum('items_status', ['confiscated', 'not_confiscated'])->nullable();
+            $table->integer('release_source_id');
                 
+               
+
 
 
             $table->timestamps();
@@ -42,6 +47,9 @@ class CreateReleaseSuspectsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('release_suspects');
+        Schema::table('release_suspects', function (Blueprint $table) {
+            $table->dropForeign(['release_source_id']);
+            $table->dropColumn('release_source_id');
+        });
     }
 }

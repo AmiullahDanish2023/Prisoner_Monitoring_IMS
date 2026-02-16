@@ -20,4 +20,22 @@ class Livelihood extends Model
     {
         return $this->belongsTo(WeekDay::class);
     }
+
+     protected $guarded = [];
+
+    protected function cleanDecimal($value)
+    {
+        return rtrim(rtrim($value, '0'), '.');
+    }
+
+    public function __get($key)
+    {
+        $value = parent::__get($key);
+
+        if (is_numeric($value)) {
+            return $this->cleanDecimal($value);
+        }
+
+        return $value;
+    }
 }

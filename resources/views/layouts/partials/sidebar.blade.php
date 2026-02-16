@@ -250,20 +250,23 @@
                     </div>
                     <!--end:Menu sub-->
 
-                    <!--begin:Menu sub-->
+                  
+
+                       <!--begin:Menu sub-->
                     <div class="menu-sub menu-sub-accordion">
                         <!--begin:Menu item-->
 
                         <div class="menu-item">
-                            <a class="menu-link" href="#" data-bs-toggle="modal"
-                                data-bs-target="#releasedReportModal">
+                            <!--begin:Menu link-->
+                            <a class="menu-link {{ Route::currentRouteName() == 'release.suspect.report' ? 'active' : '' }}"
+                                href="{{ route('release.suspect.report') }}">
                                 <span class="menu-bullet">
                                     <span class="bullet bullet-dot"></span>
                                 </span>
-                                <span class="menu-title"> د رهایی / انتقال مظنونینو راپور </span>
+                                 <span class="menu-title"> د رهایی / انتقال مظنونینو راپور </span>
                             </a>
+                            <!--end:Menu link-->
                         </div>
-
 
 
                         <!--end:Menu item-->
@@ -523,57 +526,7 @@
             border-top: 1px solid #dee2e6;
         }
     </style>
-    <div class="modal fade" id="releasedReportModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-sm modal-dialog-centered">
-            <div class="modal-content shadow">
-
-                {{-- Header --}}
-                <div class="modal-header justify-content-center position-relative">
-                    <h5 class="modal-title fw-bold">
-                        انتخاب نوع راپور
-                    </h5>
-
-                    {{-- Close button fixed to right --}}
-                    <button type="button" class="btn-close position-absolute end-0 me-2" data-bs-dismiss="modal"
-                        aria-label="Close">
-                    </button>
-                </div>
-
-                <form method="GET" action="{{ route('reports.released.pdf') }}" target="_blank">
-
-                    {{-- Body --}}
-                    <div class="modal-body px-4">
-
-                        <div class="mb-3 ">
-                            <label class="form-label fw-bold mb-2">
-                                انتخاب جنسیت مظنون
-                            </label>
-
-                            <select name="gender" class="form-select " required>
-                                <option value=""> انتخاب نمایید </option>
-                                <option value="all">عمومی (ذکور و اناث)</option>
-                                <option value="نارینه">مظنونین ذکور </option>
-                                <option value="ښځینه"> مظنونین اناث</option>
-                            </select>
-                        </div>
-
-                    </div>
-
-                    {{-- Footer --}}
-                    <div class="modal-footer d-flex justify-content-between mb-0">
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal"
-                            onclick="this.closest('form').reset()">
-                            بندول
-                        </button>
-
-                        <button type="submit" class="btn btn-primary btn-sm"> راپور لیدل</button>
-
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    </div>
+   
 
     {{-- -----------------monthly suspect report modal ----------------------- --}}
 

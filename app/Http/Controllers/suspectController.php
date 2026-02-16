@@ -225,6 +225,7 @@ class suspectController extends Controller
     if (!empty($suspect->monitoring_date)) {
       $suspect->monitoring_date = $this->to_dari_date($suspect->monitoring_date);
     }
+    
 
     return view('suspects.details', compact('suspect'));
   }
