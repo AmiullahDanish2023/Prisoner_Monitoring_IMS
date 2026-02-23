@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('content')
     {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"> --}}
-   
+
     <link rel="stylesheet" href="{{ asset('assets/persian-date/persian-datepicker.min.css') }}">
     <link rel="stylesheet" href="{{ asset('perisanDatePicker/css/persianDatepicker-default.css') }}" />
     <div class="card shadow-sm">
@@ -243,13 +243,22 @@
 
                         <div class="col-md-4">
                             <label class="form-label">منطقه</label>
-                            <input type="text" name="area" class="form-control form-control-sm"
-                                placeholder="منطقه">
+                            <input type="text" name="area" class="form-control form-control-sm" placeholder="منطقه">
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">ملاحظات </label>
-                            <textarea name="notes" class="form-control form-control-sm" rows="3" placeholder="ملاحظات"></textarea>
+                            <label class="form-label">د نیولو پر وخت توکي موجود وو؟</label>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="has_items" value="1">
+                                <label class="form-check-label">هو</label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="has_items" value="0">
+                                <label class="form-check-label">نه</label>
+                            </div>
                         </div>
+
 
                         <div class="col-md-12">
                             <label class="form-label">فایل</label>
@@ -355,21 +364,32 @@
                             <input type="text" name="area" id="edit_area" class="form-control form-control-sm">
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">ملاحظات </label>
-                            <textarea name="notes" id="edit_notes" class="form-control form-control-sm" rows="3"></textarea>
+                            <label class="form-label">د نیولو پر وخت توکي موجود وو؟</label>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="has_items" value="1"
+                                    id="edit_has_items_yes">
+                                <label class="form-check-label" for="edit_has_items_yes">هو</label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="has_items" value="0"
+                                    id="edit_has_items_no">
+                                <label class="form-check-label" for="edit_has_items_no">نه</label>
+                            </div>
+
+
+                            <div class="col-md-12">
+                                <label class="form-label">فایل</label>
+                                <input type="file" name="file" class="form-control form-control-sm">
+                                <small id="edit_existing_file" class="text-muted"></small>
+                            </div>
                         </div>
 
-                        <div class="col-md-12">
-                            <label class="form-label">فایل</label>
-                            <input type="file" name="file" class="form-control form-control-sm">
-                            <small id="edit_existing_file" class="text-muted"></small>
+                        <div class="modal-footer d-flex justify-content-between mb-0">
+                            <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">بندول</button>
+                            <button type="submit" class="btn btn-primary btn-sm">تغیراتو ثبت</button>
                         </div>
-                    </div>
-
-                    <div class="modal-footer d-flex justify-content-between mb-0">
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">بندول</button>
-                        <button type="submit" class="btn btn-primary btn-sm">تغیراتو ثبت</button>
-                    </div>
                 </form>
             </div>
         </div>
@@ -483,17 +503,7 @@
                                 required placeholder="د رهايي یا لېږد نېټه وټاکئ">
                         </div>
 
-                        {{-- Items Status --}}
-                        <div class="mb-3" id="itemsStatusWrapper">
-                            <label class="form-label">
-                                د وسایلو وضعیت
-                            </label>
-                            <select name="items_status" class="form-select">
-                                <option value="">حالت وټاکئ</option>
-                                <option value="confiscated">وسایل تسلیم شول</option>
-                                <option value="not_confiscated">وسایل تسلیم نه شول</option>
-                            </select>
-                        </div>
+
 
                         {{-- File --}}
                         <div class="col-md-12">
@@ -949,7 +959,16 @@
 
                         $('#edit_district').val(data.district);
                         $('#edit_area').val(data.area);
-                        $('#edit_notes').val(data.notes);
+
+                        // Reset first
+                        $("input[name='has_items']").prop('checked', false);
+
+                        if (data.has_items !== null) {
+                            $("input[name='has_items'][value='" + data.has_items + "']")
+                                .prop('checked', true);
+                        }
+
+
 
                         // Show existing file link if available
                         if (data.file) {
@@ -984,6 +1003,9 @@
                     dataType: 'json',
 
                     success: function(response) {
+                        var modal = bootstrap.Modal.getInstance(document.getElementById(
+                            'editSuspectModal'));
+                        modal.hide();
 
                         if (response.status === true) {
 

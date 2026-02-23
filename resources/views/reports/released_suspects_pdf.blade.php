@@ -104,32 +104,63 @@
 
     <table style="width:100%; border-collapse:collapse; margin-bottom:6px;" dir="rtl">
         <tr style="font-weight:bold;">
-            <td style="text-align:center; font-size:110%; line-height:1.6;">
-                جدول شهرت
+            <td style="text-align:center; font-size:110%; line-height:1.8;">
+
                 @php
                     $gender = request('gender');
+                    $mainOption = request('main_option_key');
                 @endphp
-                @if (request('crime_type'))
-                    نوع جرم: {{ request('crime_type') }}
-                @endif
 
+                {{-- ================== DETENTION MODE ================== --}}
+                @if ($mainOption === 'detention')
 
-                @if ($gender === 'ښځینه')
-                    مظنونین طبقه اناثیه
-                @elseif($gender === 'نارینه')
-                    مظنونین ذکور
+                    جدول شهرت مظنونین طبقه
+
+                    @if ($gender === 'ښځینه')
+                        اناثیه
+                    @elseif($gender === 'نارینه')
+                        ذکور
+                    @else
+                        عمومي ذکور و اناث
+                    @endif
+
+                    که سجل توقیفی ایشان از مراجع مختلف این اداره مواصلت کرده است
+                    انتقال آن به توقیف ولایت کابل
+
+                   
+
+                    مورخ: {{ $shamsiDate }} هـ ش
+                     &nbsp;  &nbsp;
+                    مطابق: {{ $qamariDate }} هـ ق
+
+                    {{-- ================== NORMAL MODE ================== --}}
                 @else
-                    مظنونین عمومي ذکور و اناث
+                    جدول شهرت
+
+                    @if ($gender === 'ښځینه')
+                        مظنونین طبقه اناثیه
+                    @elseif($gender === 'نارینه')
+                        مظنونین ذکور
+                    @else
+                        مظنونین عمومي ذکور و اناث
+                    @endif
+
+                  
+
+                    آمریت نظارت خانه قومندانی امنیه ولایت کابل
+
+                    
+
+                    مورخ: {{ $shamsiDate }} هـ ش
+                   
+                    مطابق: {{ $qamariDate }} هـ ق
+
                 @endif
 
-                آمریت نظارت خانه قومندانی امنیه ولایت کابل
-
-                مورخ: {{ $shamsiDate }} هـ ش
-                &nbsp;
-                مطابق: {{ $qamariDate }} هـ ق
             </td>
         </tr>
     </table>
+
 
 
     {{-- TABLE --}}
@@ -183,7 +214,7 @@
                     <td>{{ $suspect->area ?? '-' }}</td>
 
                     <td>{{ $suspect->crime_type ?? '-' }}</td>
-                   <td>{{ $suspect->referring_authority ?? '-' }}</td>
+                    <td>{{ $suspect->referring_authority ?? '-' }}</td>
 
 
                     <td>{{ $suspect->monitoring_date_dari ?? '-' }}</td>
@@ -235,6 +266,16 @@
 
                 <br>
                 آمر نظارت خانه
+            </td>
+        </tr>
+        <tr>
+            <td style="text-align:right; font-size:14px; padding-top:6px;">
+
+                <br>
+                ترتیب کننده:
+                <br><br>
+
+                مسؤل اداری نظارت خانه
             </td>
         </tr>
     </table>

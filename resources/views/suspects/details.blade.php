@@ -64,10 +64,10 @@
                                 <th>منطقه</th>
                                 <th>د نظارت نیټه</th>
                                 <th>د فایل لیدل</th>
+                                <th>توکي موجود وو؟</th>
 
-                                @if (!empty($suspect->notes) && trim($suspect->notes) !== '0')
-                                    <th>د مظنون سره موجود وسایل</th>
-                                @endif
+
+
                             </tr>
                         </thead>
                         <tbody>
@@ -84,21 +84,15 @@
                                     @endif
 
                                 </td>
-
-                                @if (!empty($suspect->notes) && trim($suspect->notes) !== '0')
-                                    <td>
-                                        {{ \Illuminate\Support\Str::limit($suspect->notes, 22, '...') }}
-
-                                        @if (strlen($suspect->notes) > 22)
-                                            <button class="btn btn-link btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#notesModal{{ $suspect->id }}">
-                                                More
-                                            </button>
-                                        @endif
-                                    </td>
-                                @endif
-
-
+                                <td>
+                                    @if ($suspect->has_items == 1)
+                                        <span class="badge bg-success">هو</span>
+                                    @elseif($suspect->has_items == 0)
+                                        <span class="badge bg-danger">نه</span>
+                                    @else
+                                        ---
+                                    @endif
+                                </td>
 
 
                             </tr>
@@ -111,36 +105,6 @@
                 </div>
 
             </div>
-        </div>
-    </div>
-
-    <!-- Notes Modal -->
-    <div class="modal fade" id="notesModal{{ $suspect->id }}" tabindex="-1">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <h5 class="modal-title text-center w-100"> له مظنون سره موجود وسایلو تفصیل</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-
-                <div class="modal-body">
-                    <p style="white-space: pre-wrap;">
-                        {{ $suspect->notes }}
-                    </p>
-                </div>
-                    
-                    <div class="modal-footer d-flex justify-content-between mb-0">
-                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">بندول</button>
-                
-                <a href="{{ route('suspects.notes.pdf', $suspect->id) }}" target="_blank"
-                    class="btn btn-primary btn-sm">
-                    پرینټ 
-                </a>
-            </div>
-            </div>
-           
-
         </div>
     </div>
 @endsection

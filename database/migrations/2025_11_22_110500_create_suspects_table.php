@@ -26,7 +26,7 @@ class CreateSuspectsTable extends Migration
             $table->integer('province');
             $table->string('district')->nullable();
             $table->string('area')->nullable();
-            $table->string('notes')->nullable();
+            $table->boolean('has_items')->nullable();
             $table->string('file')->nullable();
             $table->enum('status', ['prisoner', 'released'])->default('prisoner');
             $table->timestamps();

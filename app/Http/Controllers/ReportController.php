@@ -14,15 +14,15 @@ use Morilog\Jalali\CalendarUtils;
 class ReportController extends Controller
 {
 
-  public function to_esawi_date($date)
-  {
-    return Jalalian::fromFormat('Y-m-d', $date)->toCarbon();
-  }
+    public function to_esawi_date($date)
+    {
+        return Jalalian::fromFormat('Y-m-d', $date)->toCarbon();
+    }
 
-  public function to_dari_date($date)
-  {
-    return CalendarUtils::strftime('Y-m-d', strtotime($date));
-  }
+    public function to_dari_date($date)
+    {
+        return CalendarUtils::strftime('Y-m-d', strtotime($date));
+    }
 
     public function generalReport()
     {
@@ -299,58 +299,68 @@ class ReportController extends Controller
     }
 
 
-    // Released/Transferred Suspect PDF Report
-public function releasedSuspectPdf(Request $request)
-{
-    $query = Suspect::with([
+    public function releasedSuspectPdf(Request $request)
+    {
+        $query = Suspect::with([
             'provinceRelation',
             'release.releaseSource'
-        ])
-        ->whereHas('release');
+        ]);
 
-    // 1️⃣ Gender Filter
-    if ($request->filled('gender') && $request->gender !== 'all') {
-        $query->where('gender', $request->gender);
-    }
+        // 1️⃣ Gender
+        if ($request->filled('gender') && $request->gender !== 'all') {
+            $query->where('gender', $request->gender);
+        }
 
-    // 2️⃣ Province Filter
-    if ($request->filled('province_id')) {
-        $query->where('province', $request->province_id);
-    }
+        // 2️⃣ Province
+        if ($request->filled('province_id')) {
+            $query->where('province', $request->province_id);
+        }
 
-    // 3️⃣ Crime Type Filter
-    if ($request->filled('crime_type')) {
-        $query->where('crime_type', $request->crime_type);
-    }
+        // 3️⃣ Crime
+        if ($request->filled('crime_type')) {
+            $query->where('crime_type', $request->crime_type);
+        }
 
-    // 4️⃣ Release Source Filter
-    if ($request->filled('release_source_id')) {
+        // 4️⃣ Suspect Name 
+        if ($request->filled('first_name')) {
+            $query->where('suspect_name', 'like', '%' . $request->first_name . '%');
+        }
+
+        // 5️⃣ Father Name
+        if ($request->filled('father_name')) {
+            $query->where('father_name', 'like', '%' . $request->father_name . '%');
+        }
+
+        // 6️⃣ Release Filters
         $query->whereHas('release', function ($q) use ($request) {
-            $q->where('release_source_id', $request->release_source_id);
+
+            if ($request->filled('main_option_key')) {
+                $q->where('main_option_key', $request->main_option_key);
+            }
+
+            if ($request->filled('db_source_name')) {
+                $q->where('db_source_name', $request->db_source_name);
+            }
+
+            if ($request->filled('start_date') && $request->filled('end_date')) {
+
+                $start = $this->to_esawi_date($request->start_date);
+                $end   = $this->to_esawi_date($request->end_date);
+
+                $q->whereBetween('release_date', [$start, $end]);
+            }
         });
+
+        $suspects = $query->orderByDesc('created_at')->get();
+
+        return PDF::loadView(
+            'reports.released_suspects_pdf',
+            compact('suspects'),
+            [],
+            ['orientation' => 'L']
+        )->stream('Released_Suspects_Report.pdf');
     }
 
-    // 5️⃣ Date Range Filter
- if ($request->filled('start_date') && $request->filled('end_date')) {
-
-    $start = $this->to_esawi_date($request->start_date);
-    $end   = $this->to_esawi_date($request->end_date);
-
-    $query->whereHas('release', function ($q) use ($start, $end) {
-        $q->whereBetween('release_date', [$start, $end]);
-    });
-}
-
-
-    $suspects = $query->orderByDesc('created_at')->get();
-
-    return PDF::loadView(
-        'reports.released_suspects_pdf',
-        compact('suspects'),
-        [],
-        ['orientation' => 'L']
-    )->stream('Released_Suspects_Report.pdf');
-}
 
 
 

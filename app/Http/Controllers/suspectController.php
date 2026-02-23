@@ -126,7 +126,8 @@ class suspectController extends Controller
     $suspectStore->province = $request->province;
     $suspectStore->district = $request->district;
     $suspectStore->area = $request->area;
-    $suspectStore->notes = $request->notes;
+    $suspectStore->has_items = $request->has_items ?? null;
+
 
     if ($request->hasFile('file')) {
       $file = $request->file('file');
@@ -150,6 +151,10 @@ class suspectController extends Controller
     if (!empty($suspect->monitoring_date)) {
       $suspect->monitoring_date = $this->to_dari_date($suspect->monitoring_date);
     }
+
+    $suspect->has_items = $suspect->has_items === null
+      ? null
+      : ($suspect->has_items ? 1 : 0);
 
     return response()->json($suspect);
   }
@@ -186,7 +191,10 @@ class suspectController extends Controller
     $suspect->province = $request->province;
     $suspect->district = $request->district;
     $suspect->area = $request->area;
-    $suspect->notes = $request->notes;
+    $suspect->has_items = $request->filled('has_items') ? (int) $request->has_items : null;
+
+
+
 
     if ($request->hasFile('file')) {
       $file = $request->file('file');
@@ -225,7 +233,7 @@ class suspectController extends Controller
     if (!empty($suspect->monitoring_date)) {
       $suspect->monitoring_date = $this->to_dari_date($suspect->monitoring_date);
     }
-    
+
 
     return view('suspects.details', compact('suspect'));
   }
@@ -257,8 +265,8 @@ class suspectController extends Controller
     )->stream('Suspect_Notes_Report.pdf');
   }
 
-  
-//  PDF of release notes
+
+  //  PDF of release notes
   public function releaseNotesPdf($id)
   {
     $suspect = Suspect::with(['provinceRelation', 'release'])

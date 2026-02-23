@@ -128,7 +128,7 @@
         <tr>
 
             <!-- LEFT -->
-            <td style="width:33.33%; text-align:left; font-size:14px; vertical-align:top;">
+            <td style="width:33.33%; text-align:left; font-size:20px; vertical-align:top;">
                 <div style="direction:rtl; text-align:left;">
                     <br>
                      آمر نظارت خانه
@@ -137,7 +137,7 @@
             </td>
 
                <!-- CENTER -->
-            <td style="width:33.33%; text-align:center; font-size:14px; vertical-align:top;">
+            <td style="width:33.33%; text-align:center; font-size:20px; vertical-align:top;">
                 <div style="direction:rtl; text-align:center;">
                     <br>
        					نام رئیس هیئت
@@ -148,7 +148,7 @@
             </td>
 
             <!-- CENTER -->
-            <td style="width:33.33%; text-align:center; font-size:14px; vertical-align:top;">
+            <td style="width:33.33%; text-align:center; font-size:20px; vertical-align:top;">
                 <div style="direction:rtl; text-align:center;">
                     <br>
        					نام  هیئت
@@ -159,7 +159,7 @@
             </td>
 
              <!-- CENTER -->
-            <td style="width:33.33%; text-align:center; font-size:14px; vertical-align:top;">
+            <td style="width:33.33%; text-align:center; font-size:20px; vertical-align:top;">
                 <div style="direction:rtl; text-align:center;">
                     <br>
        					نام  هیئت
@@ -172,7 +172,7 @@
           
 
             <!-- RIGHT -->
-            <td style="width:33.33%; text-align:right; font-size:14px; vertical-align:top;">
+            <td style="width:33.33%; text-align:right; font-size:20px; vertical-align:top;">
                 <div style="direction:rtl; text-align:right;">
                     <br>
                     مسئول اکمال نظارت خانه

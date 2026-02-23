@@ -115,6 +115,7 @@ class ReleaseController extends Controller
 
     public function release(Request $request)
     {
+        
         $request->validate([
             'suspect_id'   => 'required|exists:suspects,id',
             'issued_or_transferred_number'  => 'required',
@@ -130,7 +131,8 @@ class ReleaseController extends Controller
         $release->main_option_key = $request->main_option_key;
         $release->db_source_name = $request->db_source_name;
         $release->release_date = $this->to_esawi_date($request->release_date);
-        $release->items_status = $request->items_status;
+       
+
 
         // status update in suspects table
         $suspect = Suspect::find($request->suspect_id);
@@ -144,6 +146,7 @@ class ReleaseController extends Controller
             $file->move(public_path('uploads/releases'), $filename);
             $release->file = 'uploads/releases/' . $filename;
         }
+            
 
         $release->save();
 

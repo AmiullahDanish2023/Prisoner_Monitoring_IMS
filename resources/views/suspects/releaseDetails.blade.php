@@ -101,9 +101,7 @@
                                     <th>مرجع رها کننده</th>
                                     <th>د انتقال کولو نیټه</th>
                                     <th>د رهایی یا انتقال فایل لیدل</th>
-                                    @if (!empty($suspect->release?->items_status))
-                                        <th>مظنون د وسایلو حالت</th>
-                                    @endif
+                                    <th>توکي موجود وو؟</th>
 
                                 </tr>
                             </thead>
@@ -142,24 +140,17 @@
                                         @endif
                                     </td>
                                     <td>
-
-                                        {{-- د وسایلو حالت badge --}}
-                                        @if ($suspect->release && !empty($suspect->notes))
-                                            @if ($suspect->release->items_status === 'confiscated')
-                                                <span class="badge bg-success cursor-pointer" data-bs-toggle="modal"
-                                                    data-bs-target="#itemsModal{{ $suspect->id }}">
-                                                    وسایل مظنون ته تسلیم شوي
-                                                </span>
-                                            @elseif ($suspect->release->items_status === 'not_confiscated')
-                                                <span class="badge bg-danger cursor-pointer" data-bs-toggle="modal"
-                                                    data-bs-target="#itemsModal{{ $suspect->id }}">
-                                                    وسایل مظنون ته ندي تسلیم شوي
-                                                </span>
-                                            @endif
+                                        @if ($suspect->has_items === true)
+                                            <span class="badge bg-success">هو</span>
+                                        @elseif ($suspect->has_items === false)
+                                            <span class="badge bg-danger">نه</span>
+                                        @else
+                                            ---
                                         @endif
-
-
                                     </td>
+
+
+
 
                                 </tr>
                             </tbody>
@@ -173,37 +164,4 @@
                 </div>
             </div>
         </div>
-
-      
-
-            <!-- Notes Modal -->
-            <div class="modal fade" id="itemsModal{{ $suspect->id }}" tabindex="-1">
-                <div class="modal-dialog modal-lg modal-dialog-centered">
-                    <div class="modal-content">
-
-                        <div class="modal-header">
-                            <h5 class="modal-title text-center w-100"> له مظنون سره موجود وسایلو تفصیل</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-
-                        <div class="modal-body">
-                            <p style="white-space: pre-wrap;">
-                                {{ $suspect->notes }}
-                            </p>
-                        </div>
-
-                        <div class="modal-footer d-flex justify-content-between mb-0">
-                            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">بندول</button>
-
-                            <a href="{{ route('suspects.release.notes.pdf', $suspect->id) }}" target="_blank"
-                                class="btn btn-primary btn-sm">
-                                پرینټ
-                            </a>
-                        </div>
-                    </div>
-
-
-                </div>
-            </div>
-
-        @endsection
+    @endsection

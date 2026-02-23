@@ -26,14 +26,10 @@ class CreateReleaseSuspectsTable extends Migration
             $table->string('issued_or_transferred_number');
             $table->string('release_date');
             $table->string('file')->nullable();
+            $table->boolean('has_items')->nullable();
 
             $table->enum('items_status', ['confiscated', 'not_confiscated'])->nullable();
-            $table->integer('release_source_id');
-                
-               
-
-
-
+           
             $table->timestamps();
         });
     }
@@ -47,9 +43,6 @@ class CreateReleaseSuspectsTable extends Migration
      */
     public function down()
     {
-        Schema::table('release_suspects', function (Blueprint $table) {
-            $table->dropForeign(['release_source_id']);
-            $table->dropColumn('release_source_id');
-        });
+        Schema::dropIfExists('release_suspects');
     }
 }
