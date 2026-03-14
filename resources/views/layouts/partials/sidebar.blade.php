@@ -72,7 +72,8 @@
 
                 </div>
                 <!--end:Menu item-->
-                <!--begin:Menu item-->
+                <!--begin:Menu item-->\
+
                 <div class="menu-item pt-5">
                     <!--begin:Menu content-->
                     <div class="menu-content">
@@ -80,33 +81,36 @@
                     </div>
                     <!--end:Menu content-->
                 </div>
+
                 <!--end:Menu item-->
                 <!--begin:Menu item-->
                 <div data-kt-menu-trigger="click"
                     class="menu-item {{ Request::is('contents*') ? 'here show' : '' }} menu-accordion">
                     <!--begin:Menu link-->
-                    <span class="menu-link">
-                        <span class="menu-icon">
-                            <span class="svg-icon svg-icon-2">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M7 22V10M12 22V10M17 22V10" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" />
-                                    <rect x="4" y="2" width="16" height="8" rx="2" stroke="currentColor"
-                                        stroke-width="2" />
-                                    <circle cx="12" cy="6" r="1.5" fill="currentColor" />
-                                </svg>
+                    @can('Suspect Section')
+                        <span class="menu-link">
+                            <span class="menu-icon">
+                                <span class="svg-icon svg-icon-2">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M7 22V10M12 22V10M17 22V10" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" />
+                                        <rect x="4" y="2" width="16" height="8" rx="2" stroke="currentColor"
+                                            stroke-width="2" />
+                                        <circle cx="12" cy="6" r="1.5" fill="currentColor" />
+                                    </svg>
+                                </span>
                             </span>
-                        </span>
-                        <span class="menu-title">بخش مظنونین</span>
+                            <span class="menu-title">بخش مظنونین</span>
 
-                        <span class="menu-arrow"></span>
-                    </span>
+                            <span class="menu-arrow"></span>
+                        </span>
+                    @endcan
                     <!--end:Menu link-->
                     <!--begin:Menu sub-->
                     <div class="menu-sub menu-sub-accordion">
                         <!--begin:Menu item-->
-                        @can('Create Book or Artical')
+                        @can('Save New Suspect Section')
                             <div class="menu-item">
                                 <!--begin:Menu link-->
                                 <a class="menu-link {{ Route::currentRouteName() == 'suspects.index' ? 'active' : '' }}"
@@ -128,7 +132,7 @@
                     <!--begin:Menu sub-->
                     <div class="menu-sub menu-sub-accordion">
                         <!--begin:Menu item-->
-                        @can('Create Book or Artical')
+                        @can(' List of Release or Transfer Suspects')
                             <div class="menu-item">
                                 <!--begin:Menu link-->
                                 <a class="menu-link {{ Route::currentRouteName() == 'suspects.release' ? 'active' : '' }}"
@@ -151,13 +155,15 @@
                     <!--begin:Menu sub-->
                     <div class="menu-sub menu-sub-accordion">
                         <!--begin:Menu item-->
-                        <div class="menu-item">
-                            <a class="menu-link {{ request()->routeIs('release-sources.*') ? 'active' : '' }}"
-                                href="{{ route('release-sources.index') }}">
-                                <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
-                                <span class="menu-title">د مراجعو اضافه کول</span>
-                            </a>
-                        </div>
+                        @can('Add Suspect Release Reference Section')
+                            <div class="menu-item">
+                                <a class="menu-link {{ request()->routeIs('release-sources.*') ? 'active' : '' }}"
+                                    href="{{ route('release-sources.index') }}">
+                                    <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                                    <span class="menu-title">د مراجعو اضافه کول</span>
+                                </a>
+                            </div>
+                        @endcan
 
 
 
@@ -174,99 +180,58 @@
 
                 <!--end:Menu item-->
                 <!--begin:Menu item-->
-                <div class="menu-item pt-5">
-                    <!--begin:Menu content-->
-                    <div class="menu-content">
-                        <span class="menu-heading fw-bold text-uppercase ">بخش مدیریت راپورها</span>
+                @can('Report Mangement Section')
+                    <div class="menu-item pt-5">
+                        <!--begin:Menu content-->
+                        <div class="menu-content">
+                            <span class="menu-heading fw-bold text-uppercase ">بخش مدیریت راپورها</span>
+                        </div>
+                        <!--end:Menu content-->
                     </div>
-                    <!--end:Menu content-->
-                </div>
+                @endcan
                 <!--end:Menu item-->
                 <!--begin:Menu item-->
                 <div data-kt-menu-trigger="click"
                     class="menu-item {{ Request::is('contents*') ? 'here show' : '' }} menu-accordion">
                     <!--begin:Menu link-->
-                    <span class="menu-link">
-                        <span class="menu-icon">
-                            <span class="svg-icon svg-icon-2">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <rect x="3" y="10" width="4" height="10" rx="1"
-                                        fill="currentColor" />
-                                    <rect x="10" y="6" width="4" height="14" rx="1" opacity="0.5"
-                                        fill="currentColor" />
-                                    <rect x="17" y="3" width="4" height="17" rx="1"
-                                        fill="currentColor" opacity="0.3" />
-                                </svg>
+                    @can('Report Section')
+                        <span class="menu-link">
+                            <span class="menu-icon">
+                                <span class="svg-icon svg-icon-2">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="3" y="10" width="4" height="10" rx="1"
+                                            fill="currentColor" />
+                                        <rect x="10" y="6" width="4" height="14" rx="1" opacity="0.5"
+                                            fill="currentColor" />
+                                        <rect x="17" y="3" width="4" height="17" rx="1"
+                                            fill="currentColor" opacity="0.3" />
+                                    </svg>
+                                </span>
                             </span>
+                            <span class="menu-title">بخش راپورها</span>
+
+
+                            <span class="menu-arrow"></span>
                         </span>
-                        <span class="menu-title">بخش راپورها</span>
-
-
-                        <span class="menu-arrow"></span>
-                    </span>
+                    @endcan
                     <!--end:Menu link-->
                     <!--begin:Menu sub-->
                     <div class="menu-sub menu-sub-accordion">
                         <!--begin:Menu item-->
-
-                        <div class="menu-item">
-                            <!--begin:Menu link-->
-                            <a class="menu-link {{ Route::currentRouteName() == 'report.general' ? 'active' : '' }}"
-                                href="{{ route('report.general') }}">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">د مظنونینو عمومی راپور </span>
-                            </a>
-                            <!--end:Menu link-->
-                        </div>
-
-
-                        <!--end:Menu item-->
-
-                    </div>
-                    <!--end:Menu sub-->
-
-                    <!--begin:Menu sub-->
-                    <div class="menu-sub menu-sub-accordion">
-                        <!--begin:Menu item-->
-
-                        <div class="menu-item">
-                            <!--begin:Menu link-->
-                            <a class="menu-link {{ Route::currentRouteName() == 'reports.existing.pdf' ? 'active' : '' }}"
-                                href="{{ route('reports.existing.pdf') }}">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title"> د مظنونینو د موجودی راپور </span>
-                            </a>
-                            <!--end:Menu link-->
-                        </div>
-
-
-                        <!--end:Menu item-->
-
-                    </div>
-                    <!--end:Menu sub-->
-
-                  
-
-                       <!--begin:Menu sub-->
-                    <div class="menu-sub menu-sub-accordion">
-                        <!--begin:Menu item-->
-
-                        <div class="menu-item">
-                            <!--begin:Menu link-->
-                            <a class="menu-link {{ Route::currentRouteName() == 'release.suspect.report' ? 'active' : '' }}"
-                                href="{{ route('release.suspect.report') }}">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                 <span class="menu-title"> د رهایی / انتقال مظنونینو راپور </span>
-                            </a>
-                            <!--end:Menu link-->
-                        </div>
+                        @can(' Create Suspects Genral Report')
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link {{ Route::currentRouteName() == 'report.general' ? 'active' : '' }}"
+                                    href="{{ route('report.general') }}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                    <span class="menu-title">د مظنونینو عمومی راپور </span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                        @endcan
 
 
                         <!--end:Menu item-->
@@ -277,16 +242,65 @@
                     <!--begin:Menu sub-->
                     <div class="menu-sub menu-sub-accordion">
                         <!--begin:Menu item-->
+                        @can(' Create Suspects Existing Report')
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link {{ Route::currentRouteName() == 'reports.existing.pdf' ? 'active' : '' }}"
+                                    href="{{ route('reports.existing.pdf') }}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                    <span class="menu-title"> د مظنونینو د موجودی راپور </span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                        @endcan
 
-                        <div class="menu-item">
-                            <a class="menu-link" href="#" data-bs-toggle="modal"
-                                data-bs-target="#monthlySuspectModal">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title"> د مظنونینو میاشتنی راپور </span>
-                            </a>
-                        </div>
+
+                        <!--end:Menu item-->
+
+                    </div>
+                    <!--end:Menu sub-->
+
+
+
+                    <!--begin:Menu sub-->
+                    <div class="menu-sub menu-sub-accordion">
+                        <!--begin:Menu item-->
+                        @can('Create Release or Transfer Suspcets Report')
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link {{ Route::currentRouteName() == 'release.suspect.report' ? 'active' : '' }}"
+                                    href="{{ route('release.suspect.report') }}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                    <span class="menu-title"> د رهایی / انتقال مظنونینو راپور </span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                        @endcan
+
+
+                        <!--end:Menu item-->
+
+                    </div>
+                    <!--end:Menu sub-->
+
+                    <!--begin:Menu sub-->
+                    <div class="menu-sub menu-sub-accordion">
+                        <!--begin:Menu item-->
+                        @can('Create Suspects Mothly Report')
+                            <div class="menu-item">
+                                <a class="menu-link" href="#" data-bs-toggle="modal"
+                                    data-bs-target="#monthlySuspectModal">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                    <span class="menu-title"> د مظنونینو میاشتنی راپور </span>
+                                </a>
+                            </div>
+                        @endcan
 
 
                         <!--end:Menu item-->
@@ -307,60 +321,66 @@
                 {{-- ---------------------------start livelihood plan part--------------------- --}}
 
                 <!--end:Menu item-->
-                <!--begin:Menu item-->
-                <div class="menu-item pt-5">
-                    <!--begin:Menu content-->
-                    <div class="menu-content">
-                        <span class="menu-heading fw-bold text-uppercase ">بخش مدیریت اعاشه</span>
+                @can('Livelihood Manegement Section')
+                    <!--begin:Menu item-->
+                    <div class="menu-item pt-5">
+                        <!--begin:Menu content-->
+                        <div class="menu-content">
+                            <span class="menu-heading fw-bold text-uppercase ">بخش مدیریت اعاشه</span>
+                        </div>
+                        <!--end:Menu content-->
                     </div>
-                    <!--end:Menu content-->
-                </div>
+                @endcan
                 <!--end:Menu item-->
                 <!--begin:Menu item-->
                 <div data-kt-menu-trigger="click"
                     class="menu-item {{ Request::is('contents*') ? 'here show' : '' }} menu-accordion">
                     <!--begin:Menu link-->
-                    <span class="menu-link">
-                        <span class="menu-icon">
-                            <span class="svg-icon svg-icon-2">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
+                    @can('Livelihood Manegement')
+                        <span class="menu-link">
+                            <span class="menu-icon">
+                                <span class="svg-icon svg-icon-2">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
 
-                                    <!-- Person -->
-                                    <circle cx="12" cy="6" r="3" fill="currentColor" />
-                                    <path d="M6 20C6 15.6 8.7 13 12 13C15.3 13 18 15.6 18 20" fill="currentColor"
-                                        opacity="0.3" />
+                                        <!-- Person -->
+                                        <circle cx="12" cy="6" r="3" fill="currentColor" />
+                                        <path d="M6 20C6 15.6 8.7 13 12 13C15.3 13 18 15.6 18 20" fill="currentColor"
+                                            opacity="0.3" />
 
-                                    <!-- Livelihood / Planning bars -->
-                                    <rect x="4" y="14" width="2" height="6" rx="1"
-                                        fill="currentColor" opacity="0.4" />
-                                    <rect x="18" y="11" width="2" height="9" rx="1"
-                                        fill="currentColor" opacity="0.6" />
+                                        <!-- Livelihood / Planning bars -->
+                                        <rect x="4" y="14" width="2" height="6" rx="1"
+                                            fill="currentColor" opacity="0.4" />
+                                        <rect x="18" y="11" width="2" height="9" rx="1"
+                                            fill="currentColor" opacity="0.6" />
 
-                                </svg>
+                                    </svg>
+                                </span>
                             </span>
-                        </span>
 
-                        <span class="menu-title">مدیریت اعاشه</span>
-                        <span class="menu-arrow"></span>
-                    </span>
+                            <span class="menu-title">مدیریت اعاشه</span>
+                            <span class="menu-arrow"></span>
+                        </span>
+                    @endcan
                     <!--end:Menu link-->
+
 
                     <!--begin:Menu sub-->
                     <div class="menu-sub menu-sub-accordion">
                         <!--begin:Menu item-->
-
-                        <div class="menu-item">
-                            <!--begin:Menu link-->
-                            <a class="menu-link {{ Route::currentRouteName() == 'livelihood.plan' ? 'active' : '' }}"
-                                href="{{ route('livelihood.plan') }}">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title">پلان اعاشه </span>
-                            </a>
-                            <!--end:Menu link-->
-                        </div>
+                        @can('Make Livelihood Plan')
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link {{ Route::currentRouteName() == 'livelihood.plan' ? 'active' : '' }}"
+                                    href="{{ route('livelihood.plan') }}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                    <span class="menu-title">پلان اعاشه </span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                        @endcan
 
 
                         <!--end:Menu item-->
@@ -372,21 +392,23 @@
                     <!--begin:Menu sub-->
                     <div class="menu-sub menu-sub-accordion">
                         <!--begin:Menu item-->
-
-                        <div class="menu-item">
-                            <!--begin:Menu link-->
-                            <a class="menu-link {{ Route::currentRouteName() == 'livelihood.list.show' ? 'active' : '' }}"
-                                href="{{ route('livelihood.list.show') }}">
-                                <span class="menu-bullet">
-                                    <span class="bullet bullet-dot"></span>
-                                </span>
-                                <span class="menu-title"> لیست  و  راپور اعاشه </span>
-                            </a>
-                            <!--end:Menu link-->
-                        </div>
+                        @can('List of Livelihood Plans')
+                            <div class="menu-item">
+                                <!--begin:Menu link-->
+                                <a class="menu-link {{ Route::currentRouteName() == 'livelihood.list.show' ? 'active' : '' }}"
+                                    href="{{ route('livelihood.list.show') }}">
+                                    <span class="menu-bullet">
+                                        <span class="bullet bullet-dot"></span>
+                                    </span>
+                                    <span class="menu-title"> لیست و راپور اعاشه </span>
+                                </a>
+                                <!--end:Menu link-->
+                            </div>
+                        @endcan
 
 
                         <!--end:Menu item-->
+
 
                     </div>
                     <!--end:Menu sub-->
@@ -394,11 +416,9 @@
                 <!--end:Menu item-->
 
                 <!--end:Menu item-->
+
+
                 {{-- -----------------------------end livelihood plan part--------------------------------- --}}
-
-
-
-
                 <!--end:Menu item-->
                 <!--begin:Menu item-->
                 @can('Create Users')
@@ -510,7 +530,7 @@
 
 
 @section('content')
-    <link rel="stylesheet" href="{{ asset('assets/persian-date/persian-datepicker.min.css') }}">
+    <script src="{{ asset('perisanDatePicker/js/persianDatepicker.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('perisanDatePicker/css/persianDatepicker-default.css') }}" />
 
     <style>
@@ -526,7 +546,7 @@
             border-top: 1px solid #dee2e6;
         }
     </style>
-   
+
 
     {{-- -----------------monthly suspect report modal ----------------------- --}}
 

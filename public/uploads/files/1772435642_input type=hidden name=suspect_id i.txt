@@ -1,0 +1,1 @@
+<input type="hidden" name="suspect_id" id="release_suspect_id">

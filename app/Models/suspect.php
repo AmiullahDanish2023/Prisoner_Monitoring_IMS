@@ -33,11 +33,19 @@ class suspect extends Model
         );
     }
 
-    // protected $casts = [
-    //     'has_items' => 'boolean',
-    // ];
+
 
     protected $casts = [
-    'has_items' => 'integer',
-];
+        'has_items' => 'integer',
+    ];
+
+    public function files()
+    {
+        return $this->hasMany(SuspectFile::class);
+    }
+    public function releaseFiles()
+    {
+        return $this->hasMany(SuspectFile::class, 'suspect_id')
+            ->where('file_type', 'release');
+    }
 }

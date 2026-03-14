@@ -6,10 +6,11 @@
         <!-- Header -->
         <div class="card-header d-flex justify-content-between align-items-center">
             <h4 class="card-title mb-0 fw-bold text-align-center">د مراجعو لیست</h4>
-
+                 @can('Save New Suspect  Reference')
             <a href="{{ route('release-sources.create') }}" class="btn btn-primary btn-sm">
                 نوې مرجع اضافه کړئ
             </a>
+            @endcan
 
             <style>
                 /* ------------------ Card Header ------------------ */
@@ -134,15 +135,19 @@
                                     <div class="action-buttons">
 
                                         <!-- Edit -->
-                                        <a href="" class="edit-btn" data-title="ایډیټ">
+                                        @can('Edit Suspect Reference')
+                                        <a href="" class="edit-btn" data-title="د مرجع نوم تغیرول">
                                             ✏️
                                         </a>
+                                        @endcan
 
                                         <!-- Delete -->
+                                        @can('Delete Suspect Reference')
                                         <a href="{{ route('release-sources.delete', $src->id) }}" class=" delete-btn"
-                                            data-id="{{ $src->id }}" data-title="حذف">
+                                            data-id="{{ $src->id }}" data-title="د مرجع حذف کول">
                                             🗑️
                                         </a>
+                                        @endcan
                                     </div>
                                 </td>
                             </tr>

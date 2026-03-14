@@ -80,9 +80,17 @@
                                 <td>{{ $suspect->district }}</td>
                                 <td>{{ $suspect->area }}</td>
                                 <td>{{ $suspect->monitoring_date }}</td>
-                                <td>
-                                    @if ($suspect->file)
-                                        <a href="{{ asset($suspect->file) }}" target="_blank" class="text-primary">لیدل</a>
+                                <td class="text-center">
+                                    @php
+                                        $suspectFiles = $suspect->files->where('file_type', 'suspect');
+                                    @endphp
+
+                                    @if ($suspectFiles->count() > 0)
+                                        <a href="{{ route('suspects.files', $suspect->id) }}" target="_blank"
+                                            class="btn btn-sm btn-primary">
+                                            <i class="fas fa-folder-open"></i>
+                                            د فایلونو لیدل ({{ $suspectFiles->count() }})
+                                        </a>
                                     @else
                                         ---
                                     @endif
@@ -131,18 +139,25 @@
                                     <td>
                                         {{ $suspect->release->release_date ?? '---' }}
                                     </td>
-                                    <td>
-                                        @if ($suspect->release && $suspect->release->file)
-                                            <a href="{{ asset($suspect->release->file) }}" target="_blank"
-                                                class="text-primary">لیدل</a>
+                                    <td class="text-center">
+                                        @if ($suspect->releaseFiles->count() > 0)
+                                            <a href="{{ route('suspects.release.files', $suspect->id) }}" target="_blank"
+                                                class="btn btn-sm btn-success">
+
+                                                <i class="fas fa-file-alt"></i>
+
+                                                د ریلیز فایلونه
+                                                ({{ $suspect->releaseFiles->count() }})
+
+                                            </a>
                                         @else
-                                            ---
+                                            <span class="text-muted">---</span>
                                         @endif
                                     </td>
-                                    <td>
-                                        @if ($suspect->has_items === true)
+                                    <td class="text-center">
+                                        @if ($suspect->has_items === 1)
                                             <span class="badge bg-success">هو</span>
-                                        @elseif ($suspect->has_items === false)
+                                        @elseif ($suspect->has_items === 0)
                                             <span class="badge bg-danger">نه</span>
                                         @else
                                             ---

@@ -15,119 +15,157 @@ class PermissionSeeder extends Seeder
     public function run()
     {
         $data = [
-                  // Book and Articals
             [
-                'name' => 'List of Book or Artical',
-                'name_fa' => 'لیست کتاب ها و مقاله ها',
-                'guard_name' => 'web',
-            ],
-            [
-                'name' => 'Create Book or Artical',
-                'name_fa' => 'ثبت کتاب ها و مقاله ها',
-                'guard_name' => 'web',
-            ],
-            [
-                'name' => 'Edit Book or Artical',
-                'name_fa' => 'تغییر کتاب ها و مقاله ها',
-                'guard_name' => 'web',
-            ],
-            [
-                'name' => 'Delete Book or Artical',
-                'name_fa' => 'حذب کتاب ها و مقاله ها',
-                'guard_name' => 'web',
-            ],
-                    // Conference
-            [
-                'name' => 'List of Conference',
-                'name_fa' => 'لیست کانفرانس',
-                'guard_name' => 'web',
-            ],
-            [
-                'name' => 'Create Conference',
-                'name_fa' => 'ثبت کانفراس',
-                'guard_name' => 'web',
-            ],
-            [
-                'name' => 'Edit Conference',
-                'name_fa' => 'تغییر کانفرانس',
-                'guard_name' => 'web',
-            ],
-            [
-                'name' => 'Delete Conference',
-                'name_fa' => 'حذب کانفرانس',
-                'guard_name' => 'web',
-            ],
-                // Doctors
-            [
-                'name' => 'List of Doctor',
-                'name_fa' => 'لیست داکتران',
-                'guard_name' => 'web',
-            ],
-            [
-                'name' => 'Create Doctor',
-                'name_fa' => 'ثبت داکتر',
-                'guard_name' => 'web',
-            ],
-            [
-                'name' => 'Edit Doctor',
-                'name_fa' => 'تغییر داکتر',
-                'guard_name' => 'web',
-            ],
-            [
-                'name' => 'Delete Doctor',
-                'name_fa' => 'حذب داکتر',
-                'guard_name' => 'web',
-            ],
-                // About
-            [
-                'name' => 'Edit About',
-                'name_fa' => 'تغییرات در درباره',
-                'guard_name' => 'web',
-            ],
-                // Contact
-            [
-                'name' => 'List of Contact',
-                'name_fa' => 'لیست تماس ها ',
-                'guard_name' => 'web',
-            ],
-                    // Setting
-            [
-                'name' => 'Edit Setting',
-                'name_fa' => 'تغییرات در تنظیمات',
-                'guard_name' => 'web',
-            ],
-                // Users
-            [
-                'name' => 'Users',
-                'name_fa' => 'کارمندان',
-                'guard_name' => 'web',
-            ],[
                 'name' => 'Create Users',
-                'name_fa' => 'ایجاد کارمندان',
+                'name_fa' => 'ایجاد کاربران',
                 'guard_name' => 'web',
-            ],[
+            ],
+            // Suspect 
+            [
+                'name' => 'Suspect Section',
+                'name_fa' => 'بخش مظنونین',
+                'guard_name' => 'web',
+            ],
+            [
+                'name' => 'Save New Suspect Section',
+                'name_fa' => 'ثبت بخش مظنونین جدید',
+                'guard_name' => 'web',
+            ],
+
+
+            [
+                'name' => 'Save New Suspect',
+                'name_fa' => 'ثبت مظنون جدید',
+                'guard_name' => 'web',
+            ],
+            [
+                'name' => 'View Suspect Details',
+                'name_fa' => 'مشاهده جزئیات مظنون',
+                'guard_name' => 'web',
+            ],
+            [
+                'name' => 'Edit Suspect',
+                'name_fa' => 'تغییر مظنون',
+                'guard_name' => 'web',
+            ],
+            [
+                'name' => 'Delete Suspect',
+                'name_fa' => 'حذف مظنون',
+                'guard_name' => 'web',
+            ],
+
+            [
+                'name' => 'Release Suspect',
+                'name_fa' => 'رها کردن مظنون',
+                'guard_name' => 'web',
+            ],
+            [
+                'name' => ' List of Release or Transfer Suspects',
+                'name_fa' => 'لیست رهایی و انتقال مظنونین',
+                'guard_name' => 'web',
+            ],
+            [
+                'name' => 'View Release or Transfer Suspect Details',
+                'name_fa' => 'مشاهده جزئیات مظنون رهایی یا انتقال ',
+                'guard_name' => 'web',
+            ],
+            [
+                'name' => 'Delete Release or Transfer Suspect',
+                'name_fa' => 'حذف مظنون رهایی یا انتقال',
+                'guard_name' => 'web',
+            ],
+
+            [
+                'name' => 'Add Suspect Release Reference Section',
+                'name_fa' => 'بخش اضافه کردن مراجع مظنونین',
+                'guard_name' => 'web',
+            ],
+            [
+                'name' => 'Save New Suspect  Reference',
+                'name_fa' => 'ثبت مرجع مظنون',
+                'guard_name' => 'web',
+            ],
+            [
+                'name' => 'Edit Suspect Reference',
+                'name_fa' => 'تغییر مرجع مظنونین',
+                'guard_name' => 'web',
+            ],
+            [
+                'name' => 'Delete Suspect Reference',
+                'name_fa' => 'حذف مرجع مظنونین',
+                'guard_name' => 'web',
+            ],
+            [
+                'name' => 'Report Mangement Section',
+                'name_fa' => 'بخش مدیریت راپورها',
+                'guard_name' => 'web',
+            ],
+
+            [
+                'name' => 'Report Section',
+                'name_fa' => 'بخش راپور',
+                'guard_name' => 'web',
+            ],
+
+            [
+                'name' => ' Create Suspects Genral Report',
+                'name_fa' => ' راپور عمومی مظنونین',
+                'guard_name' => 'web',
+            ],
+            [
+                'name' => ' Create Suspects Existing Report',
+                'name_fa' => 'راپور موجودی مظنونین',
+                'guard_name' => 'web',
+            ],
+            // Users
+            [
+                'name' => 'Create Release or Transfer Suspcets Report',
+                'name_fa' => 'راپور مظنونین رهایی یا انتقال ',
+                'guard_name' => 'web',
+            ],
+            [
+                'name' => 'Create Suspects Mothly Report',
+                'name_fa' => 'ایجاد راپور ماهانه مظنونین',
+                'guard_name' => 'web',
+            ],
+            [
                 'name' => 'Edit Users',
                 'name_fa' => 'تغییر کارمندان',
                 'guard_name' => 'web',
             ],
             [
-                'name' => 'Edit Announcement',
-                'name_fa' => 'تغییر اطلاعیه',
+                'name' => 'Livelihood Manegement Section',
+                'name_fa' => 'بخش مدیریت بدل اعاشه',
                 'guard_name' => 'web',
             ],
             [
-                'name' => 'List Department',
-                'name_fa' => 'لیست دیپارتمنت',
+                'name' => 'Livelihood Manegement',
+                'name_fa' => ' مدیریت بدل اعاشه',
                 'guard_name' => 'web',
             ],
             [
-                'name' => 'Create Department',
-                'name_fa' => 'ثبت دیپارتمنت',
+                'name' => 'Make Livelihood Plan',
+                'name_fa' => 'ایجاد پلان بدل اعاشه',
                 'guard_name' => 'web',
             ],
             [
-                'name' => 'Edit Department',
-                'name_fa' => 'تغییر دیپارتمنت',
+                'name' => 'List of Livelihood Plans',
+                'name_fa' => 'لیست پلان های بدل اعاشه',
+                'guard_name' => 'web',
+            ],
+            [
+                'name' => 'View Livelihood Plan Details',
+                'name_fa' => 'مشاهده تفاصیل پلان بدل اعاشه',
+                'guard_name' => 'web',
+            ],
+            [
+                'name' => 'Make Monthly Livelihood Report',
+                'name_fa' => 'ایجاد راپور ماهانه بدل اعاشه',
+                'guard_name' => 'web',
+            ],
+            [
+                'name' => 'Make Weekly Livelihood Report',
+                'name_fa' => 'ایجاد راپور هفتانه بدل اعاشه',
                 'guard_name' => 'web',
             ]
         ];

@@ -165,22 +165,56 @@
              ]
          });
      </script>
+    
      <script>
          $(document).on('click', '.delete-month', function() {
-             let month = $(this).data('month');
+             var suspectId = $(this).data('id');
+             event.preventDefault();
 
-             if (confirm('ایا د دې میاشت ټول راپورونه حذف شي؟')) {
-                 $.ajax({
-                     url: '/livelihood/month/' + month,
-                     type: 'DELETE',
-                     data: {
-                         _token: '{{ csrf_token() }}'
-                     },
-                     success: function() {
-                         $('#weekly_livelihood_table').DataTable().ajax.reload();
-                     }
-                 });
-             }
+             Swal.fire({
+                 title: 'ایا تاسې ډاډه یاست؟',
+                 text: 'ایا د دې میاشت ټول راپورونه حذف شي؟',
+                 icon: 'warning',
+                 showCancelButton: true,
+                 confirmButtonColor: '#3085d6',
+                 cancelButtonColor: '#d33',
+                 confirmButtonText: ' هو',
+                 cancelButtonText: 'نه!'
+             }).then((result) => {
+                 if (result.isConfirmed) {
+                     $.ajax({
+                         url: '/livelihood/month/' + month,
+                         type: 'DELETE',
+                         data: {
+                             _token: '{{ csrf_token() }}'
+                         },
+                         success: function(response) {
+                             if (response.status === true) {
+                                 Swal.fire(
+                                     'حذف شو!',
+                                     'معلومات په بریالیتوب سره حذف شول.',
+                                     'success'
+                                 );
+                                 window.location.reload();
+
+                             } else {
+                                 Swal.fire(
+                                     'خطا!',
+                                     'د معلوماتو د حذف کولو پر مهال ستونزه رامنځته شوه.',
+                                     'error'
+                                 );
+                             }
+                         },
+                         error: function() {
+                             Swal.fire(
+                                 'خطا!',
+                                 'د معلوماتو د حذف کولو پر مهال ستونزه رامنځته شوه.',
+                                 'error'
+                             );
+                         }
+                     });
+                 }
+             });
          });
      </script>
  @endsection

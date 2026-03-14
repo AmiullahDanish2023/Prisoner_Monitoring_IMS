@@ -93,9 +93,25 @@
                 <td>{{ $row['weekday'] }}</td>
                 <td>{{ $row['persons'] }}</td>
                 <td>{{ number_format($row['amount'], 0) }}</td>
+                {{-- @php
+                $visibleFields = [];
 
+                foreach ($items as $field => $label) {
+                    foreach ($rows as $row) {
+                        if (!empty($row[$field]) && $row[$field] != 0) {
+                            $visibleFields[$field] = $label;
+                            break;
+                        }
+                    }
+                }
+                @endphp
+                @foreach ($visibleFields as $field => $label)
+                    <th>{{ $label }}</th>
+                @endforeach --}}
                 @foreach ($items as $field => $label)
+                     
                     <td>{{ $row[$field] == 0 ? 0 : number_format($row[$field], 0) }}</td>
+                   
                 @endforeach
             </tr>
         @endforeach

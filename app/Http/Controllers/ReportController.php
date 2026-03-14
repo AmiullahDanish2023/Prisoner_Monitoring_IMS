@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Suspect;
 use App\Models\Province;
 use App\Models\ReleaseSource;
+use App\Models\SuspectFile;
 use PDF;
 use Carbon\Carbon;
 use Morilog\Jalali\Jalalian;
@@ -296,11 +297,95 @@ class ReportController extends Controller
             'releaseSources',
             'crimeTypes'
         ));
+           
     }
 
 
     public function releasedSuspectPdf(Request $request)
     {
+
+
+        if ($request->filled('file_filter')) {
+
+            $query = SuspectFile::with([
+                'suspect.provinceRelation',
+                'suspect.release.releaseSource'
+            ]);
+
+            // File Type Filter
+            if ($request->file_filter == 'suspect') {
+                $query->where('file_type', 'suspect');
+            }
+
+            if ($request->file_filter == 'release') {
+                $query->where('file_type', 'release');
+            }
+
+            if ($request->file_filter == 'all') {
+                $query->whereIn('file_type', ['suspect', 'release']);
+            }
+
+            // Suspect Filters
+            $query->whereHas('suspect', function ($q) use ($request) {
+
+                // Gender
+                if ($request->filled('gender') && $request->gender !== 'all') {
+                    $q->where('gender', $request->gender);
+                }
+
+                // Province
+                if ($request->filled('province_id')) {
+                    $q->where('province', $request->province_id);
+                }
+
+                // Crime
+                if ($request->filled('crime_type')) {
+                    $q->where('crime_type', $request->crime_type);
+                }
+
+                // Suspect Name
+                if ($request->filled('first_name')) {
+                    $q->where('suspect_name', 'like', '%' . $request->first_name . '%');
+                }
+
+                // Father Name
+                if ($request->filled('father_name')) {
+                    $q->where('father_name', 'like', '%' . $request->father_name . '%');
+                }
+
+                // Release filters
+                $q->whereHas('release', function ($r) use ($request) {
+
+                    if ($request->filled('main_option_key')) {
+                        $r->where('main_option_key', $request->main_option_key);
+                    }
+
+                    if ($request->filled('db_source_name')) {
+                        $r->where('db_source_name', $request->db_source_name);
+                    }
+
+                    if ($request->filled('start_date') && $request->filled('end_date')) {
+
+                        $start = $this->to_esawi_date($request->start_date);
+                        $end   = $this->to_esawi_date($request->end_date);
+
+                        $r->whereBetween('release_date', [$start, $end]);
+                    }
+                });
+            });
+
+            $files = $query->latest()->get();
+
+            return PDF::loadView(
+                'reports.files_report_pdf',
+                compact('files'),
+                [],
+                ['orientation' => 'L']
+            )->stream('Files_Report.pdf');
+        }
+
+
+
         $query = Suspect::with([
             'provinceRelation',
             'release.releaseSource'
@@ -321,7 +406,7 @@ class ReportController extends Controller
             $query->where('crime_type', $request->crime_type);
         }
 
-        // 4️⃣ Suspect Name 
+        // 4️⃣ Suspect Name
         if ($request->filled('first_name')) {
             $query->where('suspect_name', 'like', '%' . $request->first_name . '%');
         }
@@ -354,7 +439,7 @@ class ReportController extends Controller
         $suspects = $query->orderByDesc('created_at')->get();
 
         return PDF::loadView(
-            'reports.released_suspects_pdf',
+            'reports.released_suspects_pdf',  // عادي راپور
             compact('suspects'),
             [],
             ['orientation' => 'L']
@@ -468,5 +553,38 @@ class ReportController extends Controller
                 'reportYear'
             )
         )->stream('Monthly_Suspects_Report.pdf');
+    }
+
+
+
+    public function releasedSuspectPdfخ(Request $request)
+    {
+
+        $query = SuspectFile::with('suspect.provinceRelation', 'suspect.release');
+
+        // FILE FILTER
+        if ($request->filled('file_filter')) {
+
+            if ($request->file_filter == 'suspect') {
+                $query->where('file_type', 'suspect');
+            }
+
+            if ($request->file_filter == 'release') {
+                $query->where('file_type', 'release');
+            }
+
+            if ($request->file_filter == 'all') {
+                $query->whereIn('file_type', ['suspect', 'release']);
+            }
+        }
+
+        $files = $query->latest()->get();
+
+        return PDF::loadView(
+            'reports.files_report_pdf',
+            compact('files'),
+            [],
+            ['orientation' => 'L']
+        )->stream('Files_Report.pdf');
     }
 }

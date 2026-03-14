@@ -26,7 +26,7 @@ use Illuminate\Support\Facades\Auth;
 // Route::get('/',  [WelcomeController::class, 'welcome'])->middleware(['setlocale'])->name('welcome');
 
 Route::get('/', function () {
-  return view('auth.login');
+    return view('auth.login');
 })->name('login');
 
 
@@ -62,6 +62,17 @@ Route::post('users/role-store', [UserController::class, 'role_store'])->middlewa
 Route::get('users/role-edit', [UserController::class, 'role_edit'])->middleware(['auth', 'setlocale'])->name('role.edit');
 Route::post('users/role-update', [UserController::class, 'role_update'])->middleware(['auth', 'setlocale'])->name('role.update');
 # --------------------------------- End Users Routes ------------------------------------------------------------------
+Route::delete('/suspects/files/{id}', [SuspectController::class, 'deleteFile'])->name('suspects.files.delete');
+
+Route::get('/suspects/{id}/files', [SuspectController::class, 'showFiles'])->name('suspects.files');
+Route::get('/suspects/{id}/release-files', [SuspectController::class, 'releaseFiles'])
+    ->name('suspects.release.files');
+Route::delete(
+    '/release-files/{id}',
+    [SuspectController::class, 'deleteReleaseFile']
+)
+    ->name('suspects.release.files.delete');
+
 
 # --------------------------------- suspects Routes -------------------------------------------------------------------
 route::get('suspects', [suspectController::class, 'index'])->middleware(['auth', 'setlocale'])->name('suspects.index');
@@ -72,16 +83,16 @@ Route::post('suspects/update/{id}', [SuspectController::class, 'update'])->name(
 Route::get('suspects/destroy/{id}', [SuspectController::class, 'destroy'])->name('suspects.destroy')->middleware(['auth', 'setlocale']);
 Route::get('/suspects/details/{id}', [SuspectController::class, 'details'])->name('details')->middleware(['auth', 'setlocale']);
 
-Route::get('/suspects/{id}/notes-pdf',[SuspectController::class, 'notesPdf'])->name('suspects.notes.pdf');
-Route::get('/suspects/{id}/release/notes-pdf',[SuspectController::class, 'releaseNotesPdf'])->name('suspects.release.notes.pdf');  
-  
+Route::get('/suspects/{id}/notes-pdf', [SuspectController::class, 'notesPdf'])->name('suspects.notes.pdf');
+Route::get('/suspects/{id}/release/notes-pdf', [SuspectController::class, 'releaseNotesPdf'])->name('suspects.release.notes.pdf');
+
 
 //Release Routes
 Route::get('/suspects/release', [ReleaseController::class, 'releaseSuspect'])->name('suspects.release')->middleware(['auth', 'setlocale']);
 Route::get('release/list', [ReleaseController::class, 'show'])->name('release.list')->middleware(['auth', 'setlocale']);
 Route::post('/suspects/release/store', [ReleaseController::class, 'release'])->name('release.store')->middleware(['auth', 'setlocale']);
 Route::get('release/destroy/{id}', [ReleaseController::class, 'destroy'])->name('release.destroy')->middleware(['auth', 'setlocale']);
- Route::get('/release/details/{id}', [ReleaseController::class, 'details'])->name('release_details')->middleware(['auth', 'setlocale']);
+Route::get('/release/details/{id}', [ReleaseController::class, 'details'])->name('release_details')->middleware(['auth', 'setlocale']);
 
 
 
@@ -89,7 +100,7 @@ Route::get('release/destroy/{id}', [ReleaseController::class, 'destroy'])->name(
 //Release Source Routes
 Route::middleware(['auth'])->group(function () {
 
-  Route::resource('release-sources', ReleaseSourceController::class)->only(['index', 'create', 'store']);
+    Route::resource('release-sources', ReleaseSourceController::class)->only(['index', 'create', 'store']);
 });
 
 Route::get('release-sources/show', [ReleaseSourceController::class, 'show'])->name('release-sources.show');
@@ -122,43 +133,43 @@ Route::get('reports/monthly-suspects/pdf', [ReportController::class, 'monthlySus
 #--------------------------------- livelihood plan Routes -------------------------------------------------------------------
 Route::middleware(['auth', 'setlocale'])->group(function () {
 
-  Route::get('livelihood/plan',[LivelihoodPlanController::class, 'livelihoodPlan'])->name('livelihood.plan');
-  Route::post('livelihood/store',[LivelihoodPlanController::class, 'store'])->name('livelihood.store');
-  Route::get('livelihood/show', [LivelihoodPlanController::class, 'livelihoodShow'])->name('livelihood.list.show'); 
-  // Livelihood List (DataTable)
-Route::get('livelihood/monthly/report', [LivelihoodPlanController::class, 'monthlyReport'])
-    ->name('livelihood.monthly.report');
+    Route::get('livelihood/plan', [LivelihoodPlanController::class, 'livelihoodPlan'])->name('livelihood.plan');
+    Route::post('livelihood/store', [LivelihoodPlanController::class, 'store'])->name('livelihood.store');
+    Route::get('livelihood/show', [LivelihoodPlanController::class, 'livelihoodShow'])->name('livelihood.list.show');
+    // Livelihood List (DataTable)
+    Route::get('livelihood/monthly/report', [LivelihoodPlanController::class, 'monthlyReport'])
+        ->name('livelihood.monthly.report');
     //livelihood weekly report
-Route::get(
-    'livelihood/weekly/report/{id}',
-    [LivelihoodPlanController::class, 'weeklyReportPdf']
-)->name('livelihood.weekly.report.pdf');
+    Route::get(
+        'livelihood/weekly/report/{id}',
+        [LivelihoodPlanController::class, 'weeklyReportPdf']
+    )->name('livelihood.weekly.report.pdf');
 
 
-  Route::get('/livelihood/month/{month}', 
-    [LivelihoodPlanController::class, 'monthlyDetails']
-)->name('livelihood.month.details');
+    Route::get(
+        '/livelihood/month/{month}',
+        [LivelihoodPlanController::class, 'monthlyDetails']
+    )->name('livelihood.month.details');
 
-Route::delete('/livelihood/month/{month}', 
-    [LivelihoodPlanController::class, 'deleteMonth']
-)->name('livelihood.month.delete');
+    Route::delete(
+        '/livelihood/month/{month}',
+        [LivelihoodPlanController::class, 'deleteMonth']
+    )->name('livelihood.month.delete');
 
-// Edit single livelihood record
-Route::get('livelihood/{id}/edit', 
-    [LivelihoodPlanController::class, 'edit']
-)->name('livelihood.edit');
+    // Edit single livelihood record
+    Route::get(
+        'livelihood/{id}/edit',
+        [LivelihoodPlanController::class, 'edit']
+    )->name('livelihood.edit');
 
-Route::put('livelihood/{id}', 
-    [LivelihoodPlanController::class, 'update']
-)->name('livelihood.update');
+    Route::put(
+        'livelihood/{id}',
+        [LivelihoodPlanController::class, 'update']
+    )->name('livelihood.update');
 
-Route::get(
-    '/livelihood/month/{month}/pdf',
-    [LivelihoodPlanController::class, 'monthlyLivelihoodPdf']
-)->name('livelihood.month.pdf');
-
-
-
-
+    Route::get(
+        '/livelihood/month/{month}/pdf',
+        [LivelihoodPlanController::class, 'monthlyLivelihoodPdf']
+    )->name('livelihood.month.pdf');
 });
 #--------------------------------- End livelihood plan Routes -------------------------------------------------------------------

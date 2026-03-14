@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('content')
-    <link rel="stylesheet" href="{{ asset('assets/persian-date/persian-datepicker.min.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('assets/persian-date/persian-datepicker.min.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('perisanDatePicker/css/persianDatepicker-default.css') }}" />
 
     <div class="card">

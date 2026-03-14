@@ -76,7 +76,7 @@
                                     minlength="6" name="password_confirmation" required>
                                 <div class="invalid-feedback password_confirmation_error"></div>
                             </div>
-                            <div class="form-group col-lg-6">
+                            {{-- <div class="form-group col-lg-6">
                                 @php $departments = \App\Models\Department::get(); @endphp
                                 <label for="department_id" class="col-form-label">{{ __('translate.department') }}</label>
                                 <select class="form-control form-control-sm" name="department_id" id="department_id"
@@ -89,7 +89,7 @@
                                             {{ $item->name_ps }}</option>
                                     @endforeach
                                 </select>
-                            </div>
+                            </div> --}}
                             <div class="form-group col-lg-6">
                                 @php $roles = \Spatie\Permission\Models\Role::get(); @endphp
                                 <label for="role" class="col-form-label">{{ __('translate.permession') }}</label>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Province;
 use App\Models\suspect;
 use App\Models\ReleaseSource;
+use App\Models\SuspectFile;
 use App\Models\ReleaseSuspect;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -49,23 +50,28 @@ class suspectController extends Controller
         $btn = "<div class='action-buttons'>";
 
         // View Button
-        $btn .= "<a href='" . route('details', $row->id) . "' class='view-btn btn btn-outline-primary btn-sm' data-title='مشاهده جزئیات' style='cursor: pointer; display:inline-flex; align-items:center; gap:6px;'>
+        if (auth()->user()->can('View Suspect Details')) {
+          $btn .= "<a href='" . route('details', $row->id) . "' class='view-btn btn btn-outline-primary btn-sm' data-title='مشاهده جزئیات' style='cursor: pointer; display:inline-flex; align-items:center; gap:6px;'>
                         <svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
                             <circle cx='12' cy='12' r='3'/>
                             <path d='M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z'/>
                         </svg>
                     </a>";
+        }
 
         // Edit Button
-        $btn .= "<a class='edit-btn btn btn-outline-info btn-sm' data-title='د معلوماتو تغیرول' style='cursor: pointer; display:inline-flex; align-items:center; gap:6px;' data-id='" . $row->id . "'>
+        if (auth()->user()->can('Edit Suspect')) {
+          $btn .= "<a class='edit-btn btn btn-outline-info btn-sm' data-title='د معلوماتو تغیرول' style='cursor: pointer; display:inline-flex; align-items:center; gap:6px;' data-id='" . $row->id . "'>
                         <svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
                             <path d='M12 20h9'/>
                             <path d='M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z'/>
                         </svg>
                     </a>";
+        }
 
         // Delete Button
-        $btn .= "<a class='destroy_btn btn btn-sm btn-outline-danger' data-title='د ریکارډ حذفول' style='cursor: pointer; display:inline-flex; align-items:center; gap:6px;' data-id='" . $row->id . "'>
+        if (auth()->user()->can('Delete Suspect')) {
+          $btn .= "<a class='destroy_btn btn btn-sm btn-outline-danger' data-title='د ریکارډ حذفول' style='cursor: pointer; display:inline-flex; align-items:center; gap:6px;' data-id='" . $row->id . "'>
                         <svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
                             <polyline points='3 6 5 6 21 6'/>
                             <path d='M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6'/>
@@ -74,14 +80,17 @@ class suspectController extends Controller
                             <path d='M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2'/>
                         </svg>
                     </a>";
+        }
 
         // Release Button
-        $btn .= "<a class='release-btn btn btn-sm btn-outline-success' data-title='مظنون خلاصول' data-id='{$row->id}' data-notes='" . e($row->notes) . "' style='cursor:pointer; display:inline-flex; align-items:center; gap:6px;'>
+        if (auth()->user()->can('Release Suspect')) {
+          $btn .= "<a class='release-btn btn btn-sm btn-outline-success' data-title='مظنون خلاصول' data-id='{$row->id}'  style='cursor:pointer; display:inline-flex; align-items:center; gap:6px;'>
             <svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
                 <rect x='3' y='11' width='18' height='11' rx='2'/>
                 <path d='M7 11V7a5 5 0 0 1 10-3'/>
             </svg>
-        </a>";
+         </a>";
+        }
 
 
         return $btn;
@@ -97,7 +106,7 @@ class suspectController extends Controller
   public function store(Request $request)
   {
     $validator = validator::make($request->all(), [
-      // 'gender' => 'required',
+      'gender' => 'required',
       'suspect_name' => 'required',
       'father_name' => 'required',
       'grandfather_name' => 'required',
@@ -107,11 +116,12 @@ class suspectController extends Controller
       'province' => 'required',
       'district' => 'required',
       'area' => 'required',
-      'file' => 'nullable|file',
+      'file' => 'nullable|array',
+      'file.*' => 'file|max:5120 ,mimes:jpg,jpeg,png,gif,webp,pdf,doc,docx,xls,xlsx|max:20480',
     ]);
 
     if ($validator->fails()) {
-      return json_encode($validator->errors()->toArray());
+      return response()->json($validator->errors(), 422);
     }
 
     $suspectStore = new suspect();
@@ -127,23 +137,33 @@ class suspectController extends Controller
     $suspectStore->district = $request->district;
     $suspectStore->area = $request->area;
     $suspectStore->has_items = $request->has_items ?? null;
-
-
-    if ($request->hasFile('file')) {
-      $file = $request->file('file');
-      $filename = time() . '_' . $file->getClientOriginalName();
-      $file->move(public_path('uploads/files'), $filename);
-      $suspectStore->file = 'uploads/files/' . $filename;
-    }
-
     $suspectStore->save();
 
-    return response()->json(['status' => true, 'message' => ' معلومات په بریالیتوب سره ثبت شول!']);
+    if ($request->hasFile('file')) {
+
+      foreach ($request->file('file') as $file) {
+
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $file->move(public_path('uploads/files'), $filename);
+
+        $suspectStore->files()->create([
+          'file_path' => 'uploads/files/' . $filename,
+          'file_type' => 'suspect',
+        ]);
+      }
+    }
+
+
+    return response()->json([
+      'status' => true,
+      'message' => 'معلومات په بریالیتوب سره ثبت شول!'
+    ]);
   }
 
   public function edit($id)
   {
-    $suspect = Suspect::join('provinces', 'suspects.province', '=', 'provinces.id')
+    $suspect = Suspect::with('files')
+      ->join('provinces', 'suspects.province', '=', 'provinces.id')
       ->select('suspects.*', 'provinces.id as province_id', 'provinces.name_da as province_name')
       ->where('suspects.id', $id)
       ->first();
@@ -165,20 +185,16 @@ class suspectController extends Controller
     $suspect = Suspect::findOrFail($id);
 
     $request->validate([
-      // 'gender' => 'required',
       'suspect_name' => 'required',
       'father_name' => 'required',
       'grandfather_name' => 'required',
-      // 'children_with_mother' => 'required',
       'crime_type' => 'required',
       'referring_authority' => 'required',
       'monitoring_date' => 'required|date',
       'province' => 'required',
       'district' => 'required',
       'area' => 'required',
-
     ]);
-
 
     $suspect->gender = $request->gender;
     $suspect->suspect_name = $request->suspect_name;
@@ -193,23 +209,39 @@ class suspectController extends Controller
     $suspect->area = $request->area;
     $suspect->has_items = $request->filled('has_items') ? (int) $request->has_items : null;
 
-
+    $suspect->save();
 
 
     if ($request->hasFile('file')) {
-      $file = $request->file('file');
-      $filename = time() . '_' . $file->getClientOriginalName();
-      $file->move(public_path('uploads/files'), $filename);
-      $suspect->file = 'uploads/files/' . $filename;
-    }
 
-    $suspect->save();
+      foreach ($suspect->files as $oldFile) {
+
+        if (file_exists(public_path($oldFile->file_path))) {
+          unlink(public_path($oldFile->file_path));
+        }
+
+        $oldFile->delete();
+      }
+
+      // 2️⃣ Upload new files
+      foreach ($request->file('file') as $file) {
+
+        $filename = time() . '_' . uniqid() . '_' . $file->getClientOriginalName();
+        $file->move(public_path('uploads/files'), $filename);
+
+        $suspect->files()->create([
+          'file_path' => 'uploads/files/' . $filename,
+          'file_type' => 'suspect'
+        ]);
+      }
+    }
 
     return response()->json([
       'status' => true,
       'message' => 'معلومات په بریالیتوب سره تغیر شول!'
     ]);
   }
+
 
   // Delete suspect
   public function destroy($id)
@@ -240,55 +272,46 @@ class suspectController extends Controller
 
 
 
-  public function notesPdf($id)
-  {
-    $suspect = Suspect::with(['provinceRelation', 'release'])
-      ->findOrFail($id);
 
-    // د نظارت نیټه جلالي/دري ته اړول
-    if (!empty($suspect->monitoring_date)) {
-      $suspect->monitoring_date =
-        CalendarUtils::strftime(
-          'Y-m-d',
-          strtotime($suspect->monitoring_date)
-        );
+  public function deleteFile($id)
+  {
+    $file = SuspectFile::findOrFail($id);
+
+    // Delete physical file
+    if (file_exists(public_path($file->file_path))) {
+      unlink(public_path($file->file_path));
     }
 
-    return PDF::loadView(
-      'suspects.notes_pdf',
-      compact('suspect'),
-      [],
-      [
-        'orientation' => 'P',   // ✅ عمودی (Portrait)
-        'defaultFont' => 'dejavusans',
-      ]
-    )->stream('Suspect_Notes_Report.pdf');
+    $file->delete();
+
+    return back()->with('success', 'فایل په بریالیتوب سره حذف شو.');
+  }
+  public function showFiles($id)
+  {
+    $suspect = Suspect::with('files')->findOrFail($id);
+
+    return view('suspects.files', compact('suspect'));
   }
 
 
-  //  PDF of release notes
-  public function releaseNotesPdf($id)
+  public function releaseFiles($id)
   {
-    $suspect = Suspect::with(['provinceRelation', 'release'])
-      ->findOrFail($id);
+    $suspect = Suspect::with('releaseFiles')->findOrFail($id);
 
-    // د نظارت نیټه جلالي/دري ته اړول
-    if (!empty($suspect->monitoring_date)) {
-      $suspect->monitoring_date =
-        CalendarUtils::strftime(
-          'Y-m-d',
-          strtotime($suspect->monitoring_date)
-        );
+    return view('suspects.release_files', compact('suspect'));
+  }
+
+  public function deleteReleaseFile($id)
+  {
+
+    $file = SuspectFile::findOrFail($id);
+
+    if (file_exists(public_path($file->file_path))) {
+      unlink(public_path($file->file_path));
     }
 
-    return PDF::loadView(
-      'suspects.release_notes_pdf',
-      compact('suspect'),
-      [],
-      [
-        'orientation' => 'P',   // ✅ عمودی (Portrait)
-        'defaultFont' => 'dejavusans',
-      ]
-    )->stream('Suspect_Release_Notes_Report.pdf');
+    $file->delete();
+
+    return back()->with('success', 'فایل حذف شو');
   }
 }

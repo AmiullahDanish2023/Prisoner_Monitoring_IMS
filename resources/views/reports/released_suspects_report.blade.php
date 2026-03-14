@@ -1,7 +1,6 @@
 @extends('layouts.master')
 
 @section('content')
-    <link rel="stylesheet" href="{{ asset('assets/persian-date/persian-datepicker.min.css') }}">
     <link rel="stylesheet" href="{{ asset('perisanDatePicker/css/persianDatepicker-default.css') }}" />
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
@@ -107,6 +106,16 @@
                     </select>
                 </div>
 
+                <div class="col-md-3">
+                    <label class="form-label fw-bold"> د مظنونینو فایلونه </label>
+                    <select name="file_filter" class="form-select form-select-sm">
+                        <option value=""> </option>
+                        <option value="suspect">د مظنون د نظارت فایلونه </option>
+                        <option value="release">د رهایی یا انتقال فایلونه </option>
+                        <option value="all">ټول فایلونه</option>
+                    </select>
+                </div>
+
                 <!-- Submit Button -->
                 <div class="col-12 text-end mt-3">
                     <button type="submit" class="btn btn-success btn-sm px-4">
@@ -166,6 +175,7 @@
 
         // Dropdown logic
         document.addEventListener("DOMContentLoaded", function() {
+
             const mainOptions = document.querySelectorAll(".report-main-opt");
             const dbOptions = document.querySelectorAll(".report-db-opt");
             const dbWrapper = document.getElementById("report_db_wrapper");
@@ -173,31 +183,46 @@
             const dbName = document.getElementById("report_db_name");
             const label = document.getElementById("reportReleaseDropdownLabel");
             const btn = document.getElementById("reportReleaseDropdownBtn");
-            const dropdownInstance = new bootstrap.Dropdown(btn);
+            const dropdown = new bootstrap.Dropdown(btn);
 
+            // MAIN OPTION
             mainOptions.forEach(opt => {
                 opt.addEventListener("change", function() {
-                    dbOptions.forEach(x => x.checked = false);
-                    dbName.value = "";
+
                     mainKey.value = this.value;
-                    label.textContent = this.dataset.title;
-                    dbWrapper.style.display = (this.value === "detention") ? "none" : "block";
-                    dropdownInstance.hide();
+                    dbName.value = "";
+
+                    dbOptions.forEach(x => x.checked = false);
+
+                    // detention → close immediately
+                    if (this.value === "detention") {
+
+                        dbWrapper.style.display = "none";
+                        label.textContent = this.dataset.title;
+                        dropdown.hide();
+                        return;
+                    }
+
+                    // multi or release → wait for source
+                    dbWrapper.style.display = "block";
+                    label.textContent = this.dataset.title + " - مرجع وټاکئ";
                 });
             });
 
+            // DB SOURCE
             dbOptions.forEach(opt => {
                 opt.addEventListener("change", function() {
-                    mainOptions.forEach(x => x.checked = false);
-                    mainKey.value = "";
-                    dbOptions.forEach(x => {
-                        if (x !== this) x.checked = false;
-                    });
+
                     dbName.value = this.value;
-                    label.textContent = this.value;
-                    dropdownInstance.hide();
+
+                    label.textContent =
+                        document.querySelector(".report-main-opt:checked").dataset.title +
+                        " - " + this.value;
+
+                    dropdown.hide();
                 });
             });
+
         });
     </script>
 @endsection

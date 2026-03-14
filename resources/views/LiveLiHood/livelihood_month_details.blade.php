@@ -42,10 +42,12 @@
                         <td colspan="3" class="text-end" style="border: 1px solid #dee2e6;">ټول مبلغ:</td>
                         <td style="border: 1px solid #dee2e6;">{{ number_format($total) }}</td>
                         <td style="border: 1px solid #dee2e6;">
-                            <a href="{{ route('livelihood.weekly.report.pdf', $livelihoods->first()->id) }}"
-                                class="btn btn-sm btn-success">
-                                هفته وار راپور پرینټ
-                            </a>
+                            @can('Make Weekly Livelihood Report')
+                                <a href="{{ route('livelihood.weekly.report.pdf', $livelihoods->first()->id) }}"
+                                    class="btn btn-sm btn-success">
+                                    هفته وار راپور پرینټ
+                                </a>
+                            @endcan
 
                         </td>
                         </td>

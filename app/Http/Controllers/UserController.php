@@ -63,7 +63,7 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed|min:6',
-            'department_id' => 'required',
+            // 'department_id' => 'required',
         ], [
             'name.required' => 'نام ضروری میباشد',
             'email.required' => 'ایمیل ضروری میباشد',
@@ -71,7 +71,7 @@ class UserController extends Controller
             'password.required' => 'کود ضروری میباشد',
             'password.confirmed' => 'کود هم خوانی ندارد',
             'password.min' => 'کود باید حد اقل ۶ خانه باشد',
-            'department_id.required' => 'دیپارتمنت ضروری دی.',
+            // 'department_id.required' => 'دیپارتمنت ضروری دی.',
         ]);
 
         if ($validator->fails()) {
@@ -86,7 +86,7 @@ class UserController extends Controller
             $user->name = $request->name;
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
-            $user->department_id = $request->department_id;
+            // $user->department_id = $request->department_id;
 
             // if ($request->file('photo')) {
             //     $photo = Storage::disk('users')->put('/', new File($request->file('photo')));

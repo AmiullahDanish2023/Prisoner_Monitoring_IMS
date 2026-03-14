@@ -9,6 +9,7 @@ use App\Models\ReleaseSuspect;
 use Illuminate\Http\Request;
 use Morilog\Jalali\Jalalian;
 use Morilog\Jalali\CalendarUtils;
+use App\Models\SuspectFile;
 
 class ReleaseController extends Controller
 {
@@ -56,7 +57,8 @@ class ReleaseController extends Controller
                 $btn = "<div class='action-buttons'>";
 
                 // View Button
-                $btn .= "<a href='" . route('release_details', $row->id) . "' 
+                if (auth()->user()->can('View Release or Transfer Suspect Details')) {
+                    $btn .= "<a href='" . route('release_details', $row->id) . "' 
                         class='view-btn btn btn-outline-primary btn-sm' data-title='مشاهده جزئیات'>
                         <svg width='16' height='16' viewBox='0 0 24 24' fill='none' 
                             stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
@@ -64,9 +66,11 @@ class ReleaseController extends Controller
                             <path d='M2 12s4-8 10-8 10 8 10 8-4 8-10 8-10-8-10-8z'/>
                         </svg>
                     </a>";
+                }
 
                 // Delete Button
-                $btn .= "<a class='release_destroy_btn btn btn-sm btn-outline-danger' 
+                if (auth()->user()->can('Delete Release or Transfer Suspect')) {
+                    $btn .= "<a class='release_destroy_btn btn btn-sm btn-outline-danger' 
                         data-id='{$row->id}' data-title='حذف ریکارډ'>
                         <svg width='16' height='16' viewBox='0 0 24 24' fill='none'
                             stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
@@ -77,6 +81,7 @@ class ReleaseController extends Controller
                             <path d='M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2'/>
                         </svg>
                     </a>";
+                }
 
                 return $btn;
             })
@@ -90,7 +95,7 @@ class ReleaseController extends Controller
     public function details($id)
     {
         $release = ReleaseSuspect::all();
-        $suspect = Suspect::with(['provinceRelation', 'release'])
+        $suspect = Suspect::with(['provinceRelation', 'release','releaseFiles'])
             ->findOrFail($id);
 
         if (!empty($suspect->monitoring_date)) {
@@ -99,7 +104,7 @@ class ReleaseController extends Controller
         if (!empty($suspect->release->release_date)) {
             $suspect->release->release_date = $this->to_dari_date($suspect->release->release_date);
         }
-      
+
 
         return view('suspects.releaseDetails', compact('suspect'));
     }
@@ -115,13 +120,12 @@ class ReleaseController extends Controller
 
     public function release(Request $request)
     {
-        
+
         $request->validate([
             'suspect_id'   => 'required|exists:suspects,id',
             'issued_or_transferred_number'  => 'required',
-            'main_option_key' => 'required',     // required
+            'main_option_key' => 'required',
             'release_date' => 'required',
-
         ]);
 
         $release = new ReleaseSuspect();
@@ -131,24 +135,31 @@ class ReleaseController extends Controller
         $release->main_option_key = $request->main_option_key;
         $release->db_source_name = $request->db_source_name;
         $release->release_date = $this->to_esawi_date($request->release_date);
-       
 
+        $release->save();
 
-        // status update in suspects table
+        // update suspect status
         $suspect = Suspect::find($request->suspect_id);
         $suspect->status = 'released';
         $suspect->save();
 
 
         if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('uploads/releases'), $filename);
-            $release->file = 'uploads/releases/' . $filename;
-        }
-            
 
-        $release->save();
+            foreach ($request->file('file') as $file) {
+
+                $filename = time() . '_' . uniqid() . '_' . $file->getClientOriginalName();
+
+                $file->move(public_path('uploads/releases'), $filename);
+
+                SuspectFile::create([
+                    'suspect_id' => $request->suspect_id,
+                    'file_path' => 'uploads/releases/' . $filename,
+                    'file_type' => 'release',
+                ]);
+            }
+        }
+       
 
         return response()->json([
             'status'  => true,

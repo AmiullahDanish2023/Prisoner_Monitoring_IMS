@@ -25,7 +25,7 @@ class CreateReleaseSuspectsTable extends Migration
             $table->string('db_source_name')->nullable();
             $table->string('issued_or_transferred_number');
             $table->string('release_date');
-            $table->string('file')->nullable();
+           
             $table->boolean('has_items')->nullable();
 
             $table->enum('items_status', ['confiscated', 'not_confiscated'])->nullable();

@@ -47,8 +47,7 @@ direction="rtl" dir="rtl" style="direction: rtl;" @endif>
     <link rel="stylesheet" href="{{ asset('assets/icons.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/font-awesome.css') }}">
     <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet">
-
-    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" /> --}}
+    <link href="{{ asset('assets/fontawesome/css/all.min.css') }}" rel="stylesheet" type="text/css" />
 
     @if (Session::get('locale') == 'pa' || Session::get('locale') == 'fa')
         <style>
