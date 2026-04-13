@@ -64,6 +64,10 @@ direction="rtl" dir="rtl" style="direction: rtl;" @endif>
     @endif
     @yield('css')
     <style>
+        .select2 {
+            width: 100% !important;
+        }
+
         .select2-container {
             width: 100% !important;
             font-size: 14px;

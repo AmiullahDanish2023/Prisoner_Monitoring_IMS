@@ -165,7 +165,7 @@
              ]
          });
      </script>
-    
+
      <script>
          $(document).on('click', '.delete-month', function() {
              var suspectId = $(this).data('id');
@@ -182,36 +182,46 @@
                  cancelButtonText: 'نه!'
              }).then((result) => {
                  if (result.isConfirmed) {
-                     $.ajax({
-                         url: '/livelihood/month/' + month,
-                         type: 'DELETE',
-                         data: {
-                             _token: '{{ csrf_token() }}'
-                         },
-                         success: function(response) {
-                             if (response.status === true) {
-                                 Swal.fire(
-                                     'حذف شو!',
-                                     'معلومات په بریالیتوب سره حذف شول.',
-                                     'success'
-                                 );
-                                 window.location.reload();
+                     $(document).on('click', '.delete-month', function(event) {
 
-                             } else {
-                                 Swal.fire(
-                                     'خطا!',
-                                     'د معلوماتو د حذف کولو پر مهال ستونزه رامنځته شوه.',
-                                     'error'
-                                 );
+                         event.preventDefault();
+
+                         var month = $(this).data('month'); // ✅ صحیح
+
+                         Swal.fire({
+                             title: 'ایا تاسې ډاډه یاست؟',
+                             text: 'ایا د دې میاشت ټول راپورونه حذف شي؟',
+                             icon: 'warning',
+                             showCancelButton: true,
+                             confirmButtonText: 'هو',
+                             cancelButtonText: 'نه!'
+                         }).then((result) => {
+                             if (result.isConfirmed) {
+
+                                 $.ajax({
+                                     url: '/livelihood/month/' +
+                                     month, // ✅ اوس month شته
+                                     type: 'DELETE',
+                                     data: {
+                                         _token: '{{ csrf_token() }}'
+                                     },
+                                     success: function(response) {
+
+                                         if (response.status === true) {
+                                             Swal.fire('حذف شو!',
+                                                 'معلومات حذف شول', 'success'
+                                                 );
+                                             location.reload();
+                                         } else {
+                                             Swal.fire('خطا!', 'حذف ونه شو',
+                                                 'error');
+                                         }
+
+                                     }
+                                 });
+
                              }
-                         },
-                         error: function() {
-                             Swal.fire(
-                                 'خطا!',
-                                 'د معلوماتو د حذف کولو پر مهال ستونزه رامنځته شوه.',
-                                 'error'
-                             );
-                         }
+                         });
                      });
                  }
              });

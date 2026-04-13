@@ -28,7 +28,13 @@ class ReportController extends Controller
     public function generalReport()
     {
         $province = Province::all();
-        return view('reports.general_report', compact('province'));
+        $referrer = Suspect::whereNotNull('referring_authority')
+            ->where('status', 'prisoner') 
+            ->distinct()
+            ->orderBy('referring_authority')
+            ->pluck('referring_authority');
+
+        return view('reports.general_report', compact('province', 'referrer'));
     }
 
 
@@ -45,6 +51,7 @@ class ReportController extends Controller
         $suspects = Suspect::leftJoin('release_suspects', 'suspects.id', '=', 'release_suspects.suspect_id')
             ->join('provinces', 'suspects.province', '=', 'provinces.id')
             ->whereNull('release_suspects.suspect_id')
+            ->where('suspects.status', 'prisoner')
             ->select(
                 'suspects.*',
                 'provinces.name_da as province_name'
@@ -58,7 +65,11 @@ class ReportController extends Controller
             ->when($request->gender, function ($query) use ($request) {
                 $query->where('suspects.gender', $request->gender);
             })
+            ->when($request->referrer, function ($query) use ($request) {
+                $query->where('suspects.referring_authority', $request->referrer);
+            })
             ->get();
+        $selectedReferrer = $request->referrer;
 
         $province = null;
         if ($request->province_id) {
@@ -67,7 +78,9 @@ class ReportController extends Controller
 
         $pdf = PDF::loadView(
             'reports.general_report_pdf',
-            compact('suspects', 'province', 'start', 'end')
+            compact('suspects', 'province', 'start', 'end', 'selectedReferrer'),
+            [],
+            ['orientation' => 'L']
         );
 
         return $pdf->stream('General_Suspects_Report.pdf');
@@ -92,33 +105,39 @@ class ReportController extends Controller
         // Suspects registered before today
         $oldMaleSuspects = (clone $baseQuery)
             ->whereDate('created_at', '<', $today)
+            ->where('status', 'prisoner')
             ->where('gender', 'نارینه')
             ->count();
 
 
         $newMaleSuspects = (clone $baseQuery)
             ->whereDate('created_at', '=', $today)
+            ->where('status', 'prisoner')
             ->where('gender', 'نارینه')
             ->count();
 
         $oldFemaleSuspects = (clone $baseQuery)
             ->whereDate('created_at', '<', $today)
+            ->where('status', 'prisoner')
             ->where('gender', 'ښځینه')
             ->count();
 
 
         $newFemaleSuspects = (clone $baseQuery)
             ->whereDate('created_at', '=', $today)
+            ->where('status', 'prisoner')
             ->where('gender', 'ښځینه')
             ->count();
 
         $oldChildrenSuspects = (clone $baseQuery)
             ->whereDate('created_at', '<', $today)
+            ->where('status', 'prisoner')
             ->sum('children_with_mother');
 
 
         $newChildrenSuspects = (clone $baseQuery)
             ->whereDate('created_at', '=', $today)
+            ->where('status', 'prisoner')
             ->sum('children_with_mother');
 
 
@@ -297,7 +316,6 @@ class ReportController extends Controller
             'releaseSources',
             'crimeTypes'
         ));
-           
     }
 
 
@@ -553,38 +571,5 @@ class ReportController extends Controller
                 'reportYear'
             )
         )->stream('Monthly_Suspects_Report.pdf');
-    }
-
-
-
-    public function releasedSuspectPdfخ(Request $request)
-    {
-
-        $query = SuspectFile::with('suspect.provinceRelation', 'suspect.release');
-
-        // FILE FILTER
-        if ($request->filled('file_filter')) {
-
-            if ($request->file_filter == 'suspect') {
-                $query->where('file_type', 'suspect');
-            }
-
-            if ($request->file_filter == 'release') {
-                $query->where('file_type', 'release');
-            }
-
-            if ($request->file_filter == 'all') {
-                $query->whereIn('file_type', ['suspect', 'release']);
-            }
-        }
-
-        $files = $query->latest()->get();
-
-        return PDF::loadView(
-            'reports.files_report_pdf',
-            compact('files'),
-            [],
-            ['orientation' => 'L']
-        )->stream('Files_Report.pdf');
     }
 }

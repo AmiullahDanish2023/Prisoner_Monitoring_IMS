@@ -99,7 +99,7 @@
 
     @php
         $shamsiDate = \Morilog\Jalali\Jalalian::now()->format('Y/m/d');
-        $qamariDate = \Alkoumi\LaravelHijriDate\Hijri::Date('Y/m/d');
+        $qamariDate = \Alkoumi\LaravelHijriDate\Hijri::Date('Y/m/d', now()->addDays(1));
     @endphp
 
     <table style="width:100%; border-collapse:collapse; margin-bottom:6px;" dir="rtl">
@@ -127,10 +127,10 @@
                     که سجل توقیفی ایشان از مراجع مختلف این اداره مواصلت کرده است
                     انتقال آن به توقیف ولایت کابل
 
-                   
+
 
                     مورخ: {{ $shamsiDate }} هـ ش
-                     &nbsp;  &nbsp;
+                    &nbsp; &nbsp;
                     مطابق: {{ $qamariDate }} هـ ق
 
                     {{-- ================== NORMAL MODE ================== --}}
@@ -145,14 +145,14 @@
                         مظنونین عمومي ذکور و اناث
                     @endif
 
-                  
+
 
                     آمریت نظارت خانه قومندانی امنیه ولایت کابل
 
-                    
+
 
                     مورخ: {{ $shamsiDate }} هـ ش
-                   
+
                     مطابق: {{ $qamariDate }} هـ ق
 
                 @endif
@@ -257,27 +257,30 @@
         </tbody>
     </table>
 
-    <table style="width:100%; margin-top:6px;">
-        <tr>
-            <td style="font-weight:bold; font-size:16px;">قرار شرح فوق جدول هذا ترتیب وصحت است</td>
-        </tr>
-        <tr>
-            <td style="text-align:center; font-size:14px; padding-top:6px;">
+    <table style="width:100%; border-collapse:collapse; margin-top:12px;" dir="rtl">
 
+        <tr style="font-weight:bold;">
+            <td colspan="2" style="text-align:right; font-size:115%; line-height:1.8;">
+                قرار شرح فوق جدول تعداد ({{ $suspects->count() }}) نفر جدول هذا ترتیب وصحت است
+            </td>
+        </tr>
+
+        <tr>
+            <!-- Right Side -->
+            <td style="text-align:right; font-size:14px; width:50%;">
                 <br>
+                ترتیب کننده:
+                <br> <br>
+                مسؤل اداری نظارت خانه
+            </td>
+
+            <!-- Left Side -->
+            <td style="text-align:center; font-size:14px; width:50%;">
+                <br><br>
                 آمر نظارت خانه
             </td>
         </tr>
-        <tr>
-            <td style="text-align:right; font-size:14px; padding-top:6px;">
 
-                <br>
-                ترتیب کننده:
-                <br><br>
-
-                مسؤل اداری نظارت خانه
-            </td>
-        </tr>
     </table>
 
 

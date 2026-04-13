@@ -8,7 +8,6 @@
        
         <h4 class="card-title mb-0 fw-bold">نوې مرجع اضافه کړئ</h4>
         
-
         <a href="{{ route('release-sources.index') }}" class="btn btn-primary btn-sm">
             لیست ته بیرته لاړ شئ
         </a>

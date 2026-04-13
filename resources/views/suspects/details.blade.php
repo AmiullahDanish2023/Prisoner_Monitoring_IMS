@@ -11,7 +11,7 @@
         <div class="card shadow-sm">
             <div class="card-header text-white d-flex justify-content-center align-items-center"
                 style="background-color: #cfe3f1; height: 60px;">
-                <h4 class="mb-0 font-weight-bold">جــزئــیات مظــــنون</h4>
+                <h4 class="mb-0 font-weight-bold">     د مظنون جــزئــیات </h4>
             </div>
 
             <div class="card-body">

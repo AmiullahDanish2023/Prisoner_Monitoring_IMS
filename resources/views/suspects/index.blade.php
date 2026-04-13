@@ -1,17 +1,64 @@
 @extends('layouts.master')
 @section('content')
     <link rel="stylesheet" href="{{ asset('perisanDatePicker/css/persianDatepicker-default.css') }}" />
+
     <div class="card shadow-sm">
         <div class="card-header d-flex justify-content-between align-items-center">
-            <h4 class="card-title mb-0">لست مظنونین / زندانیان</h4>
+            <h4 class="card-title mb-0">{{ __('translate.suspect_list') }}</h4>
             @can('Save New Suspect')
                 <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#suspectModal">
-                    ثبت مظنون جدید
+                    {{ __('translate.save_new_suspect') }}
                 </button>
             @endcan
             {{-- <link rel="stylesheet" href="{{ asset('assets/custom.css') }}"> --}}
 
             <style>
+                .select2-results__options {
+                    max-height: 200px !important;
+
+                    overflow-y: auto !important;
+
+                }
+
+                .select2-dropdown {
+                    border: 1px solid #ced4da !important;
+                    border-radius: 6px !important;
+                }
+
+                .select2-dropdown {
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+                }
+
+                .select2-results__options::-webkit-scrollbar {
+                    width: 6px;
+                }
+
+                .select2-results__options::-webkit-scrollbar-thumb {
+                    background: #ccc;
+                    border-radius: 5px;
+                }
+
+                .select2-container {
+                    width: 100% !important;
+                }
+
+                .select2-selection--single {
+                    height: 38px !important;
+                    display: flex !important;
+                    align-items: center !important;
+                }
+
+                .select2-selection__rendered {
+                    width: 100% !important;
+                    overflow: hidden !important;
+                    text-overflow: ellipsis !important;
+                }
+
+                .select2-container--default .select2-selection--single {
+                    border: 1px solid #ced4da;
+                    border-radius: 6px;
+                }
+
                 /* ---------- Action Buttons Container ---------- */
                 .action-buttons {
                     display: flex;
@@ -140,17 +187,17 @@
                     id="suspects_table">
                     <thead style="background-color:#c1effa;">
                         <tr class="bg-primary-o-10">
-                            <th>شماره</th>
-                            <th> مظنون نظارت ورځې </th>
-                            <th>نوم</th>
-                            <th>د پلار نوم</th>
-                            <th>جرم</th>
-                            <th>رالیږونکې مرجع</th>
-                            <th>ولایت</th>
-                            <th>ناحیه</th>
-                            <th>منطقه</th>
-                            <th>د نظارت نیټه</th>
-                            <th>عملیات</th>
+                            <th>{{ __('translate.number') }}</th>
+                            <th>{{ __('translate.suspect days') }}</th>
+                            <th>{{ __('translate.suspect name') }}</th>
+                            <th>{{ __('translate.father name') }}</th>
+                            <th>{{ __('translate.crime') }}</th>
+                            <th>{{ __('translate.source') }}</th>
+                            <th>{{ __('translate.province') }}</th>
+                            <th>{{ __('translate.district') }}</th>
+                            <th>{{ __('translate.area') }}</th>
+                            <th>{{ __('translate.monitoring date') }}</th>
+                            <th>{{ __('translate.action') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -160,285 +207,366 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="suspectModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered mw-50">
+    <div class="modal fade" id="suspectModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
-                <div class="modal-header d-flex justify-content-center" style="background-color:#c8e6f3; color:white;">
-                    <h5 class="modal-title text-center w-100">ثبت مظنون جدید</h5>
 
-
+                {{-- Header --}}
+                <div class="modal-header justify-content-center" style="background-color:#c8e6f3;">
+                    <h5 class="modal-title text-center w-100">
+                        {{ __('translate.create_suspect') }}
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
-                <form id="store_form" method="POST" action="{{ route('suspects.store') }}" onsubmit="return false;"
-                    enctype="multipart/form-data">
+                {{-- Form --}}
+                <form id="store_form" method="POST" action="{{ route('suspects.store') }}" enctype="multipart/form-data"
+                    autocomplete="off">
                     @csrf
-                    <div class="modal-body row g-3">
 
-                        <div class="col-md-4">
-                            <label class="form-label">جنسیت</label>
-                            <select id="gender" name="gender" class="form-control form-control-sm">
-                                <option value="" selected disabled>جنسیت انتخاب کړئ</option>
-                                <option value="نارینه">نارینه</option>
-                                <option value="ښځینه">ښځینه</option>
-                            </select>
-                        </div>
+                    <div class="modal-body">
+                        <div class="row g-3">
 
-                        <div class="col-md-4">
-                            <label class="form-label">نوم مظنون</label>
-                            <input type="text" name="suspect_name" class="form-control form-control-sm"
-                                placeholder=" مظنون نوم">
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="form-label">د پلار نوم</label>
-                            <input type="text" name="father_name" class="form-control form-control-sm"
-                                placeholder="پلار نوم">
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="form-label">د نيکه نوم</label>
-                            <input type="text" name="grandfather_name" class="form-control form-control-sm"
-                                placeholder="د نيکه نوم">
-                        </div>
-
-                        <div class="col-md-4" id="childrenWithMotherDiv">
-                            <label class="form-label">د مور سره ماشومان</label>
-                            <input type="text" name="children_with_mother" class="form-control form-control-sm"
-                                placeholder="ماشومان">
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="form-label">جرم ډول</label>
-                            <input type="text" name="crime_type" class="form-control form-control-sm"
-                                placeholder="جرم ډول">
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="form-label"> رالیږونکې مرجع</label>
-                            <input type="text" name="referring_authority" class="form-control form-control-sm"
-                                placeholder="رالیږونکې مرجع">
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="form-label">د څارنې نیټه</label>
-                            <input type="text" name="monitoring_date" class="form-control form-control-sm farsi-date"
-                                placeholder="د نظارت نیټه">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">ولایت</label>
-                            <select name="province" class="form-select">
-                                <option value="">انتخاب ولایت</option>
-                                @foreach ($province as $pro)
-                                    <option value="{{ $pro->id }}">{{ $pro->name_da }}</option>
-                                @endforeach
-                            </select>
-
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="form-label">ناحیه</label>
-                            <input type="text" name="district" class="form-control form-control-sm" placeholder="ناحیه">
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="form-label">منطقه</label>
-                            <input type="text" name="area" class="form-control form-control-sm" placeholder="منطقه">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">د مظنون سره وسایل شته؟</label>
-
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="has_items" value="1">
-                                <label class="form-check-label">هو</label>
+                            {{-- Gender --}}
+                            <div class="col-md-4">
+                                <label class="form-label">{{ __('translate.gender') }}</label>
+                                <select name="gender" id="gender" class="form-select form-select-sm">
+                                    <option value="" disabled selected>
+                                        {{ __('translate.select_gender') }}
+                                    </option>
+                                    <option value="نارینه">{{ __('translate.male') }}</option>
+                                    <option value="ښځینه">{{ __('translate.female') }}</option>
+                                </select>
                             </div>
 
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="has_items" value="0">
-                                <label class="form-check-label">نه</label>
+                            {{-- Name --}}
+                            <div class="col-md-4">
+                                <label class="form-label">{{ __('translate.name') }}</label>
+                                <input type="text" name="suspect_name" class="form-control form-control-sm"
+                                    placeholder="{{ __('translate.name') }}">
                             </div>
+
+                            {{-- Father --}}
+                            <div class="col-md-4">
+                                <label class="form-label">{{ __('translate.father_name') }}</label>
+                                <input type="text" name="father_name" class="form-control form-control-sm"
+                                    placeholder="{{ __('translate.father_name') }}">
+                            </div>
+
+                            {{-- Grandfather --}}
+                            <div class="col-md-4">
+                                <label class="form-label">{{ __('translate.grandfather_name') }}</label>
+                                <input type="text" name="grandfather_name" class="form-control form-control-sm"
+                                    placeholder="{{ __('translate.grandfather_name') }}">
+                            </div>
+
+                            {{-- Children --}}
+                            <div class="col-md-4" id="childrenWithMotherDiv">
+                                <label class="form-label">{{ __('translate.children_with_mother') }}</label>
+                                <input type="text" name="children_with_mother" class="form-control form-control-sm"
+                                    placeholder="{{ __('translate.children_with_mother') }}">
+                            </div>
+
+                            {{-- Crime --}}
+                            <div class="col-md-4">
+                                <label class="form-label">{{ __('translate.crime_type') }}</label>
+                                <input type="text" name="crime_type" class="form-control form-control-sm"
+                                    placeholder="{{ __('translate.crime_type') }}">
+                            </div>
+
+                            {{-- Authority --}}
+                            <div class="col-md-4">
+                                <label class="form-label">{{ __('translate.referring_authority') }}</label>
+                                <select name="referring_authority" id="referring_authority"
+                                    class="form-select form-select-sm" style="width:100%">
+                                </select>
+                            </div>
+
+                            {{-- Date --}}
+                            <div class="col-md-4">
+                                <label class="form-label">{{ __('translate.monitoring_date') }}</label>
+                                <input type="text" name="monitoring_date" class="form-control form-control-sm farsi-date"
+                                    placeholder="{{ __('translate.monitoring_date') }}">
+                            </div>
+
+                            {{-- Province --}}
+                            <div class="col-md-4">
+                                <label class="form-label">{{ __('translate.province') }}</label>
+                                <select name="province" id="province" class="form-select form-select-sm"
+                                    style="width:100%">
+                                    <option value=""></option>
+                                    @foreach ($province as $pro)
+                                        <option value="{{ $pro->id }}">
+                                            {{ $pro->name_da }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            {{-- District --}}
+                            <div class="col-md-4">
+                                <label class="form-label">{{ __('translate.district') }}</label>
+                                <input type="text" name="district" class="form-control form-control-sm"
+                                    placeholder="{{ __('translate.district') }}">
+                            </div>
+
+                            {{-- Area --}}
+                            <div class="col-md-4">
+                                <label class="form-label">{{ __('translate.area') }}</label>
+                                <input type="text" name="area" class="form-control form-control-sm"
+                                    placeholder="{{ __('translate.area') }}">
+                            </div>
+
+                            {{-- Has Items --}}
+                            <div class="col-md-4">
+                                <label class="form-label d-block">
+                                    {{ __('translate.has_items') }}
+                                </label>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="has_items" value="1">
+                                    <label class="form-check-label">
+                                        {{ __('translate.yes') }}
+                                    </label>
+                                </div>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="has_items" value="0">
+                                    <label class="form-check-label">
+                                        {{ __('translate.no') }}
+                                    </label>
+                                </div>
+                            </div>
+
+                            {{-- File Upload --}}
+                            <div class="col-md-12">
+                                <label class="form-label">{{ __('translate.file') }}</label>
+                                <input type="file" name="file[]" class="form-control form-control-sm" multiple
+                                    accept=".jpg,.jpeg,.png,.gif,.webp,.pdf,.doc,.docx,.xls,.xlsx">
+                                <small id="edit_existing_file" class="text-muted"></small>
+                            </div>
+
                         </div>
-
-
-                        <div class="col-md-12">
-                            <label class="form-label">فایل</label>
-                            <input type="file" name="file[]" class="form-control form-control-sm" multiple
-                                accept=".jpg,.jpeg,.png,.gif,.webp,.pdf,.doc,.docx,.xls,.xlsx">
-                            <small id="edit_existing_file" class="text-muted"></small>
-                        </div>
-
                     </div>
 
-                    <div class="modal-footer d-flex justify-content-between mb-0">
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">بندول</button>
-                        <button class="btn btn-primary btn-sm">ثبتول</button>
+                    {{-- Footer --}}
+                    <div class="modal-footer justify-content-between">
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            {{ __('translate.save') }}
+                        </button>
 
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">
+                            {{ __('translate.close') }}
+                        </button>
                     </div>
+
                 </form>
-
             </div>
         </div>
     </div>
     {{-- Edit Suspect Modal --}}
+
     <div class="modal fade" id="editSuspectModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered mw-50">
             <div class="modal-content">
-                <div class="modal-header d-flex justify-content-center" style="background-color:#dff5fa; color:white;">
-                    <h5 class="modal-title text-center w-100">${row} معلومات تغیرول</h5>
+
+                {{-- Header --}}
+                <div class="modal-header d-flex justify-content-center bg-light">
+                    <h5 class="modal-title text-center w-100">
+                        {{ __('translate.edit_suspect') }}
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
 
-                <form id="edit_form" method="POST" enctype="multipart/form-data">
+                <form id="edit_form" method="POST" enctype="multipart/form-data" autocomplete="off">
                     @csrf
                     <input type="hidden" name="suspect_id" id="edit_suspect_id">
 
                     <div class="modal-body row g-3">
+
+                        {{-- Gender --}}
                         <div class="col-md-4">
-                            <label class="form-label">جنسیت</label>
+                            <label class="form-label">{{ __('translate.gender') }}</label>
                             <select id="edit_gender" name="gender" class="form-control form-control-sm">
-                                <option value="" selected disabled>جنسیت انتخاب کړئ</option>
-                                <option value="نارینه">نارینه</option>
-                                <option value="ښځینه">ښځینه</option>
+                                <option value="" selected disabled>
+                                    {{ __('translate.select_gender') }}
+                                </option>
+                                <option value="نارینه">{{ __('translate.male') }}</option>
+                                <option value="ښځینه">{{ __('translate.female') }}</option>
                             </select>
                         </div>
 
+                        {{-- Name --}}
                         <div class="col-md-4">
-                            <label class="form-label">نوم مظنون</label>
+                            <label class="form-label">{{ __('translate.name') }}</label>
                             <input type="text" name="suspect_name" id="edit_suspect_name"
                                 class="form-control form-control-sm">
                         </div>
 
+                        {{-- Father Name --}}
                         <div class="col-md-4">
-                            <label class="form-label">د پلار نوم</label>
+                            <label class="form-label">{{ __('translate.father_name') }}</label>
                             <input type="text" name="father_name" id="edit_father_name"
                                 class="form-control form-control-sm">
                         </div>
 
+                        {{-- Grandfather --}}
                         <div class="col-md-4">
-                            <label class="form-label">د نيکه نوم</label>
+                            <label class="form-label">{{ __('translate.grandfather_name') }}</label>
                             <input type="text" name="grandfather_name" id="edit_grandfather_name"
                                 class="form-control form-control-sm">
                         </div>
 
+                        {{-- Children with Mother --}}
                         <div class="col-md-4" id="edit_childrenWithMotherDiv">
-                            <label class="form-label">د مور سره ماشومان</label>
+                            <label class="form-label">{{ __('translate.children_with_mother') }}</label>
                             <input type="text" name="children_with_mother" id="edit_children_with_mother"
                                 class="form-control form-control-sm">
                         </div>
 
+                        {{-- Crime --}}
                         <div class="col-md-4">
-                            <label class="form-label">جرم ډول</label>
+                            <label class="form-label">{{ __('translate.crime_type') }}</label>
                             <input type="text" name="crime_type" id="edit_crime_type"
                                 class="form-control form-control-sm">
                         </div>
 
+                        {{-- Referring Authority --}}
                         <div class="col-md-4">
-                            <label class="form-label"> رالیږونکې مرجع</label>
+                            <label class="form-label">{{ __('translate.referring_authority') }}</label>
                             <input type="text" name="referring_authority" id="edit_referring_authority"
                                 class="form-control form-control-sm">
                         </div>
 
+                        {{-- Monitoring Date --}}
                         <div class="col-md-4">
-                            <label class="form-label">د څارنې نیټه</label>
+                            <label class="form-label">{{ __('translate.monitoring_date') }}</label>
                             <input type="text" name="monitoring_date" class="form-control form-control-sm farsi-date"
-                                id="edit_monitoring_date" placeholder="د نظارت نیټه">
+                                id="edit_monitoring_date" placeholder="{{ __('translate.monitoring_date') }}">
                         </div>
+
+
+                        {{-- Province --}}
                         <div class="col-md-4">
-                            <label class="form-label">ولایت</label>
-                            <select name="province" id="edit_province" class="form-control form-control-sm">
-                                <option disabled>ولایت انتخاب کړئ</option>
-                                @foreach ($province as $prov)
-                                    <option value="{{ $prov->id }}">{{ $prov->name_da }}</option>
+                            <label class="form-label">{{ __('translate.province') }}</label>
+                            <select name="province" id="edit_province" class="form-select form-select-sm"
+                                style="width:100%">
+                                <option value=""></option>
+                                @foreach ($province as $pro)
+                                    <option value="{{ $pro->id }}">
+                                        {{ $pro->name_da }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
 
+                        {{-- District --}}
                         <div class="col-md-4">
-                            <label class="form-label">ناحیه</label>
+                            <label class="form-label">{{ __('translate.district') }}</label>
                             <input type="text" name="district" id="edit_district"
                                 class="form-control form-control-sm">
                         </div>
 
+                        {{-- Area --}}
                         <div class="col-md-4">
-                            <label class="form-label">منطقه</label>
+                            <label class="form-label">{{ __('translate.area') }}</label>
                             <input type="text" name="area" id="edit_area" class="form-control form-control-sm">
                         </div>
+
+                        {{-- Has Items --}}
                         <div class="col-md-4">
-                            <label class="form-label">د نیولو پر وخت توکي موجود وو؟</label>
+                            <label class="form-label">{{ __('translate.has_items') }}</label>
 
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="has_items" value="1"
                                     id="edit_has_items_yes">
-                                <label class="form-check-label" for="edit_has_items_yes">هو</label>
+                                <label class="form-check-label" for="edit_has_items_yes">
+                                    {{ __('translate.yes') }}
+                                </label>
                             </div>
 
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="has_items" value="0"
                                     id="edit_has_items_no">
-                                <label class="form-check-label" for="edit_has_items_no">نه</label>
+                                <label class="form-check-label" for="edit_has_items_no">
+                                    {{ __('translate.no') }}
+                                </label>
                             </div>
                         </div>
 
+                        {{-- File --}}
                         <div class="col-md-12">
-                            <label class="form-label">فایل</label>
+                            <label class="form-label">{{ __('translate.file') }}</label>
                             <input type="file" name="file[]" id="edit_file_input"
                                 class="form-control form-control-sm" multiple
                                 accept=".jpg,.jpeg,.png,.gif,.webp,.pdf,.doc,.docx,.xls,.xlsx">
 
                             <div id="edit_existing_files_area" class="mt-2"></div>
                         </div>
+
                     </div>
 
-                    <div class="modal-footer d-flex justify-content-between mb-0">
-                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">بندول</button>
-                        <button type="submit" class="btn btn-primary btn-sm">تغیراتو ثبت</button>
+                    {{-- Footer --}}
+                    <div class="modal-footer d-flex justify-content-between">
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            {{ __('translate.save_changes') }}
+                        </button>
+
+                        <button type="button" class="btn btn-danger btn-sm" data-bs-dismiss="modal">
+                            {{ __('translate.close') }}
+                        </button>
+
+
                     </div>
+
                 </form>
             </div>
         </div>
     </div>
     </div>
 
-
     <!-- Release Modal -->
     <div class="modal fade" id="releaseModal" tabindex="-1" aria-labelledby="releaseModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
 
-                <div class="modal-header">
+                {{-- Header --}}
+                <div class="modal-header bg-light">
                     <h5 class="modal-title text-center w-100" id="releaseModalLabel">
-                        د مظنون رهايي / انتقال
+                        {{ __('translate.release_transfer') }}
                     </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="بندول"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="{{ __('translate.close') }}"></button>
                 </div>
 
-                <form id="releaseForm" method="POST" enctype="multipart/form-data">
+                <form id="releaseForm" method="POST" enctype="multipart/form-data" autocomplete="off">
                     @csrf
 
                     <div class="modal-body">
                         <input type="hidden" name="suspect_id" id="release_suspect_id">
 
-                        {{-- Issue / Transfer Number --}}
+                        {{-- Issue Number --}}
                         <div class="mb-3">
-                            <label for="issued_or_transferred_number" class="form-label">
-                                د رهايي یا انتقال د صادرې شمېر
+                            <label class="form-label">
+                                {{ __('translate.issue_number') }}
                             </label>
                             <input type="text" class="form-control" id="issued_or_transferred_number"
                                 name="issued_or_transferred_number">
                         </div>
 
-                        {{-- Releasing Authority --}}
+                        {{-- Authority --}}
                         <div class="mb-3">
                             <label class="form-label">
-                                د رهايي یا انتقال مرجع
+                                {{ __('translate.releasing_authority') }}
                             </label>
 
                             <div class="dropdown w-100">
                                 <button class="form-control text-start dropdown-toggle" type="button"
                                     id="releaseDropdownBtn" data-bs-toggle="dropdown">
-                                    <span id="releaseDropdownLabel">یوه مرجع وټاکئ</span>
+                                    <span id="releaseDropdownLabel">
+                                        {{ __('translate.select_authority') }}
+                                    </span>
                                 </button>
-
 
                                 <div class="dropdown-menu p-3 w-100" style="max-width:350px;">
 
@@ -446,33 +574,36 @@
                                     <div class="form-check mb-2">
                                         <input class="form-check-input main-opt" type="radio" name="main_option"
                                             value="انتقال به توقیف" id="main_opt_1" data-key="detention">
+
                                         <label class="form-check-label" for="main_opt_1">
-                                            توقیف‌خانې ته انتقال
+                                            {{ __('translate.to_detention') }}
                                         </label>
                                     </div>
 
                                     <div class="form-check mb-2">
                                         <input class="form-check-input main-opt" type="radio" name="main_option"
                                             value="انتقال به مراجع مختلف" id="main_opt_2" data-key="multi">
+
                                         <label class="form-check-label" for="main_opt_2">
-                                            بېلابېلو مراجعو ته انتقال
+                                            {{ __('translate.to_multiple_sources') }}
                                         </label>
                                     </div>
 
                                     <div class="form-check mb-2">
                                         <input class="form-check-input main-opt" type="radio" name="main_option"
                                             value="مظنونین رهایی" id="main_opt_3" data-key="release">
+
                                         <label class="form-check-label" for="main_opt_3">
-                                            د مظنون رهايي
+                                            {{ __('translate.suspect_release') }}
                                         </label>
                                     </div>
 
                                     <hr>
 
-                                    {{-- SEARCH DB OPTIONS --}}
+                                    {{-- Search --}}
                                     <div id="db_search_wrapper" style="display:none;" class="mb-2">
                                         <input type="text" id="db_option_search" class="form-control form-control-sm"
-                                            placeholder="مرجع ولټوئ...">
+                                            placeholder="{{ __('translate.search_authority') }}">
                                     </div>
 
                                     {{-- DB OPTIONS --}}
@@ -483,6 +614,7 @@
                                             <div class="form-check mb-2 db-option-item">
                                                 <input class="form-check-input db-opt" type="checkbox"
                                                     value="{{ $opt->name_da }}" id="db_opt_{{ $opt->id }}">
+
                                                 <label class="form-check-label" for="db_opt_{{ $opt->id }}">
                                                     {{ $opt->name_da }}
                                                 </label>
@@ -498,33 +630,35 @@
                             <input type="hidden" name="db_source_name" id="db_source_name">
                         </div>
 
-                        {{-- Release / Transfer Date --}}
+                        {{-- Date --}}
                         <div class="mb-3">
-                            <label for="release_date" class="form-label">
-                                د رهايي یا انتقال نېټه
+                            <label class="form-label">
+                                {{ __('translate.release_date') }}
                             </label>
                             <input type="text" class="form-control farsi-date" id="release_date" name="release_date"
-                                required placeholder="د رهايي یا لېږد نېټه وټاکئ">
+                                placeholder="{{ __('translate.select_date') }}">
                         </div>
 
+                        {{-- File --}}
                         <div class="mb-3">
-                            <label class="form-label">ضمیمه فایل</label>
+                            <label class="form-label">{{ __('translate.file') }}</label>
                             <input type="file" name="file[]" class="form-control" multiple
                                 accept=".jpg,.jpeg,.png,.pdf,.doc,.docx">
                         </div>
 
-
-
                     </div>
 
                     {{-- Footer --}}
-                    <div class="modal-footer d-flex justify-content-between mb-0">
-                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
-                            بندول
-                        </button>
+                    <div class="modal-footer d-flex justify-content-between">
                         <button type="submit" class="btn btn-success btn-sm">
-                            ثبت کول
+                            {{ __('translate.save') }}
                         </button>
+
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+                            {{ __('translate.close') }}
+                        </button>
+
+
                     </div>
 
                 </form>
@@ -663,6 +797,53 @@
 
     <script>
         $(document).ready(function() {
+
+            $('#referring_authority').select2({
+                dropdownParent: $('#suspectModal'),
+                placeholder: 'مرجع انتخاب یا اضافه کړئ',
+                tags: true,
+                allowClear: true,
+                width: '100%',
+
+                ajax: {
+                    url: '/get-referring-authorities',
+                    dataType: 'json',
+                    delay: 250,
+
+                    data: function(params) {
+                        return {
+                            search: params.term
+                        };
+                    },
+
+                    processResults: function(data) {
+                        return {
+                            results: data.map(function(item) {
+                                return {
+                                    id: item.referring_authority,
+                                    text: item.referring_authority
+                                };
+                            })
+                        };
+                    },
+
+                    cache: true
+                }
+
+            });
+
+        });
+
+        $(document).ready(function() {
+
+            $('#province').select2({
+                dropdownParent: $('#suspectModal'),
+                placeholder: 'ولایت انتخاب کړئ',
+                allowClear: true,
+                width: 'resolve'
+            });
+
+
             function gregorianToJalali(gy, gm, gd) {
                 let g_d_m = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
                 let jy = (gy <= 1600) ? 0 : 979;
@@ -702,6 +883,22 @@
             $('#suspects_table').DataTable({
                 processing: true,
                 serverSide: true,
+                searching: true,
+                ordering: false,
+                language: {
+                    "emptyTable": "{{ __('translate.information not exists') }}",
+                    "lengthMenu": "{{ __('translate.showing') }} _MENU_ {{ __('translate.information') }}",
+                    "info": "{{ __('translate.from') }} _START_ {{ __('translate.to') }} _END_  {{ __('translate.total information') }} _TOTAL_",
+                    "infoEmpty": "{{ __('translate.form 0 to 0 - total 0 records') }}",
+                    "search": "{{ __('translate.search') }}:",
+                    "sProcessing": "{{ __('translate.under processing') }}",
+                    "paginate": {
+                        "first": "{{ __('first') }}",
+                        "last": "{{ __('last') }}",
+                        "next": "{{ __('translate.next') }}",
+                        "previous": "{{ __('translate.previous') }}"
+                    },
+                },
                 ajax: "{{ route('suspects.list') }}",
                 columns: [{
                         "data": 'id',
@@ -727,6 +924,8 @@
                     },
                     {
                         data: null,
+                        searching: false,
+                        ordering: false,
                         render: function(data, type, row, meta) {
 
                             // Current Gregorian date → Jalali
@@ -777,7 +976,9 @@
                     },
                     {
                         data: 'suspect_name',
-                        name: 'suspect_name'
+                        name: 'suspect_name',
+                        searching: true,
+                        ordering: true,
                     },
                     {
                         data: 'father_name',
@@ -809,10 +1010,13 @@
                     },
                     {
                         data: 'action',
+                        searching: false,
+                        ordering: false,
                         className: 'text-center font-weight-bolder'
                     },
                 ]
             });
+
 
 
 
@@ -840,6 +1044,7 @@
 
             // --- Submit Form with AJAX ---
             $(document).on('submit', '#store_form', function(e) {
+
                 e.preventDefault();
 
                 clearFormErrors();
@@ -961,6 +1166,17 @@
 
     <script>
         $(document).ready(function() {
+
+            if ($('#edit_province').hasClass("select2-hidden-accessible")) {
+                $('#edit_province').select2('destroy');
+            }
+
+            $('#edit_province').select2({
+                dropdownParent: $('#editSuspectModal'),
+                placeholder: 'ولایت انتخاب کړئ',
+                allowClear: true,
+                width: '100%'
+            });
 
             function toggleEditChildrenField() {
                 if ($('#edit_gender').val() === 'ښځینه') {
@@ -1113,7 +1329,7 @@
 
 
 
-    <script>
+    {{-- <script>
         $(document).on('click', '.destroy_btn', function() {
             let suspectId = $(this).data('id');
 
@@ -1161,7 +1377,7 @@
                 }
             });
         });
-    </script>
+    </script> --}}
 
     <script>
         $(document).on('click', '.release-btn', function(e) {
@@ -1173,7 +1389,38 @@
             new bootstrap.Modal(document.getElementById('releaseModal')).show();
         });
         $('#releaseForm').on('submit', function(e) {
+
+            let isValid = true;
+            $('.text-danger').remove();
+
+            function showError(input, message) {
+                isValid = false;
+                $(input).after('<small class="text-danger">' + message + '</small>');
+            }
+
+            let number = $('#issued_or_transferred_number').val();
+            let option = $('#main_option_key').val();
+            let date = $('#release_date').val();
+
+            if (!number) {
+                showError('#issued_or_transferred_number', 'د صادرې یا انتقال شمېره ضروري ده.');
+            }
+
+            if (!option) {
+                showError('#releaseDropdownBtn', 'مهرباني وکړئ یوه مرجع انتخاب کړئ.');
+            }
+
+            if (!date) {
+                showError('#release_date', 'د رهایي نېټه ضروري ده.');
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+                return;
+            }
+
             e.preventDefault();
+
             $.ajax({
                 url: "{{ route('release.store') }}",
                 method: 'POST',
@@ -1185,42 +1432,81 @@
                 success: function(res) {
                     if (res.status == true) {
 
-                        $('#releaseModal').modal('hide');
-                        $('#releaseForm')[0].reset();
-
-                        // Refresh Released List Page
-                        $('#suspects_table').DataTable().ajax.reload(null, false);
-
-
                         Swal.fire({
                             icon: 'success',
                             text: res.message,
                             timer: 1500,
                             showConfirmButton: false
+
                         });
+                        $('#releaseModal').modal('hide');
+
+                        setTimeout(() => {
+                            location.reload();
+                        }, 1500);
                     }
                 }
             });
         });
 
-        // --- Reset modal when closed ---
-        $('#releaseModal').on('hidden.bs.modal', function() {
-            let modal = $(this);
-            modal.find('label.error').remove();
-            modal.find('.invalid-feedback').remove();
-            modal.find('.is-invalid').removeClass('is-invalid');
-            modal.find('.error').removeClass('error');
+        $('#releaseModal').on('show.bs.modal', function() {
             $('#releaseForm')[0].reset();
+            $('.text-danger').remove();
+        });
+        $(document).on('change', '.main-opt', function() {
 
+            let selectedText = $(this).next('label').text();
+            let key = $(this).data('key');
+
+            // label update
+            $('#releaseDropdownLabel').text(selectedText);
+
+            // hidden input set
+            $('#main_option_key').val(key);
+
+
+            if (key === 'detention') {
+                let dropdown = bootstrap.Dropdown.getInstance(document.getElementById('releaseDropdownBtn'));
+                if (dropdown) {
+                    dropdown.hide();
+                }
+            }
         });
 
-        // --- Clear form errors function ---
-        function clearFormErrors() {
-            $('#releaseForm').find('.error').removeClass('error');
-            $('#releaseForm').find('[aria-invalid="true"]').attr('aria-invalid', false);
-            $('#releaseForm').find('label.error').remove();
-            $('#releaseForm').find('label.error').remove();
-        }
+        $('#releaseModal').on('hidden.bs.modal', function() {
+
+            let form = $('#releaseForm');
+
+            // ✅ reset form fields
+            form[0].reset();
+
+            // ✅ remove validation messages
+            form.find('.text-danger').remove();
+
+            // ✅ remove invalid classes
+            form.find('.is-invalid').removeClass('is-invalid');
+
+
+            $('#main_option_key').val('');
+            $('#db_source_name').val('');
+            $('#release_suspect_id').val('');
+
+            // ✅ reset dropdown label
+            $('#releaseDropdownLabel').text(
+                "{{ __('translate.select_authority') }}");
+
+            // ✅ uncheck radio buttons
+            $('input[name="main_option"]').prop('checked', false);
+
+            // ✅ uncheck db checkboxes
+            $('.db-opt').prop('checked', false);
+
+            // ✅ hide dynamic sections
+            $('#db_search_wrapper').hide();
+            $('#db_options_wrapper').hide();
+
+
+        });
     </script>
 
     <!-- JS: behavior & sync label -->
@@ -1280,7 +1566,6 @@
             dbOptions.forEach(opt => {
                 opt.addEventListener("change", function() {
 
-                    // Single select only
                     dbOptions.forEach(x => {
                         if (x !== this) x.checked = false;
                     });
@@ -1293,6 +1578,8 @@
                 });
             });
         });
+
+
 
         // Search functionality
         document.getElementById('db_option_search').addEventListener('keyup', function() {

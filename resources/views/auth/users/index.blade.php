@@ -19,7 +19,7 @@
                         <th style="text-align:center">{{ __('translate.id') }}</th>
                         <th style="text-align:center">{{ __('translate.name') }}</th>
                         <th style="text-align:center">{{ __('translate.email') }}</th>
-                        <th style="text-align:center">{{ __('translate.permession') }}</th>
+                        <th style="text-align:center">{{ __('translate.permission') }}</th>
                         <th style="text-align:center">{{ __('translate.action') }}</th>
                     </thead>
                     <tbody style="text-align:center">
@@ -92,7 +92,7 @@
                             </div> --}}
                             <div class="form-group col-lg-6">
                                 @php $roles = \Spatie\Permission\Models\Role::get(); @endphp
-                                <label for="role" class="col-form-label">{{ __('translate.permession') }}</label>
+                                <label for="role" class="col-form-label">{{ __('translate.permission') }}</label>
                                 <select class="form-control form-control-sm" name="role" id="role" required>
                                     <option value="" style="direction: ltr !important;">
                                         {{ __('translate.select the permission') }}
@@ -174,7 +174,7 @@
                                     name="password_confirmation">
                                 <div class="invalid-feedback password_confirmation_error"></div>
                             </div>
-                            <div class="form-group col-lg-6">
+                            {{-- <div class="form-group col-lg-6">
                                 @php $departments = \App\Models\Department::get(); @endphp
                                 <label for="edit_department_id" class="col-form-label">دیپارتمنت</label>
                                 <select class="form-control" name="department_id" id="edit_department_id" required>
@@ -185,7 +185,7 @@
                                             {{ $item->name_ps }}</option>
                                     @endforeach
                                 </select>
-                            </div>
+                            </div> --}}
                             <div class="form-group col-lg-6">
                                 @php $roles = \Spatie\Permission\Models\Role::get(); @endphp
                                 <label for="edit_role" class="col-form-label">صلاحیت</label>
@@ -440,7 +440,7 @@
                             $("input[id=edit_email]").val('');
                             $("input[id=edit_password]").val('');
                             $("input[id=edit_password_confirmation]").val('');
-                            $("select[id=edit_department_id").val('').change();
+                            // $("select[id=edit_department_id").val('').change();
                             $("select[id=edit_role").val('').change();
 
                             $('#Edit_Modal').modal('hide');
@@ -474,7 +474,7 @@
             $('#edit_record_id').val(id);
             $("input[id=edit_name]").val($(this).attr('name'));
             $("input[id=edit_email]").val($(this).attr('email'));
-            $("select[id=edit_department_id").val($(this).attr('department_id')).change();
+            // $("select[id=edit_department_id").val($(this).attr('department_id')).change();
             $("select[id=edit_role").val($(this).attr('role')).change();
 
             $('#Edit_Modal').modal('show');

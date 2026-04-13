@@ -41,7 +41,7 @@
                 <!-- ولایت -->
                 <div class="col-md-3">
                     <label class="form-label fw-bold">ولایت</label>
-                    <select name="province_id" class="form-select form-select-sm">
+                    <select name="province_id" class="form-select form-select-sm ">
                         <option value="">انتخاب ولایت</option>
                         @foreach ($province as $pro)
                             <option value="{{ $pro->id }}">{{ $pro->name_da }}</option>
@@ -127,10 +127,12 @@
     </div>
 @endsection
 
+
 @section('scripts')
     <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
     <script src="{{ asset('perisanDatePicker/js/persianDatepicker.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('assets/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    
 
     <script>
         function resetReleasedForm() {
@@ -173,7 +175,7 @@
             }
         });
 
-        // Dropdown logic
+       
         document.addEventListener("DOMContentLoaded", function() {
 
             const mainOptions = document.querySelectorAll(".report-main-opt");

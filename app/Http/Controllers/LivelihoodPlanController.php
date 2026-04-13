@@ -170,12 +170,14 @@ class LivelihoodPlanController extends Controller
 
     public function deleteMonth($month)
     {
+         
         Livelihood::where('livelihoodDate', 'like', $month . '%')->delete();
 
         return response()->json([
             'status' => true,
             'message' => 'د میاشت راپور حذف شو'
         ]);
+        
     }
 
     public function edit($id)
@@ -349,7 +351,7 @@ class LivelihoodPlanController extends Controller
             
                 $plan = $weekPlans[$date->dayOfWeekIso - 1];
                 if ($FirstDayName_of_month == $planDayName) {
-                    // dd($planDayName);
+                    
                     $weekData = Livelihood::where('livelihoodDate', 'like', $month . '%')
                         ->first();
                 }
@@ -378,93 +380,93 @@ class LivelihoodPlanController extends Controller
         }
 
 
-        // $items = [
-        //     'rice'          => 'برنج سیله',
-        //     'sugar'         => 'بوره',
-        //     'green_tea'     => 'چای سبز',
-        //     'beans'         => 'لوبیا',
-        //     'chickpeas'     => 'نخود',
-        //     'milk_powder'   => 'شیر خشک',
-        //     'eggs'          => 'تخم مرغ',
-        //     'oil'           => 'روغن',
-        //     'mutton'        => 'گوشت گوسفند',
-        //     'chicken'       => 'گوشت مرغ',
-        //     'beef'          => 'گوشت گاو',
-        //     'cake'          => 'کیک',
-        //     'yogurt_drink'  => 'دوغ',
-        //     'dates'         => 'خرما',
-        //     'sweets'        => 'شیرینی',
-        //     'eggplant'      => 'بانجن سیاه',
-        //     'zucchini'      => 'کدو',
-        //     'potato'        => 'کچالو',
-        //     'potato_cooked' => 'کچالو جوشک',
-        //     'fasila'        => 'فاصیله',
-        //     'onion'         => 'پیاز',
-        //     'tomato'        => 'رومی',
-        //     'cucumber'      => 'بادرنګ',
-        //     'salad'         => 'سلات',
-        //     'lemon'         => 'لیمو',
-        //     'salt'          => 'نمک',
-        //     'raisin_rice'   => 'کشمش پلو',
-        //     'dry_bread'     => 'نان خشک',
-        //     'spice_pot'     => 'مساله دیگ',
-        //     'gas'           => 'گاز',
-        // ];
+        $items = [
+            'rice'          => 'برنج سیله',
+            'sugar'         => 'بوره',
+            'green_tea'     => 'چای سبز',
+            'beans'         => 'لوبیا',
+            'chickpeas'     => 'نخود',
+            'milk_powder'   => 'شیر خشک',
+            'eggs'          => 'تخم مرغ',
+            'oil'           => 'روغن',
+            'mutton'        => 'گوشت گوسفند',
+            'chicken'       => 'گوشت مرغ',
+            'beef'          => 'گوشت گاو',
+            'cake'          => 'کیک',
+            'yogurt_drink'  => 'دوغ',
+            'dates'         => 'خرما',
+            'sweets'        => 'شیرینی',
+            'eggplant'      => 'بانجن سیاه',
+            'zucchini'      => 'کدو',
+            'potato'        => 'کچالو',
+            'potato_cooked' => 'کچالو جوشک',
+            'fasila'        => 'فاصیله',
+            'onion'         => 'پیاز',
+            'tomato'        => 'رومی',
+            'cucumber'      => 'بادرنګ',
+            'salad'         => 'سلات',
+            'lemon'         => 'لیمو',
+            'salt'          => 'نمک',
+            'raisin_rice'   => 'کشمش پلو',
+            'dry_bread'     => 'نان خشک',
+            'spice_pot'     => 'مساله دیگ',
+            'gas'           => 'گاز',
+        ];
 
-        // $totals = array_fill_keys(array_keys($items), 0);
-        // $totals['persons'] = 0;
-        // $totals['amount']  = 0;
+        $totals = array_fill_keys(array_keys($items), 0);
+        $totals['persons'] = 0;
+        $totals['amount']  = 0;
 
-        // $rows = [];
-        // $dayNo = 1;
+        $rows = [];
+        $dayNo = 1;
 
-        // // =========================
-        // // loop month days
-        // // =========================
-        // for ($date = $startDate->copy(); $date->lte($endDate); $date->addDay()) {
+        // =========================
+        // loop month days
+        // =========================
+        for ($date = $startDate->copy(); $date->lte($endDate); $date->addDay()) {
 
-        //     $male = Suspect::where('status', 'prisoner')
-        //         ->where('gender', 'نارینه')
-        //         ->whereDate('monitoring_date', $date)
-        //         ->count();
+            $male = Suspect::where('status', 'prisoner')
+                ->where('gender', 'نارینه')
+                ->whereDate('monitoring_date', $date)
+                ->count();
 
-        //     $female = Suspect::where('status', 'prisoner')
-        //         ->where('gender', 'ښځینه')
-        //         ->whereDate('monitoring_date', $date)
-        //         ->count();
+            $female = Suspect::where('status', 'prisoner')
+                ->where('gender', 'ښځینه')
+                ->whereDate('monitoring_date', $date)
+                ->count();
 
-        //     $kids = Suspect::where('status', 'prisoner')
-        //         ->whereDate('monitoring_date', $date)
-        //         ->sum('children_with_mother');
+            $kids = Suspect::where('status', 'prisoner')
+                ->whereDate('monitoring_date', $date)
+                ->sum('children_with_mother');
 
-        //     $persons = $male + $female + $kids;
+            $persons = $male + $female + $kids;
 
 
-        //     // د اونۍ ورځ مطابق پلان
-        //     $plan = $weekPlans[$date->dayOfWeekIso - 1];
+            // د اونۍ ورځ مطابق پلان
+            $plan = $weekPlans[$date->dayOfWeekIso - 1];
 
-        //     $amount = $plan->amount * $persons;
+            $amount = $plan->amount * $persons;
 
-        //     $row = [
-        //         'no'      => $dayNo,
-        //         'date'    => Jalalian::fromCarbon($date)->format('Y/m/d'),
-        //         'weekday' => $plan->weekDay->name,
-        //         'persons' => $persons,
-        //         'amount'  => $amount,
-        //     ];
+            $row = [
+                'no'      => $dayNo,
+                'date'    => Jalalian::fromCarbon($date)->format('Y/m/d'),
+                'weekday' => $plan->weekDay->name,
+                'persons' => $persons,
+                'amount'  => $amount,
+            ];
 
-        //     foreach ($items as $field => $label) {
-        //         $value = $plan->$field * $persons;
-        //         $row[$field] = $value;
-        //         $totals[$field] += $value;
-        //     }
+            foreach ($items as $field => $label) {
+                $value = $plan->$field * $persons;
+                $row[$field] = $value;
+                $totals[$field] += $value;
+            }
 
-        //     $totals['persons'] += $persons;
-        //     $totals['amount']  += $amount;
+            $totals['persons'] += $persons;
+            $totals['amount']  += $amount;
 
-        //     $rows[] = $row;
-        //     $dayNo++;
-        // }
+            $rows[] = $row;
+            $dayNo++;
+        }
 
         return PDF::loadView(
             'LiveLiHood.livelihood_monthly_pdf',

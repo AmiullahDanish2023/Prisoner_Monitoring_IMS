@@ -46,7 +46,9 @@ class UserController extends Controller
                     $btn = "<a class='edit_btn btn btn-sm btn-info hover-scale' 
                     style='cursor: pointer;' record_id='" . $data->id . "' name='" . $data->name . "' email='"
                         . $data->email . "' role='" . check_user_roles($data->roles->pluck('id')) . "' department_id='"
-                        . $data->department_id . "'>Edit</a>";
+                        . $data->department_id . "'> <i class='fas fa-edit' title ='معلومات تغیرول'></i></a>";
+                        //icon-edit
+                       
                     return $btn;
                 })
                 ->rawColumns(['role'])
@@ -339,7 +341,7 @@ class UserController extends Controller
             return Datatables::of($sql)
                 ->addIndexColumn()
                 ->addColumn('action', function ($sql) {
-                    $btn = "<a class='edit_btn btn btn-sm btn-info hover-scale' style='cursor: pointer;' action='" . route('role.edit') . "' record_id='" . $sql->id . "' name='" . $sql->name . "'>Edit</a>";
+                    $btn = "<a class='edit_btn btn btn-sm btn-info hover-scale' style='cursor: pointer;' action='" . route('role.edit') . "' record_id='" . $sql->id . "' name='" . $sql->name . "'> <i class='fas fa-edit' title='معلومات تغیرول'></i></a>";
                     return $btn;
                 })
                 ->rawColumns(['action'])

@@ -30,6 +30,20 @@ class CreateSuspectsTable extends Migration
             $table->string('file')->nullable();
             $table->enum('status', ['prisoner', 'released'])->default('prisoner');
             $table->timestamps();
+
+
+            // add indexingt to the columns that are frequently searched
+            $table->index('id');
+            $table->index('gender');
+            $table->index('suspect_name');
+            $table->index('father_name');
+            $table->index('crime_type');
+            $table->index('province ');
+            $table->index('monitoring_date');
+            $table->index('referring_authority');
+
+
+
         });
     }
 

@@ -6,10 +6,10 @@
         <!-- Header -->
         <div class="card-header d-flex justify-content-between align-items-center">
             <h4 class="card-title mb-0 fw-bold text-align-center">د مراجعو لیست</h4>
-                 @can('Save New Suspect  Reference')
-            <a href="{{ route('release-sources.create') }}" class="btn btn-primary btn-sm">
-                نوې مرجع اضافه کړئ
-            </a>
+            @can('Save New Suspect  Reference')
+                <a href="{{ route('release-sources.create') }}" class="btn btn-primary btn-sm">
+                    نوې مرجع اضافه کړئ
+                </a>
             @endcan
 
             <style>
@@ -136,18 +136,19 @@
 
                                         <!-- Edit -->
                                         @can('Edit Suspect Reference')
-                                        <a href="" class="edit-btn" data-title="د مرجع نوم تغیرول">
-                                            ✏️
-                                        </a>
+                                            <a href="javascript:void(0)" class="edit-btn" data-id="{{ $src->id }}"
+                                                data-name="{{ $src->name_da }}" data-title="د مرجع نوم تغیرول">
+                                                ✏️
+                                            </a>
                                         @endcan
 
                                         <!-- Delete -->
-                                        @can('Delete Suspect Reference')
-                                        <a href="{{ route('release-sources.delete', $src->id) }}" class=" delete-btn"
-                                            data-id="{{ $src->id }}" data-title="د مرجع حذف کول">
-                                            🗑️
-                                        </a>
-                                        @endcan
+                                        {{-- @can('Delete Suspect Reference')
+                                            <a href="{{ route('release-sources.delete', $src->id) }}" class=" delete-btn"
+                                                data-id="{{ $src->id }}" data-title="د مرجع حذف کول">
+                                                🗑️
+                                            </a>
+                                        @endcan --}}
                                     </div>
                                 </td>
                             </tr>
@@ -158,11 +159,50 @@
         </div>
 
     </div>
+    <!-- Edit Modal -->
+    <div class="modal fade" id="editSourceModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title w-100 text-center">
+                        د مرجع نوم تغیرول
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <input type="hidden" id="edit_id">
+
+                    <div class="mb-3">
+                        <label class="form-label">نوم (دری)</label>
+                        <input type="text" id="edit_name_da" class="form-control">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">نوم (پښتو)</label>
+                        <input type="text" id="edit_name_pa" class="form-control">
+                    </div>
+
+                </div>
+
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        بندول
+                    </button>
+                    <button type="button" class="btn btn-primary" id="updateBtn">
+                        تغیر ثبت کړه
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
 @endsection
 @section('scripts')
-     
     <!-- Delete Script -->
-   <script>
+    {{-- <script>
         $(document).on('click', '.delete-btn', function() {
             var suspectId = $(this).data('id');
             event.preventDefault();
@@ -170,6 +210,8 @@
             Swal.fire({
                 title: 'ایا تاسې ډاډه یاست؟',
                 text: 'تاسې به دا معلومات حذف کړئ!',
+
+
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -212,7 +254,55 @@
                 }
             });
         });
+    </script> --}}
+    <script>
+        // Open modal and fill data
+        $(document).on('click', '.edit-btn', function() {
+
+            let id = $(this).data('id');
+            let name = $(this).data('name');
+
+            $('#edit_id').val(id);
+            $('#edit_name_da').val(name);
+
+            $('#editSourceModal').modal('show');
+        });
+
+
+        // Update request
+        $('#updateBtn').click(function() {
+
+            let id = $('#edit_id').val();
+
+            $.ajax({
+                url: "/release-sources/update/" + id,
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    name_da: $('#edit_name_da').val(),
+                    name_pa: $('#edit_name_pa').val()
+                },
+                success: function(response) {
+
+                    if (response.status === true) {
+
+                        Swal.fire(
+                            'بریالی!',
+                            'معلومات اپډیټ شول',
+                            'success'
+                        );
+
+                        $('#editSourceModal').modal('hide');
+                        location.reload();
+
+                    } else {
+                        Swal.fire('خطا!', 'اپډیټ کې ستونزه ده', 'error');
+                    }
+                },
+                error: function() {
+                    Swal.fire('خطا!', 'سرور ستونزه', 'error');
+                }
+            });
+        });
     </script>
-
 @endsection
-

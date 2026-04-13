@@ -102,9 +102,7 @@
         راپور هفته وار ({{ $weekRange }})
     </div>
 
-    <div class="report-subtitle">
-        تعداد مجموعی مظنونین: {{ $totals['persons'] }} نفر
-    </div>
+   
 
     <!-- Report Table -->
     <table class="report-table">

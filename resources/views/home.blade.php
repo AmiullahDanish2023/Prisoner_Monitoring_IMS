@@ -10,7 +10,7 @@
         height: 100% !important;
     }
 </style>
->
+
 @section('content')
     <div class="container-fluid">
 
@@ -20,7 +20,7 @@
             <div class="col-md-3">
                 <div class="card text-center shadow-sm">
                     <div class="card-body">
-                        <h6>ټول بندیان</h6>
+                        <h6> {{ __('translate.all Suspects(male and female)') }}</h6>
                         <h2 class="fw-bold">{{ $totalPrisoners }}</h2>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
             <div class="col-md-3">
                 <div class="card text-center shadow-sm">
                     <div class="card-body">
-                        <h6>نارینه</h6>
+                        <h6> {{ __('translate.male') }}</h6>
                         <h2 class="fw-bold">{{ $maleCount }}</h2>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
             <div class="col-md-3">
                 <div class="card text-center shadow-sm">
                     <div class="card-body">
-                        <h6>ښځینه</h6>
+                        <h6> {{ __('translate.female') }}</h6>
                         <h2 class="fw-bold">{{ $femaleCount }}</h2>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
             <div class="col-md-3">
                 <div class="card text-center shadow-sm">
                     <div class="card-body">
-                        <h6>اطفال</h6>
+                        <h6> {{ __('translate.children') }}</h6>
                         <h2 class="fw-bold">{{ $childrenCount }}</h2>
                     </div>
                 </div>
@@ -64,7 +64,7 @@
                 {{-- Status Bar --}}
                 <div class="card shadow-sm mb-4">
                     <div class="card-body">
-                        <h6 class="mb-3">د بندیانو حالت</h6>
+                        <h6 class="mb-3"> {{ __('translate.prisoners status') }}</h6>
                         <div class="chart-box">
                             <canvas id="statusChart"></canvas>
                         </div>
@@ -74,7 +74,7 @@
                 {{-- Livelihood --}}
                 <div class="card shadow-sm">
                     <div class="card-body">
-                        <h6 class="mb-3">   بدل اعاشه میاشتني مصرف</h6>
+                        <h6 class="mb-3">   {{ __('translate.livelihood  monthly price') }} </h6>
                         <div class="chart-box">
                             <canvas id="livelihoodChart"></canvas>
                         </div>
@@ -87,7 +87,7 @@
             <div class="col-md-6">
                 <div class="card shadow-sm h-100">
                     <div class="card-body d-flex flex-column">
-                        <h6 class="mb-3">جنسیت</h6>
+                        <h6 class="mb-3"> {{ __('translate.gender') }}</h6>
 
                         <div class="chart-box flex-grow-1">
                             <canvas id="genderChart"></canvas>
@@ -118,9 +118,9 @@
             new Chart(document.getElementById('statusChart'), {
                 type: 'bar',
                 data: {
-                    labels: ['په نظارت کې مظنونین', 'خلاص شوي مظنونین'],
+                    labels: [' {{ __('translate.presoners suspects') }} ', ' {{ __('translate.release suspects') }} '],
                     datasets: [{
-                        label: 'شمېر',
+                        label: '{{ __('translate.number') }}',
                         data: [{{ $detainedCount }}, {{ $releasedCount }}],
                         backgroundColor: [primaryBlue, successGreen],
                         borderRadius: 6,

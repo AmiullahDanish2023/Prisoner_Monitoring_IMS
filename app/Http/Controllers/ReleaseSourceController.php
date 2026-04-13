@@ -39,10 +39,29 @@ class ReleaseSourceController extends Controller
     }
 
     // Delete suspect
-    public function deleteSource($id)
+    // public function deleteSource($id)
+    // {
+    //     $deleteSource = ReleaseSource::findOrFail($id);
+    //     $deleteSource->delete();
+    //     return response()->json(['status' => true, 'message' => 'ریکارډ حذف شو']);
+    // }
+
+    public function updateSource(Request $request, $id)
     {
-        $deleteSource = ReleaseSource::findOrFail($id);
-        $deleteSource->delete();
-        return response()->json(['status' => true, 'message' => 'ریکارډ حذف شو']);
+        $request->validate([
+            'name_da' => 'required'
+        ]);
+
+        $source = ReleaseSource::findOrFail($id);
+
+        $source->update([
+            'name_da' => $request->name_da,
+            'name_pa' => $request->name_pa,
+        ]);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'اپډیټ شو'
+        ]);
     }
 }

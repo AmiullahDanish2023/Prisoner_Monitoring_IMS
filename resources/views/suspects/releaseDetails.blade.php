@@ -5,7 +5,7 @@
 
 @section('content')
     <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.rtl.css') }}" rel="stylesheet" type="text/css" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    
 
     <style>
         <style>.cursor-pointer {
@@ -105,8 +105,8 @@
                         <table class="table table-striped table-bordered text-center">
                             <thead style="background-color: #e3f2fd;">
                                 <tr>
-                                    <th>صادره رهایی ویا انتقال</th>
-                                    <th>مرجع رها کننده</th>
+                                    <th>د رهايي یا انتقال د صادرې شمېر</th>
+                                    <th>د رهايي / انتقال مرجع</th>
                                     <th>د انتقال کولو نیټه</th>
                                     <th>د رهایی یا انتقال فایل لیدل</th>
                                     <th>توکي موجود وو؟</th>

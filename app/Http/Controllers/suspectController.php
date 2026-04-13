@@ -69,18 +69,18 @@ class suspectController extends Controller
                     </a>";
         }
 
-        // Delete Button
-        if (auth()->user()->can('Delete Suspect')) {
-          $btn .= "<a class='destroy_btn btn btn-sm btn-outline-danger' data-title='د ریکارډ حذفول' style='cursor: pointer; display:inline-flex; align-items:center; gap:6px;' data-id='" . $row->id . "'>
-                        <svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
-                            <polyline points='3 6 5 6 21 6'/>
-                            <path d='M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6'/>
-                            <path d='M10 11v6'/>
-                            <path d='M14 11v6'/>
-                            <path d='M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2'/>
-                        </svg>
-                    </a>";
-        }
+        // // Delete Button
+        // if (auth()->user()->can('Delete Suspect')) {
+        //   $btn .= "<a class='destroy_btn btn btn-sm btn-outline-danger' data-title='د ریکارډ حذفول' style='cursor: pointer; display:inline-flex; align-items:center; gap:6px;' data-id='" . $row->id . "'>
+        //                 <svg width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
+        //                     <polyline points='3 6 5 6 21 6'/>
+        //                     <path d='M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6'/>
+        //                     <path d='M10 11v6'/>
+        //                     <path d='M14 11v6'/>
+        //                     <path d='M9 6V4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2'/>
+        //                 </svg>
+        //             </a>";
+        // }
 
         // Release Button
         if (auth()->user()->can('Release Suspect')) {
@@ -214,14 +214,7 @@ class suspectController extends Controller
 
     if ($request->hasFile('file')) {
 
-      foreach ($suspect->files as $oldFile) {
-
-        if (file_exists(public_path($oldFile->file_path))) {
-          unlink(public_path($oldFile->file_path));
-        }
-
-        $oldFile->delete();
-      }
+      //  
 
       // 2️⃣ Upload new files
       foreach ($request->file('file') as $file) {
@@ -273,19 +266,19 @@ class suspectController extends Controller
 
 
 
-  public function deleteFile($id)
-  {
-    $file = SuspectFile::findOrFail($id);
+  // public function deleteFile($id)
+  // {
+  //   $file = SuspectFile::findOrFail($id);
 
-    // Delete physical file
-    if (file_exists(public_path($file->file_path))) {
-      unlink(public_path($file->file_path));
-    }
+  //   // Delete physical file
+  //   if (file_exists(public_path($file->file_path))) {
+  //     unlink(public_path($file->file_path));
+  //   }
 
-    $file->delete();
+  //   $file->delete();
 
-    return back()->with('success', 'فایل په بریالیتوب سره حذف شو.');
-  }
+  //   return back()->with('success', 'فایل په بریالیتوب سره حذف شو.');
+  // }
   public function showFiles($id)
   {
     $suspect = Suspect::with('files')->findOrFail($id);
@@ -313,5 +306,22 @@ class suspectController extends Controller
     $file->delete();
 
     return back()->with('success', 'فایل حذف شو');
+  }
+
+  public function getAuthorities(Request $request)
+{
+    $search = $request->search;
+
+    return Suspect::query()
+        ->when($search, function ($query) use ($search) {
+            $query->where('referring_authority', 'LIKE', "%$search%");
+        })
+        ->selectRaw('LOWER(TRIM(referring_authority)) as referring_authority')
+        ->distinct()
+        ->limit(50)
+        ->get();
+
+
+    return response()->json($data);
   }
 }

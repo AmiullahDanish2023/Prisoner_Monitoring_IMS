@@ -105,7 +105,6 @@
 
         @foreach ($files as $index => $file)
             <tr>
-
                 <td >{{ $index + 1 }}</td>
 
                 <td>

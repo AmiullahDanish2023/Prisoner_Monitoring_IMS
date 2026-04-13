@@ -16,7 +16,7 @@ return [
     'user part' => 'User Part',
     'user management' => 'User Management',
     'users' => 'Users',
-    'permession' => 'Permissions',
+    'permission' => 'Permissions',
     'site part' => 'Site Part',
     'site management' => 'Site Management',
     'contents_meta' => 'Contents',
@@ -35,7 +35,8 @@ return [
     'system' => 'System',
 
 
-     // Landing Page
+    // Landing Page
+    
     'home' => 'Home',
     'about' => 'About',
     'login' => 'Login',
@@ -115,103 +116,103 @@ return [
     'close' => 'Close',
 
 
-     // auth -> roles -> index
-     'information about user permission' => 'Information about User Permission',
-     'create' => 'Create',
-     'adding permission' => 'Adding Permission',
-     'permission name' => 'Permission Name',
-     'permissions' => 'Permissions',
+    // auth -> roles -> index
+    'information about user permission' => 'Information about User Permission',
+    'create' => 'Create',
+    'adding permission' => 'Adding Permission',
+    'permission name' => 'Permission Name',
+    'permissions' => 'Permissions',
 
-     // auth -> users -> profile
-     'user information' => 'User Information',
-     'change password' => 'Change Password',
-     'previous password' => 'Previous Password',
-     'new password' => 'New Password',
+    // auth -> users -> profile
+    'user information' => 'User Information',
+    'change password' => 'Change Password',
+    'previous password' => 'Previous Password',
+    'new password' => 'New Password',
 
-     // Editing Content
-     'updating information' => 'Updating Information',
+    // Editing Content
+    'updating information' => 'Updating Information',
 
-     // Deleting Model
-     'deleting information' => 'Deleting Informatin',
-     'are you sure to delete the record' => 'Are you sure to Delete the Record!',
-     'confirm' => 'Confirm',
-     'cancel' => 'Cancel',
+    // Deleting Model
+    'deleting information' => 'Deleting Informatin',
+    'are you sure to delete the record' => 'Are you sure to Delete the Record!',
+    'confirm' => 'Confirm',
+    'cancel' => 'Cancel',
 
-     // About Page
-     'video_link' => 'Video Link',
+    // About Page
+    'video_link' => 'Video Link',
 
-     // Doctor Part
-     'pashto name' => 'Pashto Name',
-     'english name' => 'English Name',
-     'create doctor' => 'Add Doctor',
-     'register a doctor' => 'Register a Doctor',
-     'name in pashto' => 'Name in Pashto',
-     'name in english' => 'Name in English',
-     'name of specialty in pashto' => 'Name of specialty in Pashto',
-     'name of specialty in english' => 'Name of specialty in English',
-     'about doctor in pashto' => 'About Doctor in Pashto',
-     'about doctor in english' => 'About Doctor in English',
-     'edit a doctor' => 'Edit a Doctor',
+    // Doctor Part
+    'pashto name' => 'Pashto Name',
+    'english name' => 'English Name',
+    'create doctor' => 'Add Doctor',
+    'register a doctor' => 'Register a Doctor',
+    'name in pashto' => 'Name in Pashto',
+    'name in english' => 'Name in English',
+    'name of specialty in pashto' => 'Name of specialty in Pashto',
+    'name of specialty in english' => 'Name of specialty in English',
+    'about doctor in pashto' => 'About Doctor in Pashto',
+    'about doctor in english' => 'About Doctor in English',
+    'edit a doctor' => 'Edit a Doctor',
 
-     // Doctor Error Messages
-     'name in pashto is required' => 'Name in Pashto is required!',
-     'name in english is required' => 'Name in English is required',
-     'name of specialty in pashto is required' => 'Name of specialty in Pashto is required',
-     'name of specialty in english is required' => 'Name of Specialty in English is required!',
+    // Doctor Error Messages
+    'name in pashto is required' => 'Name in Pashto is required!',
+    'name in english is required' => 'Name in English is required',
+    'name of specialty in pashto is required' => 'Name of specialty in Pashto is required',
+    'name of specialty in english is required' => 'Name of Specialty in English is required!',
 
-     // Contact Part
-     'contact' => 'Contact',
-     'If you want to contact us, share your name, email and your problem with us.' => 'If you want to Contact us, Share your Name, Email and your Problem with us.',
-     'your name' => 'Your Name',
-     'your email' => 'Your Email',
-     'subject' => 'Subject',
-     'message' => 'Message',
-     'loading' => 'Loading',
-     'send message' => 'Send Message',
+    // Contact Part
+    'contact' => 'Contact',
+    'If you want to contact us, share your name, email and your problem with us.' => 'If you want to Contact us, Share your Name, Email and your Problem with us.',
+    'your name' => 'Your Name',
+    'your email' => 'Your Email',
+    'subject' => 'Subject',
+    'message' => 'Message',
+    'loading' => 'Loading',
+    'send message' => 'Send Message',
 
-     // Setting Part
-     'site name' => 'Site Name',
-     'enter the site name' => 'Enter the site name',
-     'location' => 'Location',
-     'number' => 'Number',
-     'facebook_link' => 'Facebook Link',
-     'instagram_link' => 'Instagram Link',
-     'twiter_link' => 'Twiter Link',
-     'linkedin_link' => 'Linkedin Link',
-     'number of book to show' => 'Number of book to show',
-     'number of academic artical to show' => 'Number of Academic Artical to show',
-     'number of research artical to show' => 'Number of Research Artical to show',
-     'logo' => 'Logo',
-     'typing name is required' => 'Typing name is required!',
-     'typing location is required' => 'Typing Location is required!',
-     'typing number is required' => 'Typing Number is required!',
-     'typing email is required' => 'Typing Email is required!',
-     'uploading logo is required' => 'Uploading Logo is required!',
+    // Setting Part
+    'site name' => 'Site Name',
+    'enter the site name' => 'Enter the site name',
+    'location' => 'Location',
+    'number' => 'Number',
+    'facebook_link' => 'Facebook Link',
+    'instagram_link' => 'Instagram Link',
+    'twiter_link' => 'Twiter Link',
+    'linkedin_link' => 'Linkedin Link',
+    'number of book to show' => 'Number of book to show',
+    'number of academic artical to show' => 'Number of Academic Artical to show',
+    'number of research artical to show' => 'Number of Research Artical to show',
+    'logo' => 'Logo',
+    'typing name is required' => 'Typing name is required!',
+    'typing location is required' => 'Typing Location is required!',
+    'typing number is required' => 'Typing Number is required!',
+    'typing email is required' => 'Typing Email is required!',
+    'uploading logo is required' => 'Uploading Logo is required!',
 
 
     //  SR
 
     //  COunt part
-     'departments' => 'Departments',
-     'papers' => 'Papers',
-     "landig_main_discreption" => "In this meeting, the Minister of Interior Affairs, while inquiring about the well-being and hearing the issues of patients, stated that the people of Afghanistan take pride in the brave and courageous forces of the country. These forces, like loyal sons of the nation, have spared no effort or sacrifice in protecting the lives and property of the people, even shedding their blood.
+    'departments' => 'Departments',
+    'papers' => 'Papers',
+    "landig_main_discreption" => "In this meeting, the Minister of Interior Affairs, while inquiring about the well-being and hearing the issues of patients, stated that the people of Afghanistan take pride in the brave and courageous forces of the country. These forces, like loyal sons of the nation, have spared no effort or sacrifice in protecting the lives and property of the people, even shedding their blood.
     The Minister of Interior Affairs has allocated financial assistance to the patients and wounded in hospitals, specifically donating three hundred beds to the police hospital. In order to ensure the best possible treatment for the patients, necessary instructions have been given by the Minister of Interior Affairs to the officials of that hospital.
     .",
-     'author' => 'Author',
-     'No_of_pages' => 'Pages',
-     'details' => 'Details',
-     'view' => 'View',
+    'author' => 'Author',
+    'No_of_pages' => 'Pages',
+    'details' => 'Details',
+    'view' => 'View',
 
-     // Home Page
-     'collection of books' => 'Collection of Books',
-     'collection of academic articals' => 'Collection of Academic Articals',
-     'collection of research articals' => 'Collection of Research Articals',
-     'research articals' => 'Research Articals',
-     'books and articals' => 'Books and Articals',
+    // Home Page
+    'collection of books' => 'Collection of Books',
+    'collection of academic articals' => 'Collection of Academic Articals',
+    'collection of research articals' => 'Collection of Research Articals',
+    'research articals' => 'Research Articals',
+    'books and articals' => 'Books and Articals',
 
 
-'publish_date' => 'Publish Date',
-'document_type' => '‌Document Type',
+    'publish_date' => 'Publish Date',
+    'document_type' => '‌Document Type',
     'size' => 'Size',
 
     'articals' => 'Articals',
@@ -235,18 +236,115 @@ return [
     'department dari name' => 'Department name in Dari',
 
 
+    // Suspect Table
+    'number' => 'ID',
+    'suspect days' => 'Monitoring Days',
+    'suspect name' => 'Name',
+    'father name' => 'Father Name',
+    'crime' => 'Crime',
+    'source' => 'Source',
+    'province' => 'Province',
+    'district' => 'District',
+    'area' => 'Area',
+    'monitoring date' => 'monitoring date',
+    'action' => 'Action',
+    'suspect_list' => 'Suspect List',
+    'save_new_suspect' => 'Save New Suspect',
+
+    //suspect modal
+
+    'create_suspect' => 'Create Suspect',
+    'gender' => 'Gender',
+    'select_gender' => 'Select Gender',
+    'male' => 'Male',
+    'female' => 'Female',
+    'name' => 'Name',
+    'father_name' => 'Father Name',
+    'grandfather_name' => 'Grandfather Name',
+    'children_with_mother' => 'Children with Mother',
+    'crime_type' => 'Crime Type',
+    'referring_authority' => 'Referring Authority',
+    'monitoring_date' => 'Monitoring Date',
+    'province' => 'Province',
+    'select_province' => 'Select Province',
+    'district' => 'District',
+    'area' => 'Area',
+    'has_items' => 'Has Items?',
+    'yes' => 'Yes',
+    'no' => 'No',
+    'file' => 'File',
+    'save' => 'Save',
+    'close' => 'Close',
+    'edit_suspect' => 'Edit Suspect',
+    'save_changes' => 'Save Changes',
+
+    //sidebar all file
+
+    // General
+    'dashboard' => 'Dashboard',
+    'logout' => 'Logout',
+
+    // Sections
+    'suspect_section' => 'Suspect Management Section',
+    'suspect_part' => 'Suspect Part',
+    'report_part' => ' Report Part',
+    'report_section' => 'Report Management Section',
+    'livelihood_section' => 'Livelihood Management',
+    'user_part' => 'User Section',
+
+    // Suspect Menu
+    'suspect_management' => 'Suspect Management',
+    'add_new_suspect' => 'Add New Suspect',
+    'release_transfer_list' => 'Released / Transferred Suspects List',
+    'add_reference' => 'Add References',
+
+    // Reports
+    'reports' => 'Reports',
+    'general_report' => 'General Suspects Report',
+    'existing_report' => 'Existing Suspects Report',
+    'release_report' => 'Release / Transfer Report',
+    'monthly_report' => 'Monthly Suspects Report',
+
+    // Livelihood
+    'livelihood_management' => 'Livelihood Management',
+    'livelihood_plan' => 'Livelihood Plan',
+    'livelihood_list' => 'Livelihood List & Report',
+
+    // Users
+    'user_management' => 'User Management',
+    'users' => 'Users',
+    'permission' => 'Roles & Permissions',
+
+    // Modal
+    'monthly_report_title' => 'Monthly Suspects Report',
+    'start_date' => 'Start Date',
+    'end_date' => 'End Date',
+    'generate_report' => 'Generate Report',
 
 
+    //Suspect Release Modal
+    'release_transfer' => 'Release / Transfer Suspect',
+    'issue_number' => 'Issue / Transfer Number',
+    'releasing_authority' => 'Releasing / Transferring Authority',
+    'select_authority' => 'Select an authority',
+    'to_detention' => 'Transfer to Detention Center',
+    'to_multiple_sources' => 'Transfer to Multiple Authorities',
+    'suspect_release' => 'Release Suspect',
+    'search_authority' => 'Search authority...',
+    'release_date' => 'Release / Transfer Date',
+    'select_date' => 'Select date',
+    'file' => 'Attachment File',
+    'close' => 'Close',
+    'save' => 'Save',
 
-
-
-
-
-
-
-
-
-
-]
-
-?>
+     //home page
+     'number' => 'Number',
+     'all Suspects(male and female)' => 'All Suspects(Male and Female)',
+     'female' => 'Female',
+     'children' => 'Children',
+     'prisoners status' => 'Prisoners Status',
+     'livelihood  monthly price' => 'Livelihood Monthly Price',
+     'gender' => 'Gender',
+     'release suspects' => 'Release Suspects',
+     'presoners suspects' => 'Prisoners Suspects',
+];

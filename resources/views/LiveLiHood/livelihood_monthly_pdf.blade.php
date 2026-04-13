@@ -67,7 +67,7 @@
     </table>
 
     <p style="text-align:center">
-       تعداد مجموعی مظنونین (در ماه): {{ $totals['persons'] }} نفر
+       تعداد مجموعی مظنونین : {{ $totals['persons'] }} نفر
 
     </p>
 

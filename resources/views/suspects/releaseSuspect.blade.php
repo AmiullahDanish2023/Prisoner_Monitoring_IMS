@@ -3,7 +3,7 @@
     <div class="card shadow-sm">
         <div class="card-header d-flex justify-content-center align-items-center">
             <h4 class="card-title mb-0 fw-bold">
-                د خلاص / انتقال شویو مظنونینو لیست
+                د رهایی / انتقال شویو مظنونینو لیست
             </h4>
             <style>
                 /* ---------- Action Buttons Container ---------- */
@@ -138,6 +138,20 @@
             $('#release_table').DataTable({
                 processing: true,
                 serverSide: true,
+                language: {
+                    "emptyTable": "{{ __('translate.information not exists') }}",
+                    "lengthMenu": "{{ __('translate.showing') }} _MENU_ {{ __('translate.information') }}",
+                    "info": "{{ __('translate.from') }} _START_ {{ __('translate.to') }} _END_  {{ __('translate.total information') }} _TOTAL_",
+                    "infoEmpty": "{{ __('translate.form 0 to 0 - total 0 records') }}",
+                    "search": "{{ __('translate.search') }}:",
+                    "sProcessing": "{{ __('translate.under processing') }}",
+                    "paginate": {
+                        "first": "{{ __('first') }}",
+                        "last": "{{ __('last') }}",
+                        "next": "{{ __('translate.next') }}",
+                        "previous": "{{ __('translate.previous') }}"
+                    },
+                },
                 ajax: "{{ route('release.list') }}",
                 columns: [{
                         data: 'DT_RowIndex',
@@ -191,7 +205,7 @@
             });
         });
     </script>
-    <script>
+    {{-- <script>
         $(document).on('click', '.release_destroy_btn', function() {
             let suspectId = $(this).data('id');
 
@@ -241,5 +255,5 @@
                 }
             });
         });
-    </script>
+    </script> --}}
 @endsection

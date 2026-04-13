@@ -86,6 +86,7 @@
     @php
         $shamsiDate = \Morilog\Jalali\Jalalian::now()->format('Y/m/d');
         $qamariDate = \Alkoumi\LaravelHijriDate\Hijri::Date('Y/m/d');
+        // $qamariDate = \Alkoumi\LaravelHijriDate\Hijri::Date('Y/m/d', now()->addDays(1));
     @endphp
 
     <h4 style="text-align:center; font-size:18px; font-weight:bold;">

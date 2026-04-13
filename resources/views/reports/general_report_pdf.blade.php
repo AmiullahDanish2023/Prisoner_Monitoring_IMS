@@ -85,6 +85,7 @@
     @php
         $shamsiDate = \Morilog\Jalali\Jalalian::now()->format('Y/m/d');
         $qamariDate = \Alkoumi\LaravelHijriDate\Hijri::Date('Y/m/d');
+        // $qamariDate = \Alkoumi\LaravelHijriDate\Hijri::Date('Y/m/d', now()->addDays(1));
     @endphp
 
     <table style="width:100%; border-collapse:collapse; margin-bottom:6px;" dir="rtl">
@@ -148,7 +149,7 @@
                     <td>{{ $suspect->crime_type ?? '-' }}</td>
                     <td>{{ $suspect->referring_authority ?? '-' }}</td>
 
-                   <td>{{ $suspect->monitoring_date_dari ?? '-' }}</td>
+                    <td>{{ $suspect->monitoring_date_dari ?? '-' }}</td>
 
 
                 </tr>
@@ -163,21 +164,30 @@
     </table>
 
     <table style="width:100%; border-collapse:collapse; margin-top:12px;" dir="rtl">
+
         <tr style="font-weight:bold;">
-            <td style="text-align:right; font-size:115%; line-height:1.8;">
+            <td colspan="2" style="text-align:right; font-size:115%; line-height:1.8;">
                 قرار شرح فوق جدول تعداد ({{ $suspects->count() }}) نفر جدول هذا ترتیب وصحت است
             </td>
         </tr>
 
         <tr>
-            <td style="text-align:center; font-size:14px; padding-top:6px;">
-               
+            <!-- Right Side -->
+            <td style="text-align:right; font-size:14px; width:50%;">
+                <br>
+                ترتیب کننده:
+                <br> <br>
+                مسؤل اداری نظارت خانه
+            </td>
+
+            <!-- Left Side -->
+            <td style="text-align:center; font-size:14px; width:50%;">
                 <br>
                 آمر نظارت خانه
             </td>
         </tr>
-    </table>
 
+    </table>
 
 
 </body>

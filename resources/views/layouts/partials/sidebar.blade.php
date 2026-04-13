@@ -10,11 +10,22 @@
       <img alt="Logo" src="{{asset('assets/media/logos/default-small.svg')}}" class="h-20px app-sidebar-logo-minimize" /> --}}
         {{-- <img alt="Logo" src="{{ asset('assets/moi_logo.png') }}" width="60px" />
         </a> --}}
-        <a href="{{ route('home') }}">
-            <h3 class="text-white text-center">
-                بندیانو نظارت‌ خونې د ثبت سیستم
-            </h3>
-        </a>
+        <style>
+            .app-sidebar .logo-box {
+                text-align: center;
+                padding: 15px 0;
+            }
+
+            .app-sidebar .logo-box img {
+                max-width: 60px;
+            }
+        </style>
+        <div class="logo-box">
+            <a href="{{ route('home') }}">
+                <img src="{{ asset('uploads/default_log.png') }}" alt="Logo">
+                <h8 class="text-white mt-2">نظارت‌ خونې د ثبت سیستم</h8>
+            </a>
+        </div>
 
         <!--end::Logo image-->
         <!--begin::Sidebar toggle-->
@@ -22,8 +33,6 @@
             class="app-sidebar-toggle btn btn-icon btn-shadow btn-sm btn-color-muted btn-active-color-primary body-bg h-30px w-30px position-absolute top-50 start-100 translate-middle rotate"
             data-kt-toggle="true" data-kt-toggle-state="active" data-kt-toggle-target="body"
             data-kt-toggle-name="app-sidebar-minimize">
-            <img alt="Lcogo" src="{{ asset('uploads/default_log.png') }}" width="60px" />
-
         </div>
         <!--end::Sidebar toggle-->
     </div>
@@ -72,12 +81,12 @@
 
                 </div>
                 <!--end:Menu item-->
-                <!--begin:Menu item-->\
+                <!--begin:Menu item-->
 
                 <div class="menu-item pt-5">
                     <!--begin:Menu content-->
                     <div class="menu-content">
-                        <span class="menu-heading fw-bold text-uppercase ">بخش مدیریت مظنونین</span>
+                        <span class="menu-heading fw-bold text-uppercase ">{{ __('translate.suspect_section') }}</span>
                     </div>
                     <!--end:Menu content-->
                 </div>
@@ -85,7 +94,7 @@
                 <!--end:Menu item-->
                 <!--begin:Menu item-->
                 <div data-kt-menu-trigger="click"
-                    class="menu-item {{ Request::is('contents*') ? 'here show' : '' }} menu-accordion">
+                    class="menu-item {{ request()->routeIs('suspects.*') || request()->routeIs('release-sources.*') ? 'here show' : '' }} menu-accordion">
                     <!--begin:Menu link-->
                     @can('Suspect Section')
                         <span class="menu-link">
@@ -101,7 +110,7 @@
                                     </svg>
                                 </span>
                             </span>
-                            <span class="menu-title">بخش مظنونین</span>
+                            <span class="menu-title">{{ __('translate.suspect_part') }}</span>
 
                             <span class="menu-arrow"></span>
                         </span>
@@ -109,65 +118,36 @@
                     <!--end:Menu link-->
                     <!--begin:Menu sub-->
                     <div class="menu-sub menu-sub-accordion">
-                        <!--begin:Menu item-->
+
                         @can('Save New Suspect Section')
                             <div class="menu-item">
-                                <!--begin:Menu link-->
                                 <a class="menu-link {{ Route::currentRouteName() == 'suspects.index' ? 'active' : '' }}"
                                     href="{{ route('suspects.index') }}">
-                                    <span class="menu-bullet">
-                                        <span class="bullet bullet-dot"></span>
-                                    </span>
-                                    <span class="menu-title">د نوی مظنون ثبتول </span>
+                                    <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                                    <span class="menu-title">{{ __('translate.add_new_suspect') }}</span>
                                 </a>
-                                <!--end:Menu link-->
                             </div>
                         @endcan
 
-                        <!--end:Menu item-->
-
-                    </div>
-                    <!--end:Menu sub-->
-
-                    <!--begin:Menu sub-->
-                    <div class="menu-sub menu-sub-accordion">
-                        <!--begin:Menu item-->
                         @can(' List of Release or Transfer Suspects')
                             <div class="menu-item">
-                                <!--begin:Menu link-->
                                 <a class="menu-link {{ Route::currentRouteName() == 'suspects.release' ? 'active' : '' }}"
                                     href="{{ route('suspects.release') }}">
-                                    <span class="menu-bullet">
-                                        <span class="bullet bullet-dot"></span>
-                                    </span>
-                                    <span class="menu-title">رهایی / انتقال مظنونینو لیست</span>
+                                    <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                                    <span class="menu-title">{{ __('translate.release_transfer_list') }}</span>
                                 </a>
-                                <!--end:Menu link-->
                             </div>
                         @endcan
 
-                        <!--end:Menu item-->
-
-                    </div>
-                    <!--end:Menu sub-->
-
-
-                    <!--begin:Menu sub-->
-                    <div class="menu-sub menu-sub-accordion">
-                        <!--begin:Menu item-->
                         @can('Add Suspect Release Reference Section')
                             <div class="menu-item">
                                 <a class="menu-link {{ request()->routeIs('release-sources.*') ? 'active' : '' }}"
                                     href="{{ route('release-sources.index') }}">
                                     <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
-                                    <span class="menu-title">د مراجعو اضافه کول</span>
+                                    <span class="menu-title">{{ __('translate.add_reference') }}</span>
                                 </a>
                             </div>
                         @endcan
-
-
-
-                        <!--end:Menu item-->
 
                     </div>
                     <!--end:Menu sub-->
@@ -178,28 +158,29 @@
 
                 {{-- ---------------------------report part--------------------- --}}
 
-                <!--end:Menu item-->
-                <!--begin:Menu item-->
                 @can('Report Mangement Section')
                     <div class="menu-item pt-5">
-                        <!--begin:Menu content-->
                         <div class="menu-content">
-                            <span class="menu-heading fw-bold text-uppercase ">بخش مدیریت راپورها</span>
+                            <span class="menu-heading fw-bold text-uppercase ">
+                                {{ __('translate.report_section') }}
+                            </span>
                         </div>
-                        <!--end:Menu content-->
                     </div>
                 @endcan
-                <!--end:Menu item-->
-                <!--begin:Menu item-->
+
                 <div data-kt-menu-trigger="click"
-                    class="menu-item {{ Request::is('contents*') ? 'here show' : '' }} menu-accordion">
-                    <!--begin:Menu link-->
+                    class="menu-item menu-accordion 
+                       {{ request()->routeIs('report.general') ||
+                       request()->routeIs('reports.existing.pdf') ||
+                       request()->routeIs('release.suspect.report')
+                           ? 'here show'
+                           : '' }}">
+
                     @can('Report Section')
                         <span class="menu-link">
                             <span class="menu-icon">
                                 <span class="svg-icon svg-icon-2">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                                         <rect x="3" y="10" width="4" height="10" rx="1"
                                             fill="currentColor" />
                                         <rect x="10" y="6" width="4" height="14" rx="1" opacity="0.5"
@@ -209,146 +190,86 @@
                                     </svg>
                                 </span>
                             </span>
-                            <span class="menu-title">بخش راپورها</span>
-
-
+                            <span class="menu-title">{{ __('translate.report_part') }}</span>
                             <span class="menu-arrow"></span>
                         </span>
                     @endcan
-                    <!--end:Menu link-->
-                    <!--begin:Menu sub-->
+
+                    <!-- ✅ ONE menu-sub ONLY -->
                     <div class="menu-sub menu-sub-accordion">
-                        <!--begin:Menu item-->
+
                         @can(' Create Suspects Genral Report')
                             <div class="menu-item">
-                                <!--begin:Menu link-->
-                                <a class="menu-link {{ Route::currentRouteName() == 'report.general' ? 'active' : '' }}"
+                                <a class="menu-link {{ request()->routeIs('report.general') ? 'active' : '' }}"
                                     href="{{ route('report.general') }}">
-                                    <span class="menu-bullet">
-                                        <span class="bullet bullet-dot"></span>
-                                    </span>
-                                    <span class="menu-title">د مظنونینو عمومی راپور </span>
+                                    <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                                    <span class="menu-title">{{ __('translate.general_report') }}</span>
                                 </a>
-                                <!--end:Menu link-->
                             </div>
                         @endcan
 
-
-                        <!--end:Menu item-->
-
-                    </div>
-                    <!--end:Menu sub-->
-
-                    <!--begin:Menu sub-->
-                    <div class="menu-sub menu-sub-accordion">
-                        <!--begin:Menu item-->
                         @can(' Create Suspects Existing Report')
                             <div class="menu-item">
-                                <!--begin:Menu link-->
-                                <a class="menu-link {{ Route::currentRouteName() == 'reports.existing.pdf' ? 'active' : '' }}"
+                                <a class="menu-link {{ request()->routeIs('reports.existing.pdf') ? 'active' : '' }}"
                                     href="{{ route('reports.existing.pdf') }}">
-                                    <span class="menu-bullet">
-                                        <span class="bullet bullet-dot"></span>
-                                    </span>
-                                    <span class="menu-title"> د مظنونینو د موجودی راپور </span>
+                                    <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                                    <span class="menu-title">{{ __('translate.existing_report') }}</span>
                                 </a>
-                                <!--end:Menu link-->
                             </div>
                         @endcan
 
-
-                        <!--end:Menu item-->
-
-                    </div>
-                    <!--end:Menu sub-->
-
-
-
-                    <!--begin:Menu sub-->
-                    <div class="menu-sub menu-sub-accordion">
-                        <!--begin:Menu item-->
                         @can('Create Release or Transfer Suspcets Report')
                             <div class="menu-item">
-                                <!--begin:Menu link-->
-                                <a class="menu-link {{ Route::currentRouteName() == 'release.suspect.report' ? 'active' : '' }}"
+                                <a class="menu-link {{ request()->routeIs('release.suspect.report') ? 'active' : '' }}"
                                     href="{{ route('release.suspect.report') }}">
-                                    <span class="menu-bullet">
-                                        <span class="bullet bullet-dot"></span>
-                                    </span>
-                                    <span class="menu-title"> د رهایی / انتقال مظنونینو راپور </span>
+                                    <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                                    <span class="menu-title">{{ __('translate.release_report') }}</span>
                                 </a>
-                                <!--end:Menu link-->
                             </div>
                         @endcan
 
-
-                        <!--end:Menu item-->
-
-                    </div>
-                    <!--end:Menu sub-->
-
-                    <!--begin:Menu sub-->
-                    <div class="menu-sub menu-sub-accordion">
-                        <!--begin:Menu item-->
                         @can('Create Suspects Mothly Report')
                             <div class="menu-item">
                                 <a class="menu-link" href="#" data-bs-toggle="modal"
                                     data-bs-target="#monthlySuspectModal">
-                                    <span class="menu-bullet">
-                                        <span class="bullet bullet-dot"></span>
-                                    </span>
-                                    <span class="menu-title"> د مظنونینو میاشتنی راپور </span>
+                                    <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                                    <span class="menu-title">{{ __('translate.monthly_report') }}</span>
                                 </a>
                             </div>
                         @endcan
 
-
-                        <!--end:Menu item-->
-
                     </div>
-                    <!--end:Menu sub-->
-
                 </div>
-                <!--end:Menu item-->
 
-                <!--end:Menu item-->
                 {{-- -----------------------------end report part--------------------------------- --}}
-
-
-
 
 
                 {{-- ---------------------------start livelihood plan part--------------------- --}}
 
-                <!--end:Menu item-->
                 @can('Livelihood Manegement Section')
-                    <!--begin:Menu item-->
                     <div class="menu-item pt-5">
-                        <!--begin:Menu content-->
                         <div class="menu-content">
-                            <span class="menu-heading fw-bold text-uppercase ">بخش مدیریت اعاشه</span>
+                            <span class="menu-heading fw-bold text-uppercase ">
+                                {{ __('translate.livelihood_section') }}
+                            </span>
                         </div>
-                        <!--end:Menu content-->
                     </div>
                 @endcan
-                <!--end:Menu item-->
-                <!--begin:Menu item-->
+
                 <div data-kt-menu-trigger="click"
-                    class="menu-item {{ Request::is('contents*') ? 'here show' : '' }} menu-accordion">
-                    <!--begin:Menu link-->
+                    class="menu-item menu-accordion 
+                  {{ request()->routeIs('livelihood.plan') || request()->routeIs('livelihood.list.show') ? 'here show' : '' }}">
+
                     @can('Livelihood Manegement')
                         <span class="menu-link">
                             <span class="menu-icon">
                                 <span class="svg-icon svg-icon-2">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
 
-                                        <!-- Person -->
                                         <circle cx="12" cy="6" r="3" fill="currentColor" />
                                         <path d="M6 20C6 15.6 8.7 13 12 13C15.3 13 18 15.6 18 20" fill="currentColor"
                                             opacity="0.3" />
 
-                                        <!-- Livelihood / Planning bars -->
                                         <rect x="4" y="14" width="2" height="6" rx="1"
                                             fill="currentColor" opacity="0.4" />
                                         <rect x="18" y="11" width="2" height="9" rx="1"
@@ -358,65 +279,36 @@
                                 </span>
                             </span>
 
-                            <span class="menu-title">مدیریت اعاشه</span>
+                            <span class="menu-title">{{ __('translate.livelihood_management') }}</span>
                             <span class="menu-arrow"></span>
                         </span>
                     @endcan
-                    <!--end:Menu link-->
 
-
-                    <!--begin:Menu sub-->
+                    <!-- ✅ ONE menu-sub ONLY -->
                     <div class="menu-sub menu-sub-accordion">
-                        <!--begin:Menu item-->
+
                         @can('Make Livelihood Plan')
                             <div class="menu-item">
-                                <!--begin:Menu link-->
-                                <a class="menu-link {{ Route::currentRouteName() == 'livelihood.plan' ? 'active' : '' }}"
+                                <a class="menu-link {{ request()->routeIs('livelihood.plan') ? 'active' : '' }}"
                                     href="{{ route('livelihood.plan') }}">
-                                    <span class="menu-bullet">
-                                        <span class="bullet bullet-dot"></span>
-                                    </span>
-                                    <span class="menu-title">پلان اعاشه </span>
+                                    <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                                    <span class="menu-title">{{ __('translate.livelihood_plan') }}</span>
                                 </a>
-                                <!--end:Menu link-->
                             </div>
                         @endcan
 
-
-                        <!--end:Menu item-->
-
-                    </div>
-                    <!--end:Menu sub-->
-
-
-                    <!--begin:Menu sub-->
-                    <div class="menu-sub menu-sub-accordion">
-                        <!--begin:Menu item-->
                         @can('List of Livelihood Plans')
                             <div class="menu-item">
-                                <!--begin:Menu link-->
-                                <a class="menu-link {{ Route::currentRouteName() == 'livelihood.list.show' ? 'active' : '' }}"
+                                <a class="menu-link {{ request()->routeIs('livelihood.list.show') ? 'active' : '' }}"
                                     href="{{ route('livelihood.list.show') }}">
-                                    <span class="menu-bullet">
-                                        <span class="bullet bullet-dot"></span>
-                                    </span>
-                                    <span class="menu-title"> لیست و راپور اعاشه </span>
+                                    <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                                    <span class="menu-title">{{ __('translate.livelihood_list') }}</span>
                                 </a>
-                                <!--end:Menu link-->
                             </div>
                         @endcan
 
-
-                        <!--end:Menu item-->
-
-
                     </div>
-                    <!--end:Menu sub-->
                 </div>
-                <!--end:Menu item-->
-
-                <!--end:Menu item-->
-
 
                 {{-- -----------------------------end livelihood plan part--------------------------------- --}}
                 <!--end:Menu item-->
@@ -483,7 +375,7 @@
                                     <span class="menu-bullet">
                                         <span class="bullet bullet-dot"></span>
                                     </span>
-                                    <span class="menu-title">{{ __('translate.permession') }}</span>
+                                    <span class="menu-title">{{ __('translate.permission') }}</span>
                                 </a>
                                 <!--end:Menu link-->
                             </div>
@@ -552,7 +444,7 @@
 
 
     <div class="modal fade" id="monthlySuspectModal" tabindex="-1">
-        <div class="modal-dialog modal-sm">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
 
                 <div class="modal-header">
