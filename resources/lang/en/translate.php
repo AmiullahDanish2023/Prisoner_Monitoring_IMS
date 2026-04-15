@@ -347,4 +347,9 @@ return [
      'gender' => 'Gender',
      'release suspects' => 'Release Suspects',
      'presoners suspects' => 'Prisoners Suspects',
+     'invalid_credentials' => 'Email or Password is incorrect !',
+     'password' => 'Password',
+     'email_required' => 'Email address is required',
+     'invalid_email' => 'Invalid email address',
+     'password_required' => 'Password is required',
 ];

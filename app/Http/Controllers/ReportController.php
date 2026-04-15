@@ -29,7 +29,7 @@ class ReportController extends Controller
     {
         $province = Province::all();
         $referrer = Suspect::whereNotNull('referring_authority')
-            ->where('status', 'prisoner') 
+            ->where('status', 'prisoner')
             ->distinct()
             ->orderBy('referring_authority')
             ->pluck('referring_authority');
@@ -44,10 +44,15 @@ class ReportController extends Controller
         $end   = null;
 
         if ($request->start_date && $request->end_date) {
-            $start = Carbon::parse($request->start_date)->startOfDay();
-            $end   = Carbon::parse($request->end_date)->endOfDay();
-        }
 
+            $start = Jalalian::fromFormat('Y-m-d', $request->start_date)
+                ->toCarbon()
+                ->startOfDay();
+
+            $end = Jalalian::fromFormat('Y-m-d', $request->end_date)
+                ->toCarbon()
+                ->endOfDay();
+        }
         $suspects = Suspect::leftJoin('release_suspects', 'suspects.id', '=', 'release_suspects.suspect_id')
             ->join('provinces', 'suspects.province', '=', 'provinces.id')
             ->whereNull('release_suspects.suspect_id')

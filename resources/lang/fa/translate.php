@@ -352,6 +352,11 @@ return [
      'gender' => 'جنسیت',
      'release suspects' => ' مظنونین رهایی ',
      'presoners suspects' => 'مظنونین در نظارت',
+     'invalid_credentials' => 'ایمیل یا رمز عبور اشتباه است !',
+     'password' => 'رمز عبور',
+     'email_required' => 'درج ایمیل آدرس ضروری میباشد',
+     'invalid_email' => 'فرمت ایمیل درست نمیباشد',
+     'password_required' => 'درج رمز عبور ضروری میباشد',
 ];
 
 

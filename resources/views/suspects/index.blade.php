@@ -208,7 +208,7 @@
         </div>
     </div>
     <div class="modal fade" id="suspectModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
 
                 {{-- Header --}}
@@ -367,7 +367,7 @@
     {{-- Edit Suspect Modal --}}
 
     <div class="modal fade" id="editSuspectModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered mw-50">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
 
                 {{-- Header --}}
@@ -449,7 +449,7 @@
                         {{-- Province --}}
                         <div class="col-md-4">
                             <label class="form-label">{{ __('translate.province') }}</label>
-                            <select name="province" id="edit_province" class="form-select form-select-sm"
+                            <select name="province" id="edit_province" class="form-select form-select-sm select2"
                                 style="width:100%">
                                 <option value=""></option>
                                 @foreach ($province as $pro)
@@ -778,14 +778,23 @@
                     accept: 'فایل باید jpg, png, pdf, doc, docx وي'
                 }
             },
+            errorPlacement: function(error, element) {
+                element.addClass('is-invalid');
+                $(element).parent().addClass('is-invalid');
+                if (element.hasClass('select2') && element.next('.select2-container').length) {
+                    error.insertAfter(element.next('.select2-container'));
+                } else {
+                    error.insertAfter(element);
+                }
+            }
 
-            highlight: function(element) {
-                $(element).addClass('error');
-            },
+            // highlight: function(element) {
+            //     $(element).addClass('error');
+            // },
 
-            unhighlight: function(element) {
-                $(element).removeClass('error');
-            },
+            // unhighlight: function(element) {
+            //     $(element).removeClass('error');
+            // },
 
             // submitHandler: function(form) {
             //     form.submit();
@@ -842,6 +851,8 @@
                 allowClear: true,
                 width: 'resolve'
             });
+
+
 
 
             function gregorianToJalali(gy, gm, gd) {

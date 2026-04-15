@@ -209,6 +209,11 @@ return [
      'gender' => 'جنسیت',
      'release suspects' => 'رها شوی مظنونین',
      'presoners suspects' => 'په نظارت کې مظنونین  ',
+     'invalid_credentials' => '	ایمل آدرس او یا کود  صحیح ندی !',
+     'password' => 'کود',
+     'email_required' => 'ایمل آدرس لیکل ضروری دی',
+      'invalid_email' => 'ایمل آدرس صحیح ندی',
+      'password_required' => 'کود  ضروری دی',
 ];
 
 

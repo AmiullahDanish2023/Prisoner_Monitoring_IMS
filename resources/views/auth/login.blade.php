@@ -67,7 +67,7 @@
 
 									<div class="text-gray-900 fw-bold fs-1">د کـــابل ولایت امنیه قوماندانۍ </div>
 									<div class="text-gray-900 fw-bold fs-1">د نظــارت خــونې آمــریت </div>
-											<div class="text-gray-900 fw-bold fs-1">د بندیانو د ثبت اداري سیستم </div>
+											<div class="text-gray-900 fw-bold fs-1">د مظنونینو د ثبت مدیریتي سیستم </div>
 									<!--end::Subtitle=-->
 								</div>
 								@if ($errors->any())
@@ -82,7 +82,7 @@
 											<!--begin::Title-->
 											@error('email')
 												<h4 class="mb-1 text-danger">
-													ایمل آدرس یا کود اشتباه است !
+												{{__('translate.invalid_credentials')}}
 												</h4>
 											@enderror
 											<!--end::Title-->
@@ -100,7 +100,7 @@
 								<!--end::Input group=-->
 								<div class="fv-row mb-3">
 									<!--begin::Password-->
-									<input type="password" placeholder="رمز عبور" name="password" id="password" required autocomplete="off" class="form-control form-control-lg bg-transparent" />
+									<input type="password" placeholder=" {{ __('translate.password') }}" name="password" id="password" required autocomplete="off" class="form-control form-control-lg bg-transparent" />
 									<!--end::Password-->
 								</div>
 								<!--end::Input group=-->
@@ -157,11 +157,11 @@
 							},
 							messages: {
 									email: {
-											required: '<span class="text-danger" style="font-size:13px; font-weight:bold">درج ایمیل آدرس ضروری میباشد.</span>',
-											email: '<span class="text-danger" style="font-size:13px; font-weight:bold">فازمت ایمیل درست نمیباشد.</span>',
+											required: '<span class="text-danger" style="font-size:13px; font-weight:bold"> {{ __('translate.email_required') }} </span>',
+											email: '<span class="text-danger" style="font-size:13px; font-weight:bold"> {{ __('translate.invalid_email') }} </span>',
 									},
 									password: {
-											required: '<span class="text-danger" style="font-size:13px; font-weight:bold">درج رمز ضروری میباشد.</span>',
+											required: '<span class="text-danger" style="font-size:13px; font-weight:bold"> {{ __('translate.password_required') }} </span>',
 									},
 							}
 					});

@@ -208,7 +208,7 @@
                     if (val !== '') {
                         hasValue = true;
 
-                        // ❌ invalid number
+                        
                         if (isNaN(val)) {
                             showError(name, 'لطفاً یک عدد معتبر را داخل کنید');
                             hasError = true;
