@@ -207,6 +207,7 @@
             </div>
         </div>
     </div>
+    {{--  Create Suspect Modal --}}
     <div class="modal fade" id="suspectModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content">
@@ -434,9 +435,11 @@
                         {{-- Referring Authority --}}
                         <div class="col-md-4">
                             <label class="form-label">{{ __('translate.referring_authority') }}</label>
-                            <input type="text" name="referring_authority" id="edit_referring_authority"
-                                class="form-control form-control-sm">
+                            <select name="referring_authority" id="edit_referring_authority"
+                                class="form-select form-select-sm" style="width:100%">
+                            </select>
                         </div>
+
 
                         {{-- Monitoring Date --}}
                         <div class="col-md-4">
@@ -1175,20 +1178,180 @@
         });
     </script>
 
+
+    //edit modal related scripts
     <script>
         $(document).ready(function() {
+            // ===========================
+            // INIT EDIT SELECT2 (PROVINCE + AUTHORITY)
+            // ===========================
+            function initEditSelect2() {
 
-            if ($('#edit_province').hasClass("select2-hidden-accessible")) {
-                $('#edit_province').select2('destroy');
+                // destroy first
+                if ($('#edit_province').hasClass("select2-hidden-accessible")) {
+                    $('#edit_province').select2('destroy');
+                }
+
+                if ($('#edit_referring_authority').hasClass("select2-hidden-accessible")) {
+                    $('#edit_referring_authority').select2('destroy');
+                }
+
+                // province
+                $('#edit_province').select2({
+                    dropdownParent: $('#editSuspectModal'),
+                    placeholder: 'ولایت انتخاب کړئ',
+                    allowClear: true,
+                    width: '100%'
+                });
+
+                // referring authority (AJAX + TAGS)
+                $('#edit_referring_authority').select2({
+                    dropdownParent: $('#editSuspectModal'),
+                    placeholder: 'مرجع انتخاب یا اضافه کړئ',
+                    tags: true,
+                    allowClear: true,
+                    width: '100%',
+
+                    ajax: {
+                        url: '/get-referring-authorities',
+                        dataType: 'json',
+                        delay: 250,
+
+                        data: function(params) {
+                            return {
+                                search: params.term
+                            };
+                        },
+
+                        processResults: function(data) {
+                            return {
+                                results: data.map(function(item) {
+                                    return {
+                                        id: item.referring_authority,
+                                        text: item.referring_authority
+                                    };
+                                })
+                            };
+                        },
+
+                        cache: true
+                    }
+                });
             }
 
-            $('#edit_province').select2({
-                dropdownParent: $('#editSuspectModal'),
-                placeholder: 'ولایت انتخاب کړئ',
-                allowClear: true,
-                width: '100%'
+            // ===========================
+            // SELECT2 INIT
+            // ===========================
+            function initSelect2() {
+                $('#edit_province').select2({
+                    dropdownParent: $('#editSuspectModal'),
+                    placeholder: 'ولایت انتخاب کړئ',
+                    allowClear: true,
+                    width: '100%'
+                });
+            }
+
+            $('#editSuspectModal').on('shown.bs.modal', function() {
+                initEditSelect2();
+                if ($('#edit_province').hasClass("select2-hidden-accessible")) {
+                    $('#edit_province').select2('destroy');
+                }
+                // initSelect2();
             });
 
+
+            $('#edit_form').validate({
+
+                ignore: ":hidden:not(.select2-hidden-accessible)",
+
+                rules: {
+                    gender: {
+                        required: true
+                    },
+                    suspect_name: {
+                        required: true,
+
+                    },
+                    father_name: {
+                        required: true
+                    },
+                    grandfather_name: {
+                        required: true
+                    },
+                    crime_type: {
+                        required: true
+                    },
+                    referring_authority: {
+                        required: true
+                    },
+                    monitoring_date: {
+                        required: true
+                    },
+                    province: {
+                        required: true
+                    },
+                    district: {
+                        required: true
+                    },
+                    area: {
+                        required: true
+                    }
+
+                },
+
+                messages: {
+                    gender: "جنسیت انتخاب کړئ",
+                    suspect_name: {
+                        required: "د مظنون نوم داخل کړئ",
+
+                    },
+                    father_name: "د مظنون د پلار نوم داخل کړئ",
+                    grandfather_name: "د مظنون د نیکه نوم داخل کړئ",
+                    crime_type: "د مظنون د جرم ډول انتخاب کړئ",
+                    referring_authority: "رالیږونکې  مرجع انتخاب کړئ",
+                    monitoring_date: "د مظنون د څارنې نیټه انتخاب کړئ",
+                    province: "ولایت انتخاب کړئ",
+                    district: "ناحیه انتخاب کړئ",
+                    area: "سیمه انتخاب کړئ"
+                },
+
+                errorElement: 'div',
+                errorClass: 'invalid-feedback',
+
+                highlight: function(element) {
+                    if ($(element).hasClass('select2-hidden-accessible')) {
+                        $(element).next('.select2').find('.select2-selection')
+                            .addClass('is-invalid');
+                    } else {
+                        $(element).addClass('is-invalid');
+                    }
+                },
+
+                unhighlight: function(element) {
+                    if ($(element).hasClass('select2-hidden-accessible')) {
+                        $(element).next('.select2').find('.select2-selection')
+                            .removeClass('is-invalid');
+                    } else {
+                        $(element).removeClass('is-invalid');
+                    }
+                },
+
+                errorPlacement: function(error, element) {
+                    if (element.hasClass('select2-hidden-accessible')) {
+                        error.insertAfter(element.next('.select2'));
+                    } else {
+                        error.insertAfter(element);
+                    }
+                }
+            });
+
+            $('#edit_province, #edit_referring_authority').on('change', function() {
+                $(this).valid();
+            });
+
+            // ===========================
+            // TOGGLE FIELD
+            // ===========================
             function toggleEditChildrenField() {
                 if ($('#edit_gender').val() === 'ښځینه') {
                     $('#edit_childrenWithMotherDiv').show();
@@ -1202,7 +1365,6 @@
             // ===========================
             // OPEN EDIT MODAL
             // ===========================
-
             $(document).on('click', '.edit-btn', function() {
 
                 let id = $(this).data('id');
@@ -1212,11 +1374,13 @@
                     method: 'GET',
                     success: function(data) {
 
-                        // Reset form first
                         $('#edit_form')[0].reset();
-                        $('#edit_existing_files_area').html('');
 
-                        // Fill inputs
+                        $('#edit_form').validate().resetForm();
+                        $('#edit_form .form-control, #edit_form .form-select')
+                            .removeClass('is-invalid');
+
+                        // fill normal fields
                         $('#edit_suspect_id').val(data.id);
                         $('#edit_gender').val(data.gender);
                         $('#edit_suspect_name').val(data.suspect_name);
@@ -1224,49 +1388,24 @@
                         $('#edit_grandfather_name').val(data.grandfather_name);
                         $('#edit_children_with_mother').val(data.children_with_mother);
                         $('#edit_crime_type').val(data.crime_type);
-                        $('#edit_referring_authority').val(data.referring_authority);
                         $('#edit_monitoring_date').val(data.monitoring_date);
-                        $('#edit_province').val(data.province).trigger('change');
                         $('#edit_district').val(data.district);
                         $('#edit_area').val(data.area);
 
-                        $("input[name='has_items']").prop('checked', false);
-                        if (data.has_items !== null) {
-                            $("input[name='has_items'][value='" + data.has_items + "']")
-                                .prop('checked', true);
-                        }
+                        // 🔥 province
+                        $('#edit_province').val(data.province).trigger('change');
 
-                        // ===========================
-                        // SHOW EXISTING FILES
-                        // ===========================
+                        // 🔥 referring authority (IMPORTANT)
+                        if (data.referring_authority) {
 
-                        if (data.files && data.files.length > 0) {
+                            let option = new Option(
+                                data.referring_authority,
+                                data.referring_authority,
+                                true,
+                                true
+                            );
 
-                            let html = `
-                        <div class="alert alert-success p-2">
-                            ${data.files.length} فایلونه موجود دي
-                        </div>
-                        <div class="d-flex flex-wrap gap-2">
-                    `;
-
-                            data.files.forEach(function(file) {
-                                html += `
-                            <a href="/${file.file_path}"
-                               target="_blank"
-                               class="badge bg-primary text-decoration-none">
-                                ${file.file_path.split('/').pop()}
-                            </a>
-                        `;
-                            });
-
-                            html += `</div>`;
-
-                            $('#edit_existing_files_area').html(html);
-
-                        } else {
-
-                            $('#edit_existing_files_area')
-                                .html('<span class="text-muted">هیڅ فایل نشته</span>');
+                            $('#edit_referring_authority').append(option).trigger('change');
                         }
 
                         toggleEditChildrenField();
@@ -1276,34 +1415,20 @@
             });
 
             // ===========================
-            // WHEN NEW FILE SELECTED
+            // SUBMIT (🔥 FIXED)
             // ===========================
-
-            $('#edit_file_input').on('change', function() {
-
-                let count = this.files.length;
-
-                if (count > 0) {
-                    $('#edit_existing_files_area').html(
-                        `<div class="alert alert-warning p-2">
-                    ${count} نوي فایلونه انتخاب شوي
-                 </div>`
-                    );
-                }
-            });
-
-            // ===========================
-            // SUBMIT FORM
-            // ===========================
-
             $('#edit_form').submit(function(e) {
+
+                if (!$(this).valid()) {
+                    return false;
+                }
+
                 e.preventDefault();
 
                 let id = $('#edit_suspect_id').val();
 
                 $.ajax({
-                    url: "{{ route('suspects.update', ['id' => ':id']) }}"
-                        .replace(':id', id),
+                    url: "{{ route('suspects.update', ['id' => ':id']) }}".replace(':id', id),
                     method: 'POST',
                     data: new FormData(this),
                     processData: false,
@@ -1327,12 +1452,23 @@
                                 location.reload();
                             }, 1500);
                         }
-                    },
-
-                    error: function(err) {
-                        console.log("AJAX Error:", err);
                     }
                 });
+            });
+
+            // ===========================
+            // RESET ON CLOSE
+            // ===========================
+            $('#editSuspectModal').on('hidden.bs.modal', function() {
+
+                $('#edit_form')[0].reset();
+
+                $('#edit_form').validate().resetForm();
+
+                $('#edit_form .form-control, #edit_form .form-select')
+                    .removeClass('is-invalid');
+
+                $('#edit_province').val(null).trigger('change');
             });
 
         });
@@ -1340,55 +1476,6 @@
 
 
 
-    {{-- <script>
-        $(document).on('click', '.destroy_btn', function() {
-            let suspectId = $(this).data('id');
-
-            Swal.fire({
-                title: 'ایا تاسې ډاډه یاست؟',
-                text: 'تاسې به دا معلومات حذف کړئ!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: ' هو',
-                cancelButtonText: 'نه!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: "{{ route('suspects.destroy', '') }}/" + suspectId,
-                        type: 'GET',
-                        data: {
-                            _token: '{{ csrf_token() }}'
-                        },
-                        success: function(response) {
-                            if (response.status === true) {
-                                Swal.fire(
-                                    'حذف شو!',
-                                    'معلومات په بریالیتوب سره حذف شول.',
-                                    'success'
-                                );
-                                $('#suspects_table').DataTable().ajax.reload();
-                            } else {
-                                Swal.fire(
-                                    'خطا!',
-                                    'د معلوماتو د حذف کولو پر مهال ستونزه رامنځته شوه.',
-                                    'error'
-                                );
-                            }
-                        },
-                        error: function() {
-                            Swal.fire(
-                                'خطا!',
-                                'د معلوماتو د حذف کولو پر مهال ستونزه رامنځته شوه.',
-                                'error'
-                            );
-                        }
-                    });
-                }
-            });
-        });
-    </script> --}}
 
     <script>
         $(document).on('click', '.release-btn', function(e) {

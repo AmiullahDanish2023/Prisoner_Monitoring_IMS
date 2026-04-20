@@ -106,7 +106,7 @@ Route::middleware(['auth'])->group(function () {
 Route::get('release-sources/show', [ReleaseSourceController::class, 'show'])->name('release-sources.show');
 Route::get('release-sources/delete/{id}', [ReleaseSourceController::class, 'deleteSource'])->name('release-sources.delete');
 Route::post('/release-sources/update/{id}', [ReleaseSourceController::class, 'updateSource'])->name('release-sources.update');
-    
+
 
 
 //------------------------------------ Start Report Routes ------------------------------------------------------------------
@@ -153,7 +153,7 @@ Route::middleware(['auth', 'setlocale'])->group(function () {
         [LivelihoodPlanController::class, 'monthlyDetails']
     )->name('livelihood.month.details');
 
-   Route::delete('/livelihood/month/{month}', [LivelihoodPlanController::class, 'deleteMonth']);
+    Route::delete('/livelihood/month/{month}', [LivelihoodPlanController::class, 'deleteMonth']);
 
     // Edit single livelihood record
     Route::get(

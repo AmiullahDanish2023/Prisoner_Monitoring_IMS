@@ -164,9 +164,9 @@
                  }
              ]
          });
-     </script>
+    //  </script>
 
-     <script>
+     {{-- <script>
          $(document).on('click', '.delete-month', function() {
              var suspectId = $(this).data('id');
              event.preventDefault();
@@ -226,5 +226,5 @@
                  }
              });
          });
-     </script>
+     </script> --}}
  @endsection

@@ -48,11 +48,7 @@ class PermissionSeeder extends Seeder
                 'name_fa' => 'د مظنون معلوماتو تغیرول',
                 'guard_name' => 'web',
             ],
-            // [
-            //     'name' => 'Delete Suspect',
-            //     'name_fa' => 'حذف مظنون',
-            //     'guard_name' => 'web',
-            // ],
+           
 
             [
                 'name' => 'Release Suspect',
@@ -69,11 +65,7 @@ class PermissionSeeder extends Seeder
                 'name_fa' => 'د رهایی یا انتقال مظنونینو جزئیاتو مشاهده',
                 'guard_name' => 'web',
             ],
-            // [
-            //     'name' => 'Delete Release or Transfer Suspect',
-            //     'name_fa' => 'حذف مظنون رهایی یا انتقال',
-            //     'guard_name' => 'web',
-            // ],
+        
 
             [
                 'name' => 'Add Suspect Release Reference Section',
@@ -90,11 +82,7 @@ class PermissionSeeder extends Seeder
                 'name_fa' => 'د مظنونینو مرجع تغیرول',
                 'guard_name' => 'web',
             ],
-            // [
-            //     'name' => 'Delete Suspect Reference',
-            //     'name_fa' => 'حذف مرجع مظنونین',
-            //     'guard_name' => 'web',
-            // ],
+           
             [
                 'name' => 'Report Mangement Section',
                 'name_fa' => 'د راپورنو مدیریت برخه',

@@ -1,84 +1,109 @@
 @extends('layouts.master')
 
 @section('content')
-<div class="card shadow-sm">
+    <div class="card shadow-sm">
 
-    <!-- Header -->
-    <div class="card-header d-flex justify-content-between align-items-center">
-       
-        <h4 class="card-title mb-0 fw-bold">نوې مرجع اضافه کړئ</h4>
-        
-        <a href="{{ route('release-sources.index') }}" class="btn btn-primary btn-sm">
-            لیست ته بیرته لاړ شئ
-        </a>
+        <!-- Header -->
+        <div class="card-header d-flex justify-content-between align-items-center">
 
-        <style>
-            .form-label {
-                font-weight: 600;
-                color: #333;
-            }
+            <h4 class="card-title mb-0 fw-bold">نوې مرجع اضافه کړئ</h4>
 
-            .form-control {
-                border-radius: 6px !important;
-                padding: 10px !important;
-            }
+            <a href="{{ route('release-sources.index') }}" class="btn btn-primary btn-sm">
+                لیست ته بیرته لاړ شئ
+            </a>
 
-            .card {
-                border-radius: 10px;
-            }
+            <style>
+                .form-label {
+                    font-weight: 600;
+                    color: #333;
+                }
 
-            .card-header {
-                background: #f1fbff !important;
-                border-bottom: 1px solid #d7f3ff;
-            }
+                .form-control {
+                    border-radius: 6px !important;
+                    padding: 10px !important;
+                }
 
-            .form-section-title {
-                font-size: 16px;
-                font-weight: bold;
-                margin-bottom: 15px;
-                color: #007bff;
-                border-left: 4px solid #0dcaf0;
-                padding-left: 8px;
-            }
+                .card {
+                    border-radius: 10px;
+                }
 
-            .btn-save {
-                padding: 8px 20px;
-                border-radius: 6px;
-                font-weight: 600;
-            }
-        </style>
-    </div>
+                .card-header {
+                    background: #f1fbff !important;
+                    border-bottom: 1px solid #d7f3ff;
+                }
 
-    <!-- FORM -->
-    <form action="{{ route('release-sources.store') }}" method="POST">
-        @csrf
+                .form-section-title {
+                    font-size: 16px;
+                    font-weight: bold;
+                    margin-bottom: 15px;
+                    color: #007bff;
+                    border-left: 4px solid #0dcaf0;
+                    padding-left: 8px;
+                }
 
-        <div class="card-body">
+                .btn-save {
+                    padding: 8px 20px;
+                    border-radius: 6px;
+                    font-weight: 600;
+                }
+            </style>
+        </div>
 
-           
+        <!-- FORM -->
+        <form id="source_form" action="{{ route('release-sources.store') }}" method="POST" autocomplete="off">
+            @csrf
 
-            <div class="row">
+            <div class="card-body">
 
-                <!-- Name in Dari -->
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">نوم (په دری)</label>
-                    <input type="text" name="name_da" class="form-control" required>
-                </div>
 
-                <!-- Name in Pashto -->
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">نوم (په پښتو)</label>
-                    <input type="text" name="name_pa" class="form-control">
+
+                <div class="row">
+
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">نوم (په پښتو)</label>
+                        <input type="text" name="name_da" class="form-control" required>
+                    </div>
+
+
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">نوم (په دری)</label>
+                        <input type="text" name="name_pa" class="form-control">
+                    </div>
+
                 </div>
 
             </div>
 
-        </div>
-
-        <!-- Footer -->
-        <div class="card-footer text-end">
-            <button class="btn btn-primary btn-save">ثبت</button>
-        </div>
-    </form>
-</div>
+            <!-- Footer -->
+            <div class="card-footer text-end">
+                <button class="btn btn-primary btn-save">ثبت</button>
+            </div>
+        </form>
+    </div>
+@endsection
+@section('scripts')
+    <script>
+        $('#source_form').validate({
+            rules: {
+                name_da: {
+                    required: true,
+                    
+                }
+            },
+            messages: {
+                name_da: {
+                    required: "مهرباني وکړئ نوې مرجع اضافه کړئ",
+                   
+                }
+            },
+            errorClass: 'is-invalid',
+            validClass: 'is-valid',
+            errorElement: 'div',
+            errorPlacement: function(error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.mb-3').append(error);
+            }
+        });
+    </script>
 @endsection

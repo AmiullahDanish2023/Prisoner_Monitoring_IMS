@@ -109,6 +109,7 @@ class suspectController extends Controller
       'gender' => 'required',
       'suspect_name' => 'required',
       'father_name' => 'required',
+      'children_with_mother' => 'nullable|string',
       'grandfather_name' => 'required',
       'crime_type' => 'required',
       'referring_authority' => 'required',
@@ -309,17 +310,17 @@ class suspectController extends Controller
   }
 
   public function getAuthorities(Request $request)
-{
+  {
     $search = $request->search;
 
     return Suspect::query()
-        ->when($search, function ($query) use ($search) {
-            $query->where('referring_authority', 'LIKE', "%$search%");
-        })
-        ->selectRaw('LOWER(TRIM(referring_authority)) as referring_authority')
-        ->distinct()
-        ->limit(50)
-        ->get();
+      ->when($search, function ($query) use ($search) {
+        $query->where('referring_authority', 'LIKE', "%$search%");
+      })
+      ->selectRaw('LOWER(TRIM(referring_authority)) as referring_authority')
+      ->distinct()
+      ->limit(50)
+      ->get();
 
 
     return response()->json($data);

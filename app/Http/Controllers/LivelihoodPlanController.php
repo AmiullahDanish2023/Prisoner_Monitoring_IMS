@@ -59,14 +59,14 @@ class LivelihoodPlanController extends Controller
                  </a>";
                 }
 
-                // Delete Monthly Records
-                $btn .= "<a class='btn btn-danger btn-sm delete-month'
-                        data-month='{$month}'
-                        data-title='حذف راپور'>
-                        حذف
-                    </a>";
+                // // Delete Monthly Records
+                // $btn .= "<a class='btn btn-danger btn-sm delete-month'
+                //         data-month='{$month}'
+                //         data-title='حذف راپور'>
+                //         حذف
+                //     </a>";
 
-                $btn .= "</div>";
+                // $btn .= "</div>";
 
                 return $btn;
             })
@@ -168,17 +168,17 @@ class LivelihoodPlanController extends Controller
         return view('LiveLiHood.livelihood_month_details', compact('livelihoods', 'month'));
     }
 
-    public function deleteMonth($month)
-    {
+    // public function deleteMonth($month)
+    // {
          
-        Livelihood::where('livelihoodDate', 'like', $month . '%')->delete();
+    //     Livelihood::where('livelihoodDate', 'like', $month . '%')->delete();
 
-        return response()->json([
-            'status' => true,
-            'message' => 'د میاشت راپور حذف شو'
-        ]);
+    //     return response()->json([
+    //         'status' => true,
+    //         'message' => 'د میاشت راپور حذف شو'
+    //     ]);
         
-    }
+    // }
 
     public function edit($id)
     {

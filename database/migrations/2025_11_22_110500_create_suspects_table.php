@@ -19,7 +19,7 @@ class CreateSuspectsTable extends Migration
             $table->string('suspect_name');
             $table->string('father_name');
             $table->string('grandfather_name')->nullable();
-            $table->integer('children_with_mother')->nullable();
+            $table->string('children_with_mother')->nullable();
             $table->string('crime_type');
             $table->string('referring_authority')->nullable();
             $table->date('monitoring_date');
@@ -38,7 +38,7 @@ class CreateSuspectsTable extends Migration
             $table->index('suspect_name');
             $table->index('father_name');
             $table->index('crime_type');
-            $table->index('province ');
+            $table->index('province');
             $table->index('monitoring_date');
             $table->index('referring_authority');
 
