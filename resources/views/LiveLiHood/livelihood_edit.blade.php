@@ -1,8 +1,8 @@
 @extends('layouts.master')
 
 @section('content')
-    <link rel="stylesheet" href="{{ asset('assets/persian-date/persian-datepicker.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('perisanDatePicker/css/persianDatepicker-default.css') }}" />
+    {{-- <link rel="stylesheet" href="{{ asset('assets/persian-date/persian-datepicker.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('perisanDatePicker/css/persianDatepicker-default.css') }}" /> --}}
 
     <style>
         .section-title {
@@ -15,10 +15,10 @@
 
         <div class="card-header fw-bold fs-4 d-flex justify-content-center align-items-center text-center"
             style="height:100px;">
-            ویرایش فورم پلان مواد غذایی بدل اعاشه
+           د بدل اعاشې د غذایی موادو تغیرول
         </div>
 
-
+     
         <div class="card-body">
 
             <form action="{{ route('livelihood.update', $livelihood->id) }}" method="POST" id="livelihoodForm">
@@ -179,12 +179,12 @@
 @endsection
 
 @section('scripts')
-    {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
+    
+    {{-- <script src="{{ asset('perisanDatePicker/js/persianDatepicker.js') }}"></script> --}}
+    
+{{-- <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script> --}}
     <script src="{{ asset('perisanDatePicker/js/persianDatepicker.js') }}"></script>
-    {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> --}}
-<script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>
-    <script src="{{ asset('perisanDatePicker/js/persianDatepicker.js') }}"></script>
-    <script src="{{ asset('assets/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    {{-- <script src="{{ asset('assets/bootstrap/js/bootstrap.bundle.min.js') }}"></script> --}}
 
 
 

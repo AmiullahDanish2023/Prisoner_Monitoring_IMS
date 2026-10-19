@@ -2,7 +2,7 @@
 <style>
     .chart-box {
         height: 280px;
-        
+
     }
 
     .chart-box canvas {
@@ -20,8 +20,8 @@
             <div class="col-md-3">
                 <div class="card text-center shadow-sm">
                     <div class="card-body">
-                        <h6> {{ __('translate.all Suspects(male and female)') }}</h6>
-                        <h2 class="fw-bold">{{ $totalPrisoners }}</h2>
+                        <h6> {{ __('translate.all Suspects') }}</h6>
+                        <h2 class="fw-bold">{{ $totalWithChildren }}</h2>
                     </div>
                 </div>
             </div>
@@ -74,7 +74,7 @@
                 {{-- Livelihood --}}
                 <div class="card shadow-sm">
                     <div class="card-body">
-                        <h6 class="mb-3">   {{ __('translate.livelihood  monthly price') }} </h6>
+                        <h6 class="mb-3"> {{ __('translate.livelihood  monthly price') }} </h6>
                         <div class="chart-box">
                             <canvas id="livelihoodChart"></canvas>
                         </div>
@@ -118,7 +118,9 @@
             new Chart(document.getElementById('statusChart'), {
                 type: 'bar',
                 data: {
-                    labels: [' {{ __('translate.presoners suspects') }} ', ' {{ __('translate.release suspects') }} '],
+                    labels: [' {{ __('translate.presoners suspects') }} ',
+                        ' {{ __('translate.release suspects') }} '
+                    ],
                     datasets: [{
                         label: '{{ __('translate.number') }}',
                         data: [{{ $detainedCount }}, {{ $releasedCount }}],

@@ -18,17 +18,20 @@ class HomeController extends Controller
     {
         /* ================= KPI CARDS ================= */
 
-        // Active prisoners (not released)
-        $totalPrisoners = Suspect::where('status', 'prisoner')->count();
+        $data = Suspect::where('status', 'prisoner')
+            ->selectRaw("
+        COUNT(*) as totalPrisoners,
+        SUM(CASE WHEN gender = 'نارینه' THEN 1 ELSE 0 END) as maleCount,
+        SUM(CASE WHEN gender = 'ښځینه' THEN 1 ELSE 0 END) as femaleCount,
+        SUM(COALESCE(children_with_mother, 0)) as childrenCount
+    ")
+            ->first();
 
-        $maleCount = Suspect::where('status', 'prisoner')
-            ->where('gender', 'نارینه')->count();
-
-        $femaleCount = Suspect::where('status', 'prisoner')
-            ->where('gender', 'ښځینه')->count();
-
-        $childrenCount = Suspect::where('status', 'prisoner')
-            ->sum('children_with_mother');
+        $totalPrisoners   = $data->totalPrisoners;
+        $maleCount        = $data->maleCount;
+        $femaleCount      = $data->femaleCount;
+        $childrenCount    = $data->childrenCount;
+        $totalWithChildren = $totalPrisoners + $childrenCount;
 
         /* ================= STATUS BAR ================= */
 
@@ -46,9 +49,9 @@ class HomeController extends Controller
         /* ================= LIVELIHOOD LINE ================= */
 
         $livelihoodData = Livelihood::select(
-                DB::raw('DATE(livelihoodDate) as date'),
-                DB::raw('SUM(amount) as total')
-            )
+            DB::raw('DATE(livelihoodDate) as date'),
+            DB::raw('SUM(amount) as total')
+        )
             ->groupBy('date')
             ->orderBy('date', 'desc')
             ->limit(7)
@@ -67,7 +70,8 @@ class HomeController extends Controller
             'detainedCount',
             'genderChart',
             'livelihoodLabels',
-            'livelihoodTotals'
+            'livelihoodTotals',
+            'totalWithChildren'
         ));
     }
 }

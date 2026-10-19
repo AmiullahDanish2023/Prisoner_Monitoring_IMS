@@ -99,12 +99,59 @@
                     /* bold */
                     font-size: 18px !important;
                 }
+
+                #release_table {
+                    border: 1px solid #dee2e6;
+                    border-radius: 8px;
+                    overflow: hidden;
+                }
+
+                #release_table th,
+                #release_table td {
+                    border: 1px solid #dee2e6 !important;
+                }
+
+                #release_table thead th {
+                    background: #3f577c;
+                    color: #fff;
+                    font-weight: 600;
+                    text-align: center;
+                    vertical-align: middle;
+                    padding: 12px;
+                }
+
+                #release_table td {
+                    padding: 10px;
+                    text-align: center;
+                    vertical-align: middle;
+                }
+
+                #release_table tbody tr {
+                    transition: all 0.2s ease;
+                }
+
+                #release_table tbody tr:hover {
+                    background-color: #f1faff;
+                }
+
+                #release_table.table-striped tbody tr:nth-of-type(odd) {
+                    background-color: #6597ca;
+                }
+
+                .table-responsive {
+                    border-radius: 10px;
+                    overflow: hidden;
+                    border: 1px solid #dee2e6;
+                }
+
+             
+                
             </style>
         </div>
 
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-hover table-striped  table-checkable align-middle"
+                <table class="table table-bordered table-hover table-responsive  table-checkable align-middle"
                     id="release_table">
                     <thead style="background-color:#c1effa;">
                         <tr class="bg-primary-o-10">

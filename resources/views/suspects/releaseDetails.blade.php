@@ -4,8 +4,9 @@
 @endsection
 
 @section('content')
-    <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.rtl.css') }}" rel="stylesheet" type="text/css" />
-    
+    {{-- <link href="{{ asset('assets/plugins/custom/datatables/datatables.bundle.rtl.css') }}" rel="stylesheet" type="text/css" /> --}}
+    <script src="{{ asset('perisanDatePicker/js/persianDatepicker.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('assets/bootstrap-icons/bootstrap-icons.css') }}">
 
     <style>
         <style>.cursor-pointer {
@@ -86,7 +87,7 @@
                                     @endphp
 
                                     @if ($suspectFiles->count() > 0)
-                                        <a href="{{ route('suspects.files', $suspect->id) }}" target="_blank"
+                                        <a href="{{ route('suspects.files', $suspect->id) }}"
                                             class="btn btn-sm btn-primary">
                                             <i class="fas fa-folder-open"></i>
                                             د فایلونو لیدل ({{ $suspectFiles->count() }})
@@ -141,12 +142,12 @@
                                     </td>
                                     <td class="text-center">
                                         @if ($suspect->releaseFiles->count() > 0)
-                                            <a href="{{ route('suspects.release.files', $suspect->id) }}" target="_blank"
+                                            <a href="{{ route('suspects.release.files', $suspect->id) }}"
                                                 class="btn btn-sm btn-success">
 
                                                 <i class="fas fa-file-alt"></i>
 
-                                                د ریلیز فایلونه
+                                                د فایلونو لیدل
                                                 ({{ $suspect->releaseFiles->count() }})
 
                                             </a>
@@ -178,5 +179,6 @@
 
                 </div>
             </div>
-        </div>
-    @endsection
+        </div>   
+    </div>
+@endsection

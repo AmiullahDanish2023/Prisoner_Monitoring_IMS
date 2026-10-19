@@ -102,9 +102,24 @@
         راپور هفته وار ({{ $weekRange }})
     </div>
 
-   
+
 
     <!-- Report Table -->
+    @php
+        function formatNumber($number)
+        {
+            if ($number == 0 || $number == null) {
+                return '0';
+            }
+
+            $formatted = number_format((float) $number, 3, '.', '');
+            $formatted = rtrim($formatted, '0');
+            $formatted = rtrim($formatted, '.');
+
+            return $formatted;
+        }
+    @endphp
+
     <table class="report-table">
         <thead>
             <tr>
@@ -127,12 +142,11 @@
                     <td>{{ $row['date'] }}</td>
                     <td>{{ $row['weekday'] }}</td>
                     <td>{{ $row['persons'] }}</td>
-                    <td>{{ number_format($row['amount'], 0) }}</td>
+
+                    <td>{{ formatNumber($row['amount']) }}</td>
 
                     @foreach ($items as $field => $label)
-                        <td>
-                            {{ $row[$field] == 0 ? 0 : number_format($row[$field], 0) }}
-                        </td>
+                        <td>{{ formatNumber($row[$field]) }}</td>
                     @endforeach
                 </tr>
             @endforeach
@@ -141,13 +155,13 @@
         <tfoot>
             <tr>
                 <td colspan="3">مجموع</td>
+
                 <td>{{ $totals['persons'] }}</td>
-                <td>{{ number_format($totals['amount'], 0) }}</td>
+
+                <td>{{ formatNumber($totals['amount']) }}</td>
 
                 @foreach ($items as $field => $label)
-                    <td>
-                        {{ $totals[$field] == 0 ? 0 : number_format($totals[$field], 0) }}
-                    </td>
+                    <td>{{ formatNumber($totals[$field]) }}</td>
                 @endforeach
             </tr>
         </tfoot>
@@ -182,5 +196,5 @@
     </table>
 
 </body>
-</html> 
 
+</html>

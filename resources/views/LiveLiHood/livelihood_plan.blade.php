@@ -18,12 +18,12 @@
 
     <div class="card shadow-sm">
         <div class="card-header fw-bold fs-4 d-flex justify-content-center align-items-center text-center"
-            style="height: 100px;">
+            style="height: 100px;" style="background-color:#3f577c;">
             فورم پلان مواد غذایی مظنونین ذکور واناث امریت نظارت خانه قومندانی ا منیه ولایت کابل
         </div>
 
         <div class="card-body">
-            <form method="POST" action="{{ route('livelihood.store') }}" id="livelihoodForm">
+            <form  method="POST" action="{{ route('livelihood.store') }}" id="livelihoodForm">
                 @csrf
 
                 {{-- ================== معلومات عمومی ================== --}}
@@ -208,7 +208,7 @@
                     if (val !== '') {
                         hasValue = true;
 
-                        
+
                         if (isNaN(val)) {
                             showError(name, 'لطفاً یک عدد معتبر را داخل کنید');
                             hasError = true;

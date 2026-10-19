@@ -10,6 +10,7 @@ use App\Http\Controllers\LivelihoodPlanController;
 use App\Http\Controllers\ReleaseSourceController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\suspectController;
+use App\Http\Controllers\BillController;
 
 use Illuminate\Support\Facades\Auth;
 /*
@@ -62,16 +63,11 @@ Route::post('users/role-store', [UserController::class, 'role_store'])->middlewa
 Route::get('users/role-edit', [UserController::class, 'role_edit'])->middleware(['auth', 'setlocale'])->name('role.edit');
 Route::post('users/role-update', [UserController::class, 'role_update'])->middleware(['auth', 'setlocale'])->name('role.update');
 # --------------------------------- End Users Routes ------------------------------------------------------------------
-Route::delete('/suspects/files/{id}', [SuspectController::class, 'deleteFile'])->name('suspects.files.delete');
+
 
 Route::get('/suspects/{id}/files', [SuspectController::class, 'showFiles'])->name('suspects.files');
-Route::get('/suspects/{id}/release-files', [SuspectController::class, 'releaseFiles'])
-    ->name('suspects.release.files');
-Route::delete(
-    '/release-files/{id}',
-    [SuspectController::class, 'deleteReleaseFile']
-)
-    ->name('suspects.release.files.delete');
+Route::get('/suspects/{id}/release-files', [SuspectController::class, 'releaseFiles'])->name('suspects.release.files');
+
 
 
 # --------------------------------- suspects Routes -------------------------------------------------------------------
@@ -127,8 +123,8 @@ Route::post('reports/released-suspects/pdf', [ReportController::class, 'released
 
 // monthly suspects PDF Report
 Route::get('reports/monthly-suspects/pdf', [ReportController::class, 'monthlySuspectPdf'])->name('reports.monthly.pdf');
-
-
+//monthly suspects create report
+Route::get('reports/monthly-suspects', [ReportController::class, 'monthlySuspectReport'])->name('reports.monthly');
 # --------------------------------- End suspects Routes ------------------------------------------------------------------
 
 
@@ -172,3 +168,94 @@ Route::middleware(['auth', 'setlocale'])->group(function () {
     )->name('livelihood.month.pdf');
 });
 #--------------------------------- End livelihood plan Routes -------------------------------------------------------------------
+
+
+// د بیلونو لیست
+Route::get('bills', [BillController::class, 'index'])
+    ->middleware(['auth', 'setlocale'])
+    ->name('bills.index');
+
+// د بیل ذخیره کول
+Route::post('bills/store', [BillController::class, 'store'])->middleware(['auth', 'setlocale'])->name('bills.store');
+
+
+
+// د بیل تفصیلات (AJAX)
+Route::get('bills/show/{id}', [BillController::class, 'show'])
+    ->middleware(['auth', 'setlocale'])
+    ->name('bills.show');
+
+// د بیل لیست (AJAX)
+Route::get('bills/list', [BillController::class, 'list'])
+    ->middleware(['auth', 'setlocale'])
+    ->name('bills.list');
+
+// د بیل سمول (Edit form)
+Route::get('bills/edit/{id}', [BillController::class, 'edit'])
+    ->middleware(['auth', 'setlocale'])
+    ->name('bills.edit');
+
+// د بیل تازه کول
+
+Route::put('bills/update/{id}', [BillController::class, 'update'])
+    ->middleware(['auth', 'setlocale'])
+    ->name('bills.update');
+
+// د بیل حذف کول 
+Route::get('bills/destroy/{id}', [BillController::class, 'destroy'])
+    ->middleware(['auth', 'setlocale'])
+    ->name('bills.destroy');
+
+
+// د عکس حذف کول
+Route::get('bills/image/destroy/{id}', [BillController::class, 'deleteImage'])
+    ->middleware(['auth', 'setlocale'])
+    ->name('bills.image.destroy');
+
+// د بیل حالت بدلول
+Route::get('bills/status/{id}/{status}', [BillController::class, 'changeStatus'])
+    ->middleware(['auth', 'setlocale'])
+    ->name('bills.change-status');
+// --------------------------------- Reports Routes -------------------------------------------------------------------
+// ==========================================
+// د بیل راپور روټونه
+// ==========================================
+
+// د راپور لومړنی صفحه
+Route::get('bills/reports', [BillController::class, 'reports'])
+    ->middleware(['auth', 'setlocale'])
+    ->name('bills.reports');
+
+// د راپور ډاټا (AJAX)
+Route::get('bills/reports/data', [BillController::class, 'reportsData'])
+    ->middleware(['auth', 'setlocale'])
+    ->name('bills.reports.data');
+
+// د راپور ایکسپورټ (Excel/PDF)
+Route::get('bills/reports/export', [BillController::class, 'exportReport'])
+    ->middleware(['auth', 'setlocale'])
+    ->name('bills.reports.export');
+
+// د راپور چاپ
+Route::get('bills/reports/print', [BillController::class, 'printReport'])
+    ->middleware(['auth', 'setlocale'])
+    ->name('bills.reports.print');
+
+// د جنسونو لیست (د فلتر لپاره)
+Route::get('bills/reports/items-list', [BillController::class, 'itemsList'])
+    ->middleware(['auth', 'setlocale'])
+    ->name('bills.reports.items-list');
+
+// د دوکانونو لیست (د فلتر لپاره)
+Route::get('bills/reports/shops-list', [BillController::class, 'shopsList'])
+    ->middleware(['auth', 'setlocale'])
+    ->name('bills.reports.shops-list');
+// د راپور چاپ - د براوزر لپاره (HTML)
+Route::get('bills/reports/print', [BillController::class, 'printReport'])
+    ->middleware(['auth', 'setlocale'])
+    ->name('bills.reports.print');
+
+// د بیل لیست - د DataTables لپاره (AJAX)
+Route::get('bills/list', [BillController::class, 'list'])
+    ->middleware(['auth', 'setlocale'])
+    ->name('bills.list');

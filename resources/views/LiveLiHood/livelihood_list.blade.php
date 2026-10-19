@@ -3,108 +3,177 @@
  @section('header-menu')
  @endsection
  @section('content')
+
      <style>
+       
+
+         /* ---------- Table Container ---------- */
+         .table-responsive {
+             border-radius: 10px;
+             overflow: hidden;
+             border: 1px solid #dee2e6;
+             background: #fff;
+         }
+
+         /* ---------- Table Base ---------- */
+         #monthly_livelihood_table {
+             width: 100%;
+             border-collapse: collapse !important;
+             font-size: 14px;
+             border: 1px solid #dee2e6;
+         }
+
+         /* ---------- Table Borders ---------- */
+         #monthly_livelihood_table th,
+         #monthly_livelihood_table td {
+             border: 1px solid #dee2e6 !important;
+             padding: 10px;
+             text-align: center;
+             vertical-align: middle;
+         }
+
+         /* ---------- Header ---------- */
+         #monthly_livelihood_table thead th {
+             background: #3f577c !important;
+             color: #fff;
+             font-weight: 600;
+             text-align: center;
+             vertical-align: middle;
+         }
+
+         /* ---------- Body Hover ---------- */
+         #monthly_livelihood_table tbody tr {
+             transition: all 0.2s ease-in-out;
+         }
+
+         #monthly_livelihood_table tbody tr:hover {
+             background-color: #f1faff !important;
+         }
+
+         /* ---------- Striped Rows ---------- */
+         /* #monthly_livelihood_table.table-striped tbody tr:nth-of-type(odd) {
+             background-color: #f9fbfd;
+         } */
+
          /* ---------- Action Buttons Container ---------- */
          .action-buttons {
              display: flex;
+             justify-content: center;
              gap: 6px;
-             /* space between buttons */
          }
 
-         /* Base Button Styling */
+         
+         .action-buttons {
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             gap: 8px;
+         }
+
+         /* ---------- Base Button Styling ---------- */
          .action-buttons a {
-             display: flex !important;
-             /* override inline styles */
+             display: inline-flex !important;
              align-items: center;
              justify-content: center;
              gap: 6px;
+
+             min-width: 38px;
+             height: 38px;
+
+             padding: 0 12px;
+
+             border-radius: 8px;
              cursor: pointer;
-             border-radius: 4px;
-             padding: 4px 6px;
-             transition: all 0.25s ease-in-out;
              text-decoration: none;
+
+             transition: all 0.25s ease-in-out;
+
+             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
          }
 
-         /* SVG icons always white */
+         /* ---------- Icons ---------- */
+         .action-buttons a i,
          .action-buttons a svg {
+             color: #fff !important;
              stroke: #fff !important;
+             font-size: 16px;
          }
 
-         /* Hover effect */
+         /* ---------- Hover Effect ---------- */
          .action-buttons a:hover {
-             transform: scale(1.08);
-             box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+             transform: translateY(-2px) scale(1.03);
+             box-shadow: 0 6px 14px rgba(124, 56, 56, 0.18);
          }
 
-         /* Button Colors */
+         /* ---------- Active Click ---------- */
+         .action-buttons a:active {
+             transform: scale(0.96);
+         }
+
+         /* =========================================================
+           BUTTON COLORS
+        ========================================================= */
+
          .view-btn {
-             background-color: #56a0f0 !important;
+             background: linear-gradient(135deg, #4f9cf9, #1d4ed8);
              color: #fff !important;
          }
 
          .edit-btn {
-             background-color: #0dcaf0 !important;
+             background: linear-gradient(135deg, #22d3ee, #0891b2);
              color: #fff !important;
          }
 
          .destroy_btn {
-             background-color: #e26774 !important;
+             background: linear-gradient(135deg, #fb7185, #dc2626);
              color: #fff !important;
          }
 
          .release-btn {
-             background-color: #a3ee94 !important;
+             background: linear-gradient(135deg, #4ade80, #16a34a);
              color: #fff !important;
          }
 
          .btn-transfer {
-             background-color: #f0c14d !important;
+             background: linear-gradient(135deg, #facc15, #d97706);
              color: #fff !important;
          }
 
-         /* Tooltip for SVG buttons */
+         /* =========================================================
+           TOOLTIP
+        ========================================================= */
+
          .action-buttons a[data-title] {
              position: relative;
          }
 
          .action-buttons a[data-title]::after {
              content: attr(data-title);
+
              position: absolute;
              bottom: 125%;
              left: 50%;
              transform: translateX(-50%);
-             background: #000;
+
+             background: rgba(0, 0, 0, 0.9);
              color: #fff;
+
              font-size: 11px;
-             padding: 4px 8px;
-             border-radius: 4px;
+             padding: 5px 9px;
+
+             border-radius: 5px;
+
              opacity: 0;
              white-space: nowrap;
              pointer-events: none;
+
              transition: all 0.25s ease;
              z-index: 999;
          }
 
          .action-buttons a[data-title]:hover::after {
              opacity: 1;
-             bottom: 135%;
-         }
-
-         .swal2-title,
-         .swal2-html-container {
-             font-family: 'Bahij', sans-serif !important;
-             font-weight: 700 !important;
-             /* bold */
-             font-size: 18px !important;
-         }
-
-         #releaseDropdownBtn.form-control {
-             cursor: pointer;
-         }
-
-         #releaseDropdownBtn.form-control:focus {
-             box-shadow: 0 0 0 .25rem rgba(13, 110, 253, .25);
-             border-color: #86b7fe;
+             bottom: 140%;
          }
      </style>
 
@@ -113,23 +182,26 @@
      <div class="container-fluid">
 
          <h4 class="mb-4 fw-bold text-center">
-             راپور بدل اعاشه
+            د بدل اعاشې راپور
          </h4>
 
          <div class="table-responsive">
-             <table class="table table-bordered table-striped" id="monthly_livelihood_table">
-                 <thead style="background:#9abacc">
-                     <tr>
-                         <th>شماره</th>
+             <table class="table table-bordered table-striped align-middle" id="monthly_livelihood_table">
 
-                         <th>تعداد روځ</th>
-                         <th> تاریخ پلان</th>
-                         <th>مجموع مصرف (AFN)</th>
+                 <thead>
+                     <tr>
+                         <th>شمیره</th>
+                         <th>د ورځو تعداد</th>
+                         <th>د پلان تاریخ</th>
+                         <th>مجموعي مصرف (AFN)</th>
                          <th>عملیات</th>
                      </tr>
                  </thead>
-             </table>
 
+                 <tbody>
+                 </tbody>
+
+             </table>
          </div>
 
      </div>
@@ -164,7 +236,8 @@
                  }
              ]
          });
-    //  </script>
+         //  
+     </script>
 
      {{-- <script>
          $(document).on('click', '.delete-month', function() {

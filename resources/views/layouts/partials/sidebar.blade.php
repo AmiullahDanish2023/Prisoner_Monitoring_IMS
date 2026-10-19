@@ -1,6 +1,7 @@
 <div id="kt_app_sidebar" class="app-sidebar flex-column" data-kt-drawer="true" data-kt-drawer-name="app-sidebar"
     data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="225px"
-    data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle">
+    data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle"
+    style="background-color: #142d4b;">
     <!--begin::Logo-->
     <div class="app-sidebar-logo px-6" id="kt_app_sidebar_logo">
         <!--begin::Logo image-->
@@ -19,21 +20,36 @@
             .app-sidebar .logo-box img {
                 max-width: 60px;
             }
+
+            .title-text {
+                white-space: nowrap;
+
+                font-size: 14px;
+
+            }
+
+            .logo-box a {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
         </style>
         <div class="logo-box">
             <a href="{{ route('home') }}">
                 <img src="{{ asset('uploads/default_log.png') }}" alt="Logo">
-                <h8 class="text-white mt-2">نظارت‌ خونې د ثبت سیستم</h8>
+                <h6 class="text-white mt-2 title-text">
+                    دمظنونینو د ثبت مدیریتي سیستم
+                </h6>
             </a>
         </div>
 
         <!--end::Logo image-->
         <!--begin::Sidebar toggle-->
-        <div id="kt_app_sidebar_toggle"
+        {{-- <div id="kt_app_sidebar_toggle"
             class="app-sidebar-toggle btn btn-icon btn-shadow btn-sm btn-color-muted btn-active-color-primary body-bg h-30px w-30px position-absolute top-50 start-100 translate-middle rotate"
             data-kt-toggle="true" data-kt-toggle-state="active" data-kt-toggle-target="body"
             data-kt-toggle-name="app-sidebar-minimize">
-        </div>
+        </div> --}}
         <!--end::Sidebar toggle-->
     </div>
     <!--end::Logo-->
@@ -172,7 +188,8 @@
                     class="menu-item menu-accordion 
                        {{ request()->routeIs('report.general') ||
                        request()->routeIs('reports.existing.pdf') ||
-                       request()->routeIs('release.suspect.report')
+                       request()->routeIs('release.suspect.report') ||
+                       request()->routeIs('reports.monthly')
                            ? 'here show'
                            : '' }}">
 
@@ -230,8 +247,8 @@
 
                         @can('Create Suspects Mothly Report')
                             <div class="menu-item">
-                                <a class="menu-link" href="#" data-bs-toggle="modal"
-                                    data-bs-target="#monthlySuspectModal">
+                                <a class="menu-link {{ request()->routeIs('reports.monthly') ? 'active' : '' }}"
+                                    href="{{ route('reports.monthly') }}">
                                     <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
                                     <span class="menu-title">{{ __('translate.monthly_report') }}</span>
                                 </a>
@@ -312,6 +329,74 @@
 
                 {{-- -----------------------------end livelihood plan part--------------------------------- --}}
                 <!--end:Menu item-->
+                {{-- ---------------------------start Goods Invoices part--------------------- --}}
+
+                {{-- 1. د برخې سرلیک --}}
+                @can('Goods Invoices Section')
+                    <div class="menu-item pt-5">
+                        <div class="menu-content">
+                            <span class="menu-heading fw-bold text-uppercase">
+                                د اجناسو د بیلونو مدیریت برخه
+                            </span>
+                        </div>
+                    </div>
+                @endcan
+
+                {{-- 2. د اصلي مینو (Parent) برخه --}}
+                @can('Goods Invoices Management')
+                    <div data-kt-menu-trigger="click"
+                        class="menu-item menu-accordion 
+        {{ request()->routeIs('bills.index') || request()->routeIs('bills.reports') ? 'here show' : '' }}">
+
+                        <span class="menu-link">
+                            <span class="menu-icon">
+                                <span class="svg-icon svg-icon-2">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                        <circle cx="12" cy="6" r="3" fill="currentColor" />
+                                        <path d="M6 20C6 15.6 8.7 13 12 13C15.3 13 18 15.6 18 20" fill="currentColor"
+                                            opacity="0.3" />
+                                        <rect x="4" y="14" width="2" height="6" rx="1"
+                                            fill="currentColor" opacity="0.4" />
+                                        <rect x="18" y="11" width="2" height="9" rx="1"
+                                            fill="currentColor" opacity="0.6" />
+                                    </svg>
+                                </span>
+                            </span>
+
+                            <span class="menu-title">د اجناسو د بیلونو مدیریت</span>
+                            <span class="menu-arrow"></span>
+                        </span>
+
+                        <!-- مینو فرعي برخه -->
+                        <div class="menu-sub menu-sub-accordion">
+
+                            {{-- د بیلونو لیست او ثبت --}}
+                            @can('List Goods Invoices')
+                                <div class="menu-item">
+                                    <a class="menu-link {{ request()->routeIs('bills.index') ? 'active' : '' }}"
+                                        href="{{ route('bills.index') }}">
+                                        <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                                        <span class="menu-title">د اجناسو د بیلونو ثبت او لیست</span>
+                                    </a>
+                                </div>
+                            @endcan
+
+                            {{-- د بیلونو راپور --}}
+                            @can('Goods Invoice Reports')
+                                <div class="menu-item">
+                                    <a class="menu-link {{ request()->routeIs('bills.reports') ? 'active' : '' }}"
+                                        href="{{ route('bills.reports') }}">
+                                        <span class="menu-bullet"><span class="bullet bullet-dot"></span></span>
+                                        <span class="menu-title">د اجناسو د بیلونو راپور</span>
+                                    </a>
+                                </div>
+                            @endcan
+
+                        </div>
+                    </div>
+                @endcan
+
+                {{-- -----------------------------end Goods Invoices part--------------------------------- --}}
                 <!--begin:Menu item-->
                 @can('Create Users')
                     <div class="menu-item pt-5">
@@ -440,48 +525,6 @@
     </style>
 
 
-    {{-- -----------------monthly suspect report modal ----------------------- --}}
-
-
-    <div class="modal fade" id="monthlySuspectModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-
-                <div class="modal-header">
-                    <h5 class="modal-title text-align-center">د مظنونینو میاشتنی راپور</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-
-                <form method="GET" action="{{ route('reports.monthly.pdf') }}" target="_blank">
-
-                    <div class="modal-body">
-
-                        <!-- تاریخ شروع -->
-                        <div class="mb-3">
-                            <label class="form-label">تاریخ شروع</label>
-                            <input type="text" name="start_date" class="form-control farsi-date"
-                                placeholder="از تاریخ" autocomplete="off" value="">
-                        </div>
-
-                        <!-- تاریخ ختم -->
-                        <div class="mb-3">
-                            <label class="form-label">تاریخ ختم</label>
-                            <input type="text" name="end_date" class="form-control farsi-date" placeholder="تا تاریخ"
-                                autocomplete="off" value="">
-                        </div>
-
-
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">راپور جوړول </button>
-                    </div>
-
-                </form>
-
-            </div>
-        </div>
-    </div>
 
 @section('scripts')
     <script src="{{ asset('assets/plugins/global/plugins.bundle.js') }}"></script>

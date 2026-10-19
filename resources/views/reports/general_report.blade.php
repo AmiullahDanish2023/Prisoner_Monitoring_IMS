@@ -4,6 +4,16 @@
     {{-- <link rel="stylesheet" href="{{ asset('assets/persian-date/persian-datepicker.min.css') }}"> --}}
     <link rel="stylesheet" href="{{ asset('perisanDatePicker/css/persianDatepicker-default.css') }}" />
     <style>
+        .form-select,
+        .form-control {
+            min-height: 38px;
+        }
+
+        .form-label {
+            display: block;
+            min-height: 24px;
+        }
+
         .select2-results__options {
             max-height: 200px !important;
 
@@ -54,7 +64,7 @@
     <div class="card">
         <div class="card-body" style="font-weight: bold">
             <form id="generalReportForm" action="{{ route('report.general.pdf') }}" method="POST" class="p-4 rounded shadow"
-                style="background: #f8f8f8; border: 1px solid #e9ebee;">
+                style="background: #fdfdfd; border: 1px solid #fdfdfd;" autocomplete="off">
                 @csrf
 
                 <p class="text-primary text-center" style="font-size: 1.6rem; font-weight:bold">
@@ -62,9 +72,9 @@
                 </p>
                 <hr>
 
-                <div class="row">
-                    <!-- جنسیت -->
-                    <div class="col-md-3">
+                <div class="row align-items-end g-3">
+
+                    <div class="col-md-2">
                         <label class="form-label">جنسیت</label>
                         <select name="gender" class="form-select">
                             <option value=""> انتخاب جنسیت </option>
@@ -73,12 +83,9 @@
                         </select>
                     </div>
 
-
-                    <!-- ولایت -->
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label class="form-label">ولایت</label>
-                        <select name="province_id" id="province_id" class="form-select" style="width:100%"
-                            data-placeholder="انتخاب کنید">
+                        <select name="province_id" class="form-select">
                             <option value="">انتخاب ولایت</option>
                             @foreach ($province as $pro)
                                 <option value="{{ $pro->id }}">{{ $pro->name_da }}</option>
@@ -86,37 +93,29 @@
                         </select>
                     </div>
 
-                    <!-- تاریخ شروع -->
+                    <div class="col-md-2">
+                        <label class="form-label">رالیږونکې مرجع</label>
+                        <select name="referrer" class="form-select">
+                            <option value="">انتخاب رالیږونکې مرجع</option>
+                            @foreach ($referrer as $item)
+                                <option value="{{ $item }}">{{ $item }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
                     <div class="col-md-3">
                         <label class="form-label">تاریخ شروع</label>
-                        <input type="text" name="start_date" class="form-control farsi-date" placeholder="از تاریخ"
-                            autocomplete="off" value="">
+                        <input type="text" name="start_date" class="form-control farsi-date" placeholder="از تاریخ">
                     </div>
 
-                    <!-- تاریخ ختم -->
                     <div class="col-md-3">
                         <label class="form-label">تاریخ ختم</label>
-                        <input type="text" name="end_date" class="form-control farsi-date" placeholder="تا تاریخ"
-                            autocomplete="off" value="">
+                        <input type="text" name="end_date" class="form-control farsi-date" placeholder="تا تاریخ">
                     </div>
+
                 </div>
-                <div class="col-md-3">
-                    <label class="form-label">رالیږونکې مرجع</label>
 
-                    <select name="referrer" id="referrer" class="form-select" style="width:100%">
-                        <option value="">انتخاب رالیږونکې مرجع</option>
 
-                        @foreach ($referrer as $item)
-                            <option value="{{ $item }}">{{ $item }}</option>
-                        @endforeach
-                    </select>
-
-                    @if (isset($selectedReferrer) && $selectedReferrer)
-                        <small class="text-success">
-                            انتخاب شوی: {{ $selectedReferrer }}
-                        </small>
-                    @endif
-                </div>
 
                 <br>
 

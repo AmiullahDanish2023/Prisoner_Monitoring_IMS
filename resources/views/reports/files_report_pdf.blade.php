@@ -1,127 +1,112 @@
-{{-- <style>
-    #table {
-        border-collapse: collapse;
-        width: 100%;
-        font-family: sans-serif;
-    }
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
 
-    #table thead th {
-        border: 2px solid #000;
-        padding: 8px;
-        text-align: center;
-        font-size: 14px;
-        background: #f2f2f2;
-    }
+<head>
+    <meta charset="UTF-8">
 
-    #table tbody td {
-        border: 1px solid #000;
-        padding: 8px;
-        text-align: center;
-        vertical-align: middle;
-        font-size: 13px;
-    }
-
-    .file-img {
-        width: 220px;
-        height: auto;
-        border: 1px solid #333;
-        padding: 4px;
-    }
-
-    .file-box {
-        text-align: center;
-    }
-</style> --}}
-
-<style>
+    <style>
         @page {
-            margin: 35px;
+            margin: 25px;
         }
 
         @font-face {
             font-family: 'bahijfont';
             src: url('{{ public_path('assets/fonts/bahij-nazanin.ttf') }}') format('truetype');
-            font-weight: normal;
-            font-style: normal;
         }
 
         body {
             font-family: 'bahijfont', sans-serif;
             direction: rtl;
-            unicode-bidi: embed;
             margin: 0;
         }
 
-        #table {
-            border-collapse: collapse;
-            width: 100%;
+        .page {
+            page-break-after: always;
         }
 
-        #table thead th {
+        .header-table {
             border: 2px solid #000;
-            text-align: center;
             padding: 5px;
-            background-color: #f2f2f2;
-            font-weight: bold;
-            font-size: 13px;
+            margin-bottom: 10px;
         }
 
-        #table tbody td {
-            border: 1px solid #000;
+        .info-box {
             text-align: center;
-            padding: 4px;
-            font-size: 12px;
-        }
-
-        .header-label {
-            font-size: 16px;
-            font-weight: bold;
-            line-height: 1.3;
-        }
-
-        .report-info {
-            margin: 8px 0;
+            padding: 8px;
+            margin-bottom: 10px;
             font-size: 14px;
-            text-align: right;
+            line-height: 1.8;
+        }
+
+        .image-box {
+            text-align: center;
+        }
+
+        .file-img {
+            width: 90%;
+            height: 800px;
+            object-fit: contain;
+        }
+
+        .empty {
+            text-align: center;
+            margin-top: 100px;
+            font-size: 18px;
         }
     </style>
-<table id="table">
+</head>
 
-    <thead>
+<body>
 
-        <tr>
+    @if ($files->count() > 0)
 
-            <th style="width:60px; font-size: 160% ;">شماره</th>
-            <th style="width:80px; font-size: 130%">نام مظنون</th>
-            <th style="width:150px; font-size: 160%">نوع فایل</th>
-            <th style="font-size: 160%">فایل</th>
+        @foreach ($files as $file)
+            @php
+                $suspectName = $file->suspect->suspect_name ?? '-';
+            @endphp
 
-        </tr>
+            <div class="page">
 
-    </thead>
+                {{-- HEADER --}}
+                <table width="100%">
+                    <tr>
+                        <td style="text-align:left">
+                            <img src="{{ public_path('assets/moi.png') }}" width="100">
+                        </td>
 
+                        <td style="text-align:center; font-size:14px;">
+                            <p>امـــــــــارت اســـــلامی افغــــانــستان</p>
+                            <p>وزارت امــــــــــور داخـــــــــلــــه</p>
+                            <p>معینیت ارشد امــــور امنیتــی</p>
+                            <p>قومنـدانی امنیه ولایت کابل</p>
+                            <p>معاونیت امــور امنیتی</p>
+                            <p>آمریت نظارت خانه</p>
+                        </td>
 
-    <tbody>
+                        <td style="text-align:right">
+                            <img src="{{ public_path('assets/logo.png') }}" width="90">
+                        </td>
+                    </tr>
+                </table>
 
-        @foreach ($files as $index => $file)
-            <tr>
-                <td >{{ $index + 1 }}</td>
+                {{-- INFO --}}
+                <div class="info-box">
 
-                <td>
-                    {{ $file->suspect->suspect_name ?? '-' }}
-                </td>
+                    <div><strong>مظنون نوم :</strong> {{ $suspectName }}</div>
 
-                <td>
+                    <div>
+                        <strong> فایل ډول:</strong>
+                        @if ($file->file_type == 'suspect')
+                            د مظنون د نظارت فایل
+                        @else
+                            د مظنون د رهایی فایل
+                        @endif
+                    </div>
 
-                    @if ($file->file_type == 'suspect')
-                       د مظنون د معرفی فایل 
-                    @else
-                       د مظنون د رهایی  فایل
-                    @endif
+                </div>
 
-                </td>
-
-                <td class="file-box">
+                {{-- IMAGE --}}
+                <div class="image-box">
 
                     @if ($file->file_path)
                         <img src="{{ public_path($file->file_path) }}" class="file-img">
@@ -129,11 +114,17 @@
                         ---
                     @endif
 
-                </td>
+                </div>
 
-            </tr>
+            </div>
         @endforeach
+    @else
+        <div class="empty">
+            هیڅ فایل موجود نه دی
+        </div>
 
-    </tbody>
+    @endif
 
-</table>
+</body>
+
+</html>

@@ -170,14 +170,14 @@ class LivelihoodPlanController extends Controller
 
     // public function deleteMonth($month)
     // {
-         
+
     //     Livelihood::where('livelihoodDate', 'like', $month . '%')->delete();
 
     //     return response()->json([
     //         'status' => true,
     //         'message' => 'د میاشت راپور حذف شو'
     //     ]);
-        
+
     // }
 
     public function edit($id)
@@ -249,10 +249,174 @@ class LivelihoodPlanController extends Controller
     }
 
 
+    public function weeklyReportPdf($id)
+    {
+        $record = Livelihood::findOrFail($id);
 
+        $planJalaliDate = $record->livelihoodDate;
 
+        $planCarbon = Jalalian::fromFormat('Y-m-d', $planJalaliDate)->toCarbon();
 
+        // فقط د همدې ورځې نه شروع
+        $startDate = $planCarbon->copy();
 
+        // ۷ ورځې
+        $endDate = $startDate->copy()->addDays(6);
+
+        $startJalali = Jalalian::fromCarbon($startDate)->format('Y-m-d');
+        $endJalali   = Jalalian::fromCarbon($endDate)->format('Y-m-d');
+
+        // د همدې ۷ ورځو پلانونه
+        $weekPlans = Livelihood::with('weekDay')
+            ->whereBetween('livelihoodDate', [$startJalali, $endJalali])
+            ->orderBy('livelihoodDate')
+            ->get()
+            ->keyBy(function ($plan) {
+                return $plan->livelihoodDate;
+            });
+
+        $persianDays = [
+            'Saturday' => 'شنبه',
+            'Sunday' => 'یکشنبه',
+            'Monday' => 'دوشنبه',
+            'Tuesday' => 'سه‌شنبه',
+            'Wednesday' => 'چهارشنبه',
+            'Thursday' => 'پنجشنبه',
+            'Friday' => 'جمعه',
+        ];
+
+        $items = [
+            'rice' => 'برنج سیله',
+            'sugar' => 'بوره',
+            'green_tea' => 'چای سبز',
+            'beans' => 'لوبیا',
+            'chickpeas' => 'نخود',
+            'milk_powder' => 'شیر خشک',
+            'eggs' => 'تخم مرغ',
+            'oil' => 'روغن',
+            'mutton' => 'گوشت گوسفند',
+            'chicken' => 'گوشت مرغ',
+            'beef' => 'گوشت گاو',
+            'cake' => 'کیک',
+            'yogurt_drink' => 'دوغ',
+            'dates' => 'خرما',
+            'sweets' => 'شیرینی',
+            'eggplant' => 'بانجن سیاه',
+            'zucchini' => 'کدو',
+            'potato' => 'کچالو',
+            'potato_cooked' => 'کچالو جوشک',
+            'fasila' => 'فاصیله',
+            'onion' => 'پیاز',
+            'tomato' => 'رومی',
+            'cucumber' => 'بادرنګ',
+            'salad' => 'سلات',
+            'lemon' => 'لیمو',
+            'salt' => 'نمک',
+            'raisin_rice' => 'کشمش پلو',
+            'dry_bread' => 'نان خشک',
+            'spice_pot' => 'مساله دیگ',
+            'gas' => 'گاز',
+        ];
+
+        $totals = array_fill_keys(array_keys($items), 0);
+
+        $totals['persons'] = 0;
+        $totals['amount']  = 0;
+
+        $rows = [];
+
+        $dayNo = 1;
+
+        for ($date = $startDate->copy(); $date->lte($endDate); $date->addDay()) {
+
+            $currentJalaliDate = Jalalian::fromCarbon($date)->format('Y-m-d');
+
+            // پلان
+            $plan = $weekPlans->get($currentJalaliDate);
+
+            if (!$plan) {
+                $plan = new Livelihood();
+
+                $plan->amount = 0;
+
+                foreach (array_keys($items) as $field) {
+                    $plan->$field = 0;
+                }
+            }
+
+            // مظنونین
+            $male = Suspect::where('status', 'prisoner')
+                ->where('gender', 'نارینه')
+                ->whereDate('monitoring_date', $date)
+                ->count();
+
+            $female = Suspect::where('status', 'prisoner')
+                ->where('gender', 'ښځینه')
+                ->whereDate('monitoring_date', $date)
+                ->count();
+
+            $kids = Suspect::where('status', 'prisoner')
+                ->whereDate('monitoring_date', $date)
+                ->sum('children_with_mother');
+
+            $persons = $male + $female + $kids;
+
+            // ورځ
+            $englishDayName = $date->format('l');
+
+            $weekdayName = $persianDays[$englishDayName] ?? '';
+
+            // amount
+            $amount = round((float)$plan->amount * $persons, 3);
+
+            $row = [
+                'no'       => $dayNo,
+                'date'     => $currentJalaliDate,
+                'weekday'  => $weekdayName,
+                'persons'  => $persons,
+                'amount'   => $amount,
+            ];
+
+            foreach ($items as $field => $label) {
+
+                $value = round((float)$plan->$field * $persons, 3);
+
+                $row[$field] = $value;
+
+                $totals[$field] += $value;
+            }
+
+            $totals['persons'] += $persons;
+            $totals['amount']  += $amount;
+
+            $rows[] = $row;
+
+            $dayNo++;
+        }
+
+        foreach ($totals as $key => $value) {
+
+            if (is_numeric($value)) {
+
+                $totals[$key] = round($value, 3);
+            }
+        }
+
+        $weekRange = $startJalali . ' - ' . $endJalali;
+
+        return PDF::loadView(
+            'LiveLiHood.livelihood_weekly_pdf',
+            compact('rows', 'items', 'totals', 'weekRange'),
+            [],
+            [
+                'format' => 'A4',
+                'orientation' => 'L',
+                'default_font' => 'dejavusans',
+            ]
+        )->stream("Weekly_Livelihood_Report.pdf");
+    }
+
+    // Monthly PDF Report
 
     public function monthlyLivelihoodPdf($month)
     {
@@ -265,121 +429,35 @@ class LivelihoodPlanController extends Controller
             'Thursday' => 'پنجشنبه',
             'Friday' => 'جمعه',
         ];
+
         [$year, $mon] = explode('-', $month);
 
         $startJalali = Jalalian::fromFormat('Y-m-d', "$year-$mon-01");
-        $FirstDayName_of_month = $persianDays[$startJalali->toCarbon()->format('l')];
-        $parsianStartDate = $startJalali;
-        $parsianEndDate   = $startJalali->addMonths(1)->subDays(1);
-
+        $parsianStartDate = clone $startJalali;
+        $parsianEndDate = $startJalali->addMonths(1)->subDays(1);
 
         $startDate = $parsianStartDate->toCarbon();
-        $endDate   = $parsianEndDate->toCarbon();
+        $endDate = $parsianEndDate->toCarbon();
 
-        $items = [
-            'rice'          => 'برنج سیله',
-            'sugar'         => 'بوره',
-            'green_tea'     => 'چای سبز',
-            'beans'         => 'لوبیا',
-            'chickpeas'     => 'نخود',
-            'milk_powder'   => 'شیر خشک',
-            'eggs'          => 'تخم مرغ',
-            'oil'           => 'روغن',
-            'mutton'        => 'گوشت گوسفند',
-            'chicken'       => 'گوشت مرغ',
-            'beef'          => 'گوشت گاو',
-            'cake'          => 'کیک',
-            'yogurt_drink'  => 'دوغ',
-            'dates'         => 'خرما',
-            'sweets'        => 'شیرینی',
-            'eggplant'      => 'بانجن سیاه',
-            'zucchini'      => 'کدو',
-            'potato'        => 'کچالو',
-            'potato_cooked' => 'کچالو جوشک',
-            'fasila'        => 'فاصیله',
-            'onion'         => 'پیاز',
-            'tomato'        => 'رومی',
-            'cucumber'      => 'بادرنګ',
-            'salad'         => 'سلات',
-            'lemon'         => 'لیمو',
-            'salt'          => 'نمک',
-            'raisin_rice'   => 'کشمش پلو',
-            'dry_bread'     => 'نان خشک',
-            'spice_pot'     => 'مساله دیگ',
-            'gas'           => 'گاز',
-        ];
+        // د میاشتې پلانونه - د حقیقی نیټو پر اساس راوړل
+        $monthPlans = Livelihood::with('weekDay')
+            ->where('livelihoodDate', 'like', "$year-$mon-%")
+            ->orderBy('livelihoodDate')
+            ->get()
+            ->keyBy(function ($plan) {
+                return \Morilog\Jalali\Jalalian::fromFormat('Y-m-d', $plan->livelihoodDate)
+                    ->toCarbon()
+                    ->dayOfWeekIso;
+            });
 
-        $totals = array_fill_keys(array_keys($items), 0);
-        $totals['persons'] = 0;
-        $totals['amount']  = 0;
-
-        $rows = [];
-        $dayNo = 1;
-
-
-
-        $weekPlans = Livelihood::with('weekDay')
-            ->take(7)
-            ->get();
-        foreach ($weekPlans as $planDate) {
-
-            $planDate = Jalalian::fromFormat('Y-m-d', $planDate->livelihoodDate)->toCarbon()->format('l');
-            $planDayName = $persianDays[$planDate];
-
-            // =========================
-            // loop month days
-            // =========================
-            for ($date = $startDate->copy(); $date->lte($endDate); $date->addDay()) {
-
-                $male = Suspect::where('status', 'prisoner')
-                    ->where('gender', 'نارینه')
-                    ->whereDate('monitoring_date', $date)
-                    ->count();
-
-                $female = Suspect::where('status', 'prisoner')
-                    ->where('gender', 'ښځینه')
-                    ->whereDate('monitoring_date', $date)
-                    ->count();
-
-                $kids = Suspect::where('status', 'prisoner')
-                    ->whereDate('monitoring_date', $date)
-                    ->sum('children_with_mother');
-
-                $persons = $male + $female + $kids;
-
-
-            
-                $plan = $weekPlans[$date->dayOfWeekIso - 1];
-                if ($FirstDayName_of_month == $planDayName) {
-                    
-                    $weekData = Livelihood::where('livelihoodDate', 'like', $month . '%')
-                        ->first();
-                }
-                $amount = $plan->amount * $persons;
-
-                $row = [
-                    'no'      => $dayNo,
-                    'date'    => Jalalian::fromCarbon($date)->format('Y/m/d'),
-                    'weekday' => $plan->weekDay->name,
-                    'persons' => $persons,
-                    'amount'  => $amount,
-                ];
-
-                foreach ($items as $field => $label) {
-                    $value = $plan->$field * $persons;
-                    $row[$field] = $value;
-                    $totals[$field] += $value;
-                }
-
-                $totals['persons'] += $persons;
-                $totals['amount']  += $amount;
-
-                $rows[] = $row;
-                $dayNo++;
-            }
+        if ($monthPlans->isEmpty()) {
+            $monthPlans = Livelihood::with('weekDay')
+                ->orderBy('week_day_id')
+                ->take(7)
+                ->get()
+                ->keyBy('week_day_id');
         }
 
-
         $items = [
             'rice'          => 'برنج سیله',
             'sugar'         => 'بوره',
@@ -413,17 +491,16 @@ class LivelihoodPlanController extends Controller
             'gas'           => 'گاز',
         ];
 
-        $totals = array_fill_keys(array_keys($items), 0);
+        $totals = array_fill_keys(array_keys($items), 0.0);
         $totals['persons'] = 0;
-        $totals['amount']  = 0;
+        $totals['amount'] = 0.0;
 
         $rows = [];
         $dayNo = 1;
 
-        // =========================
-        // loop month days
-        // =========================
         for ($date = $startDate->copy(); $date->lte($endDate); $date->addDay()) {
+
+            $currentJalaliDate = Jalalian::fromCarbon($date)->format('Y-m-d');
 
             $male = Suspect::where('status', 'prisoner')
                 ->where('gender', 'نارینه')
@@ -439,33 +516,62 @@ class LivelihoodPlanController extends Controller
                 ->whereDate('monitoring_date', $date)
                 ->sum('children_with_mother');
 
-            $persons = $male + $female + $kids;
+            $persons = (int)$male + (int)$female + (int)$kids;
 
+            $dayOfWeek = $date->dayOfWeekIso;
+            $plan = $monthPlans->get($dayOfWeek);
 
-            // د اونۍ ورځ مطابق پلان
-            $plan = $weekPlans[$date->dayOfWeekIso - 1];
+            if (!$plan) {
+                $plan = $monthPlans->isNotEmpty() ? $monthPlans->first() : null;
+            }
 
-            $amount = $plan->amount * $persons;
+            if (!$plan) {
+                $plan = new Livelihood();
+                $plan->amount = 0;
+                foreach (array_keys($items) as $field) {
+                    $plan->$field = 0;
+                }
+            }
+
+            // مهم: د float ارزښتونو سم استعمال
+            $planAmount = (float)($plan->amount ?? 0);
+            $amount = round($planAmount * $persons, 2);
+
+            $englishDayName = $date->format('l');
+            $weekdayName = $persianDays[$englishDayName] ?? '';
 
             $row = [
                 'no'      => $dayNo,
-                'date'    => Jalalian::fromCarbon($date)->format('Y/m/d'),
-                'weekday' => $plan->weekDay->name,
+                'date'    => $currentJalaliDate,
+                'weekday' => $weekdayName,
                 'persons' => $persons,
                 'amount'  => $amount,
             ];
 
             foreach ($items as $field => $label) {
-                $value = $plan->$field * $persons;
+                // مهم: د float ارزښتونو سم استعمال - درې شمېرې د دقیقیت لپاره
+                $fieldValue = (float)($plan->$field ?? 0);
+                $value = round($fieldValue * $persons, 3);
                 $row[$field] = $value;
                 $totals[$field] += $value;
             }
 
             $totals['persons'] += $persons;
-            $totals['amount']  += $amount;
+            $totals['amount'] += $amount;
 
             $rows[] = $row;
             $dayNo++;
+        }
+
+        // د مجموعو ګردول - د توپیر لپاره
+        foreach ($totals as $key => $value) {
+            if (is_numeric($value)) {
+                if (in_array($key, ['persons'])) {
+                    $totals[$key] = (int)$value;
+                } else {
+                    $totals[$key] = round($value, 2);
+                }
+            }
         }
 
         return PDF::loadView(
@@ -474,141 +580,9 @@ class LivelihoodPlanController extends Controller
             [],
             [
                 'orientation' => 'L',
-                'format'      => 'A4',
+                'format' => 'A4',
+                'default_font' => 'dejavusans',
             ]
         )->stream("Monthly_Livelihood_$month.pdf");
-    }
-
-
-    public function weeklyReportPdf($id)
-    {
-        $record = Livelihood::findOrFail($id);
-
-
-        $startDate = \Morilog\Jalali\Jalalian::fromFormat('Y-m-d', $record->livelihoodDate)
-            ->toCarbon()
-            ->startOfWeek(\Carbon\Carbon::SATURDAY);
-
-        $endDate = $startDate->copy()->addDays(6);
-
-
-        $weekPlans = Livelihood::with('weekDay')
-            ->orderBy('week_day_id')
-            ->take(7)
-            ->get();
-
-        if ($weekPlans->count() < 7) {
-            abort(404, 'باید مکمل ۷ ورځنی پلان موجود وي');
-        }
-
-
-        $items = [
-            'rice'          => 'برنج سیله',
-            'sugar'         => 'بوره',
-            'green_tea'     => 'چای سبز',
-            'beans'         => 'لوبیا',
-            'chickpeas'     => 'نخود',
-            'milk_powder'   => 'شیر خشک',
-            'eggs'          => 'تخم مرغ',
-            'oil'           => 'روغن',
-            'mutton'        => 'گوشت گوسفند',
-            'chicken'       => 'گوشت مرغ',
-            'beef'          => 'گوشت گاو',
-            'cake'          => 'کیک',
-            'yogurt_drink'  => 'دوغ',
-            'dates'         => 'خرما',
-            'sweets'        => 'شیرینی',
-            'eggplant'      => 'بانجن سیاه',
-            'zucchini'      => 'کدو',
-            'potato'        => 'کچالو',
-            'potato_cooked' => 'کچالو جوشک',
-            'fasila'        => 'فاصیله',
-            'onion'         => 'پیاز',
-            'tomato'        => 'رومی',
-            'cucumber'      => 'بادرنګ',
-            'salad'         => 'سلات',
-            'lemon'         => 'لیمو',
-            'salt'          => 'نمک',
-            'raisin_rice'   => 'کشمش پلو',
-            'dry_bread'     => 'نان خشک',
-            'spice_pot'     => 'مساله دیگ',
-            'gas'           => 'گاز',
-        ];
-
-        $totals = array_fill_keys(array_keys($items), 0);
-        $totals['persons'] = 0;
-        $totals['amount']  = 0;
-
-        $rows = [];
-        $dayNo = 1;
-
-        // =========================
-        // Loop 7 Days
-        // =========================
-        for ($date = $startDate->copy(); $date->lte($endDate); $date->addDay()) {
-
-            $male = Suspect::where('status', 'prisoner')
-                ->where('gender', 'نارینه')
-                // ->whereDate('monitoring_date', $date)
-                ->count();
-
-            $female = Suspect::where('status', 'prisoner')
-                ->where('gender', 'ښځینه')
-                // ->whereDate('monitoring_date', $date)
-                ->count();
-
-            $kids = Suspect::where('status', 'prisoner')
-                // ->whereDate('monitoring_date', $date)
-                ->sum('children_with_mother');
-
-            $persons = $male + $female + $kids;
-
-            // د اونۍ ورځ مطابق پلان
-            $plan = $weekPlans[$date->dayOfWeekIso - 1];
-
-            $amount = $plan->amount * $persons;
-
-            $row = [
-                'no'      => $dayNo,
-                'date'    => \Morilog\Jalali\Jalalian::fromCarbon($date)->format('Y/m/d'),
-                'weekday' => $plan->weekDay->name ?? '',
-                'persons' => $persons,
-                'amount'  => $amount,
-            ];
-
-            foreach ($items as $field => $label) {
-                $value = ($plan->$field ?? 0) * $persons; // safety null check
-                $row[$field] = $value;
-                $totals[$field] += $value;
-            }
-
-            $totals['persons'] += $persons;
-            $totals['amount']  += $amount;
-
-            $rows[] = $row;
-            $dayNo++;
-        }
-
-        // =========================
-        // Week range for header
-        // =========================
-        $weekRange =
-            \Morilog\Jalali\Jalalian::fromCarbon($startDate)->format('Y/m/d')
-            . ' - ' .
-            \Morilog\Jalali\Jalalian::fromCarbon($endDate)->format('Y/m/d');
-
-        // =========================
-        // Generate PDF
-        // =========================
-        return PDF::loadView(
-            'LiveLiHood.livelihood_weekly_pdf',
-            compact('rows', 'items', 'totals', 'weekRange'),
-            [],
-            [
-                'format' => 'A4',
-                'orientation' => 'L',
-                'default_font' => 'dejavusans', // Pashto font support
-            ]
-        )->stream("Weekly_Livelihood_Report.pdf");
     }
 }

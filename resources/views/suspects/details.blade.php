@@ -11,14 +11,14 @@
         <div class="card shadow-sm">
             <div class="card-header text-white d-flex justify-content-center align-items-center"
                 style="background-color: #cfe3f1; height: 60px;">
-                <h4 class="mb-0 font-weight-bold">     د مظنون جــزئــیات </h4>
+                <h4 class="mb-0 font-weight-bold"> د مظنون جــزئــیات </h4>
             </div>
 
             <div class="card-body">
 
                 <!-- Basic Information -->
                 <legend></legend>
-                <h5 class="text-primary mb-3 border-bottom pb-2 font-weight-bold">اطلاعات اصلی</h5>
+                <h5 class="text-primary mb-3 border-bottom pb-2 font-weight-bold"> اصلی اطلاعات</h5>
                 <div class="table-responsive mb-4">
                     <table class="table table-striped table-bordered text-center">
                         <thead style="background-color: #e3f2fd;"> <!-- light header color -->
@@ -62,7 +62,7 @@
                                 <th>ناحیه</th>
                                 <th>منطقه</th>
                                 <th>د نظارت نیټه</th>
-                                <th>د فایل لیدل</th>
+                                <th> دنظارت فایلونو لیدل </th>
                                 <th>توکي موجود وو؟</th>
 
 
@@ -77,10 +77,10 @@
                                 <td>{{ $suspect->monitoring_date }}</td>
                                 <td class="text-center">
                                     @if ($suspect->files->count() > 0)
-                                        <a href="{{ route('suspects.files', $suspect->id) }}" target="_blank"
+                                        <a href="{{ route('suspects.files', $suspect->id) }}" 
                                             class="btn btn-sm btn-primary">
                                             <i class="fas fa-folder-open"></i>
-                                            د فایلونو لیدل ({{ $suspect->files->count() }})
+                                            دنظارت فایلونو لیدل ({{ $suspect->files->count() }})
                                         </a>
                                     @else
                                         ---

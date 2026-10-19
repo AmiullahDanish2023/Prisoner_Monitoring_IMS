@@ -339,7 +339,7 @@ return [
 
      //home page
      'number' => 'Number',
-     'all Suspects(male and female)' => 'All Suspects(Male and Female)',
+     'all Suspects' => 'All Suspects',
      'female' => 'Female',
      'children' => 'Children',
      'prisoners status' => 'Prisoners Status',

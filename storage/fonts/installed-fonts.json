@@ -1,5 +1,10 @@
 {
     "bahijfont": {
-        "normal": "bahijfont_normal_10f74deab8be3a0ab9e673a93bc63642"
+        "normal": "D:\\Prisoner_Monitoring_IMS\\storage\\fonts\/bahijfont_normal_9dc80da1b311110fb7ea5f1492f5c4a6",
+        "bold": "bahijfont_bold_cea1d4dc4569226369ae68e6a7929bb9"
+    },
+    "bahijnazanin": {
+        "normal": "D:\\Prisoner_Monitoring_IMS\\storage\\fonts\/bahijnazanin_normal_9dc80da1b311110fb7ea5f1492f5c4a6",
+        "bold": "bahijnazanin_bold_cea1d4dc4569226369ae68e6a7929bb9"
     }
 }

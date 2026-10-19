@@ -24,7 +24,7 @@
                             <path d="M4 12h8v1H4z" />
                         </svg>
 
-                        پرینټ ټول عکسونه
+                         ټول فایلونه پرینټ کول
 
                     </button>
                 @endif
@@ -106,22 +106,7 @@
                                                 </svg>
                                             </button>
 
-                                            {{-- DELETE --}}
-                                            <form action="{{ route('suspects.release.files.delete', $file->id) }}"
-                                                method="POST"
-                                                onsubmit="return confirm('ایا ډاډه یی چې حذف یې کول غواړې؟');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" title="Delete File"
-                                                    class="btn btn-danger btn-sm p-3">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                                        viewBox="0 0 24 24" fill="white">
-                                                        <path d="M3 6h18" />
-                                                        <path d="M8 6V4h8v2" />
-                                                        <path d="M19 6l-1 14H6L5 6" />
-                                                    </svg>
-                                                </button>
-                                            </form>
+                                            
 
                                         </div>
                                     </div>

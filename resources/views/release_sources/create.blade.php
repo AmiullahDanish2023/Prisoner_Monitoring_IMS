@@ -1,10 +1,10 @@
 @extends('layouts.master')
 
 @section('content')
-    <div class="card shadow-sm">
+    <div class="card shadow-sm" >
 
         <!-- Header -->
-        <div class="card-header d-flex justify-content-between align-items-center">
+        <div class="card-header d-flex justify-content-between align-items-center " style="background-color:#3f577c;">
 
             <h4 class="card-title mb-0 fw-bold">نوې مرجع اضافه کړئ</h4>
 
@@ -88,13 +88,13 @@
             rules: {
                 name_da: {
                     required: true,
-                    
+
                 }
             },
             messages: {
                 name_da: {
                     required: "مهرباني وکړئ نوې مرجع اضافه کړئ",
-                   
+
                 }
             },
             errorClass: 'is-invalid',

@@ -3,6 +3,214 @@
 @section('content')
     <!--begin::datatable-->
     <div class="card shadow-sm mt-6">
+        <style>
+            /* =========================================================
+                   GLOBAL DATATABLE STYLE
+                ========================================================= */
+
+            .table-responsive {
+                border-radius: 8px;
+                overflow: hidden;
+                border: 1px solid #dee2e6;
+                background: #fff;
+            }
+
+            .custom-datatable {
+                width: 100% !important;
+                border: 1px solid #dee2e6;
+                border-collapse: collapse !important;
+            }
+
+            .custom-datatable th,
+            .custom-datatable td {
+                border: 1px solid #dee2e6 !important;
+                padding: 10px;
+                vertical-align: middle;
+                text-align: center;
+            }
+
+            .custom-datatable thead th {
+                background: #3f577c !important;
+                color: #fff !important;
+                font-weight: 600;
+                text-align: center;
+                vertical-align: middle;
+                white-space: nowrap;
+            }
+
+            .custom-datatable tbody tr {
+                transition: all 0.2s ease;
+            }
+
+            .custom-datatable tbody tr:hover {
+                background-color: #f1faff !important;
+            }
+
+            .custom-datatable.table-striped tbody tr:nth-of-type(odd) {
+                background-color: #f9fbfd;
+            }
+
+            /* =========================================================
+                   ACTION BUTTONS
+                ========================================================= */
+
+            .action-buttons {
+                display: flex;
+                gap: 6px;
+                justify-content: center;
+            }
+
+            .action-buttons a {
+                display: flex !important;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                cursor: pointer;
+                border-radius: 4px;
+                padding: 5px 8px;
+                transition: all 0.25s ease-in-out;
+                text-decoration: none;
+            }
+
+            .action-buttons a i {
+                color: #fff !important;
+                font-size: 16px;
+            }
+
+            .action-buttons a:hover {
+                transform: scale(1.08);
+                box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+            }
+
+            .view-btn {
+                background-color: #56a0f0 !important;
+                color: #fff !important;
+            }
+
+            .edit-btn {
+                background-color: #0dcaf0 !important;
+                color: #fff !important;
+            }
+
+            .destroy_btn {
+                background-color: #e26774 !important;
+                color: #fff !important;
+            }
+
+            .release-btn {
+                background-color: #a3ee94 !important;
+                color: #fff !important;
+            }
+
+            .btn-transfer {
+                background-color: #f0c14d !important;
+                color: #fff !important;
+            }
+
+            /* =========================================================
+                   TOOLTIP
+                ========================================================= */
+
+            .action-buttons a[data-title] {
+                position: relative;
+            }
+
+            .action-buttons a[data-title]::after {
+                content: attr(data-title);
+                position: absolute;
+                bottom: 125%;
+                left: 50%;
+                transform: translateX(-50%);
+                background: #000;
+                color: #fff;
+                font-size: 11px;
+                padding: 4px 8px;
+                border-radius: 4px;
+                opacity: 0;
+                white-space: nowrap;
+                pointer-events: none;
+                transition: all 0.25s ease;
+                z-index: 999;
+            }
+
+            .action-buttons a[data-title]:hover::after {
+                opacity: 1;
+                bottom: 135%;
+            }
+
+            /* =========================================================
+                   SELECT2
+                ========================================================= */
+
+            .select2-results__options {
+                max-height: 200px !important;
+                overflow-y: auto !important;
+            }
+
+            .select2-dropdown {
+                border: 1px solid #ced4da !important;
+                border-radius: 6px !important;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .select2-results__options::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            .select2-results__options::-webkit-scrollbar-thumb {
+                background: #ccc;
+                border-radius: 5px;
+            }
+
+            .select2-container {
+                width: 100% !important;
+            }
+
+            .select2-selection--single {
+                height: 38px !important;
+                display: flex !important;
+                align-items: center !important;
+            }
+
+            .select2-selection__rendered {
+                width: 100% !important;
+                overflow: hidden !important;
+                text-overflow: ellipsis !important;
+            }
+
+            .select2-container--default .select2-selection--single {
+                border: 1px solid #ced4da;
+                border-radius: 6px;
+            }
+
+            /* =========================================================
+                   VALIDATION
+                ========================================================= */
+
+            label.error {
+                color: #dc3545;
+                font-size: 13px;
+                margin-top: 4px;
+                display: block;
+            }
+
+            input.error,
+            select.error,
+            textarea.error {
+                border-color: #dc3545 !important;
+            }
+
+            /* =========================================================
+                   SWEET ALERT
+                ========================================================= */
+
+            .swal2-title,
+            .swal2-html-container {
+                font-family: 'Bahij', sans-serif !important;
+                font-weight: 700 !important;
+                font-size: 18px !important;
+            }
+        </style>
         <div class="card-header">
             <div class="card-title" style="font-size: 20px !important;font-weight:bold">
                 {{ __('translate.user information') }}
@@ -13,17 +221,19 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="table">
-                <table id="table_id" class="table yajra-datatable">
-                    <thead class="bg-light" style="font-weight:bold">
-                        <th style="text-align:center">{{ __('translate.id') }}</th>
-                        <th style="text-align:center">{{ __('translate.name') }}</th>
-                        <th style="text-align:center">{{ __('translate.email') }}</th>
-                        <th style="text-align:center">{{ __('translate.permission') }}</th>
-                        <th style="text-align:center">{{ __('translate.action') }}</th>
+            <div class="table-responsive">
+                <table id="table_id" class="table table-striped custom-datatable yajra-datatable">
+                    <thead>
+                        <tr>
+                            <th>{{ __('translate.id') }}</th>
+                            <th>{{ __('translate.name') }}</th>
+                            <th>{{ __('translate.email') }}</th>
+                            <th>{{ __('translate.permission') }}</th>
+                            <th>{{ __('translate.action') }}</th>
+                        </tr>
                     </thead>
-                    <tbody style="text-align:center">
-                    </tbody>
+
+                    <tbody></tbody>
                 </table>
             </div>
         </div>
@@ -33,7 +243,7 @@
     <div class="modal fade" id="Store_Modal" tabindex="-1" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered mw-50">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header" style="background-color:#3f577c;">
                     <h3>{{ __('translate.user registration') }}</h3>
                     <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
                         <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->
@@ -105,8 +315,7 @@
                             </div>
                             <div class="form-group col-lg-12">
                                 <label for="photo" class="col-form-label">{{ __('translate.image') }}</label>
-                                <input type="file" class="form-control form-control-sm" name="photo"
-                                    id="photo">
+                                <input type="file" class="form-control form-control-sm" name="photo" id="photo">
                             </div>
                         </div>
                         <hr>
@@ -132,7 +341,7 @@
     <div class="modal fade" id="Edit_Modal" tabindex="-1" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered mw-50">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header" style="background-color:#3f577c;">
                     <h3>د کار کونکی معلومات تغیر کول</h3>
                     <div class="btn btn-sm btn-icon btn-active-color-primary" data-bs-dismiss="modal">
                         <!--begin::Svg Icon | path: icons/duotune/arrows/arr061.svg-->

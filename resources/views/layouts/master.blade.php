@@ -6,7 +6,7 @@ direction="rtl" dir="rtl" style="direction: rtl;" @endif>
 <!--begin::Head-->
 
 <head>
-    <title>د بندیانو د ثبت اداري سیستم</title>
+    <title>د مظنونینو د ثبت مدیریتي سیستم</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta property="og:locale" content="en_US" />
@@ -17,7 +17,7 @@ direction="rtl" dir="rtl" style="direction: rtl;" @endif>
     {{-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" /> --}}
     <!--end::Fonts-->
 
-    <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('assets/css/style.bundle.rtl.css') }}" rel="stylesheet"> --}}
 
 
 
@@ -42,6 +42,7 @@ direction="rtl" dir="rtl" style="direction: rtl;" @endif>
         <link href="{{ asset('assets/css/style.bundle.rtl.css') }}" rel="stylesheet" type="text/css" />
     @endif
 
+    <link rel="stylesheet" href="{{ asset('perisanDatePicker/css/persianDatepicker-default.css') }}">
     <link rel="stylesheet" href="{{ asset('datepicker/bootstrap-datepicker.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/plugins/custom/loader/css/preloader.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/icons.css') }}">
@@ -107,6 +108,7 @@ direction="rtl" dir="rtl" style="direction: rtl;" @endif>
     data-kt-app-sidebar-enabled="true" data-kt-app-sidebar-fixed="true" data-kt-app-sidebar-hoverable="true"
     data-kt-app-sidebar-push-header="true" data-kt-app-sidebar-push-toolbar="true"
     data-kt-app-sidebar-push-footer="true" data-kt-app-toolbar-enabled="true" class="app-default">
+    
     <!--begin::Theme mode setup on page load-->
 
 
@@ -132,7 +134,7 @@ direction="rtl" dir="rtl" style="direction: rtl;" @endif>
                         <!--begin::Content-->
                         <div id="kt_app_content" class="app-content flex-column-fluid">
                             <!--begin::Content container-->
-                            <div id="kt_app_content_container" class="app-container container-fluid">
+                            <div id="kt_app_content_container" class="app-container container-fluid " style="margin-top: 35px; !important;">
                                 @yield('content')
                             </div>
                             <!--end::Content container-->
@@ -203,7 +205,7 @@ direction="rtl" dir="rtl" style="direction: rtl;" @endif>
     <script src="{{ asset('assets/plugins/custom/ckeditor/ckeditor-classic.bundle.js') }}"></script>
 
 
-
+    <script src="{{ asset('perisanDatePicker/js/persianDatepicker.js') }}"></script>
     <script src="{{ asset('datepicker/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('datepicker/bootstrap-datepicker.fa.min.js') }}"></script>
 

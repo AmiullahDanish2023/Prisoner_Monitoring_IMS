@@ -48,7 +48,7 @@ class PermissionSeeder extends Seeder
                 'name_fa' => 'د مظنون معلوماتو تغیرول',
                 'guard_name' => 'web',
             ],
-           
+
 
             [
                 'name' => 'Release Suspect',
@@ -65,7 +65,7 @@ class PermissionSeeder extends Seeder
                 'name_fa' => 'د رهایی یا انتقال مظنونینو جزئیاتو مشاهده',
                 'guard_name' => 'web',
             ],
-        
+
 
             [
                 'name' => 'Add Suspect Release Reference Section',
@@ -73,7 +73,7 @@ class PermissionSeeder extends Seeder
                 'guard_name' => 'web',
             ],
             [
-                'name' => 'Save New Suspect  Reference',
+                'name' => 'Save New Suspect Reference',
                 'name_fa' => 'د نوی مرجع اضافه کول',
                 'guard_name' => 'web',
             ],
@@ -82,7 +82,7 @@ class PermissionSeeder extends Seeder
                 'name_fa' => 'د مظنونینو مرجع تغیرول',
                 'guard_name' => 'web',
             ],
-           
+
             [
                 'name' => 'Report Mangement Section',
                 'name_fa' => 'د راپورنو مدیریت برخه',
@@ -155,8 +155,68 @@ class PermissionSeeder extends Seeder
                 'name' => 'Make Weekly Livelihood Report',
                 'name_fa' => 'د بدل اعاشه هفتنی راپور جوړول',
                 'guard_name' => 'web',
-            ]
+            ],
+
+            // ==========================================
+            // ⭐ د اجناسو د بیلونو (Goods Invoices) اجازې
+            // ==========================================
+            [
+                'name' => 'Goods Invoices Section',
+                'name_fa' => 'د اجناسو د بیلونو مدیریت برخه',
+                'guard_name' => 'web',
+            ],
+            [
+                'name' => 'Goods Invoices Management',
+                'name_fa' => 'د اجناسو د بیلونو مدیریت',
+                'guard_name' => 'web',
+            ],
+            [
+                'name' => 'Create Goods Invoice',
+                'name_fa' => 'د اجناسو نوی بیل ثبتول',
+                'guard_name' => 'web',
+            ],
+            [
+                'name' => 'List Goods Invoices',
+                'name_fa' => 'د اجناسو د بیلونو لیست لیدل',
+                'guard_name' => 'web',
+            ],
+            [
+                'name' => 'View Goods Invoice Details',
+                'name_fa' => 'د اجناسو د بیل تفصیلات لیدل',
+                'guard_name' => 'web',
+            ],
+            [
+                'name' => 'Edit Goods Invoice',
+                'name_fa' => 'د اجناسو د بیل معلوماتو تغیرول',
+                'guard_name' => 'web',
+            ],
+            [
+                'name' => 'Delete Goods Invoice',
+                'name_fa' => 'د اجناسو بیل حذف کول',
+                'guard_name' => 'web',
+            ],
+            [
+                'name' => 'Change Goods Invoice Status',
+                'name_fa' => 'د اجناسو د بیل حالت بدلول',
+                'guard_name' => 'web',
+            ],
+            [
+                'name' => 'Delete Goods Invoice Image',
+                'name_fa' => 'د اجناسو د بیل عکس حذف کول',
+                'guard_name' => 'web',
+            ],
+            [
+                'name' => 'Goods Invoice Reports',
+                'name_fa' => 'د اجناسو د بیلونو راپور',
+                'guard_name' => 'web',
+            ],
+            [
+                'name' => 'Print Goods Invoice Reports',
+                'name_fa' => 'د اجناسو د بیلونو راپور چاپ',
+                'guard_name' => 'web',
+            ],
         ];
+
         foreach ($data as $value) {
             Permission::updateOrCreate(
                 [

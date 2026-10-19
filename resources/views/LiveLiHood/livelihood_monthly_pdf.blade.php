@@ -67,68 +67,71 @@
     </table>
 
     <p style="text-align:center">
-       تعداد مجموعی مظنونین : {{ $totals['persons'] }} نفر
+        تعداد مجموعی مظنونین : {{ $totals['persons'] }} نفر
 
     </p>
 
-  <table class="report-table">
-    <thead>
-        <tr>
-            <th>شماره</th>
-            <th>تاریخ</th>
-            <th>روز</th>
-            <th>تعداد مظنونین</th>
-            <th>مبلغ</th>
-            @foreach ($items as $label)
-                <th>{{ $label }}</th>
-            @endforeach
-        </tr>
-    </thead>
+    @php
+        function formatNumber($number)
+        {
+            if ($number == 0 || $number == null) {
+                return '0';
+            }
 
-    <tbody>
-        @foreach ($rows as $row)
+            $formatted = number_format((float) $number, 3, '.', '');
+            $formatted = rtrim($formatted, '0');
+            $formatted = rtrim($formatted, '.');
+
+            return $formatted;
+        }
+    @endphp
+
+    <table class="report-table">
+        <thead>
             <tr>
-                <td>{{ $row['no'] }}</td>
-                <td>{{ $row['date'] }}</td>
-                <td>{{ $row['weekday'] }}</td>
-                <td>{{ $row['persons'] }}</td>
-                <td>{{ number_format($row['amount'], 0) }}</td>
-                {{-- @php
-                $visibleFields = [];
+                <th>شماره</th>
+                <th>تاریخ</th>
+                <th>روز</th>
+                <th>تعداد مظنونین</th>
+                <th>مبلغ</th>
 
-                foreach ($items as $field => $label) {
-                    foreach ($rows as $row) {
-                        if (!empty($row[$field]) && $row[$field] != 0) {
-                            $visibleFields[$field] = $label;
-                            break;
-                        }
-                    }
-                }
-                @endphp
-                @foreach ($visibleFields as $field => $label)
+                @foreach ($items as $label)
                     <th>{{ $label }}</th>
-                @endforeach --}}
-                @foreach ($items as $field => $label)
-                     
-                    <td>{{ $row[$field] == 0 ? 0 : number_format($row[$field], 0) }}</td>
-                   
                 @endforeach
             </tr>
-        @endforeach
-    </tbody>
+        </thead>
 
-    <tfoot>
-        <tr>
-            <td colspan="3">مجموع</td>
-            <td>{{ $totals['persons'] }}</td>
-            <td>{{ number_format($totals['amount'], 0) }}</td>
+        <tbody>
+            @foreach ($rows as $row)
+                <tr>
+                    <td>{{ $row['no'] }}</td>
+                    <td>{{ $row['date'] }}</td>
+                    <td>{{ $row['weekday'] }}</td>
+                    <td>{{ $row['persons'] }}</td>
 
-            @foreach ($items as $field => $label)
-                <td>{{ $totals[$field] == 0 ? 0 : number_format($totals[$field], 0) }}</td>
+                    <td>{{ formatNumber($row['amount']) }}</td>
+
+                    @foreach ($items as $field => $label)
+                        <td>{{ formatNumber($row[$field]) }}</td>
+                    @endforeach
+                </tr>
             @endforeach
-        </tr>
-    </tfoot>
-</table>
+        </tbody>
+
+        <tfoot>
+            <tr>
+                <td colspan="3">مجموع</td>
+
+                <td>{{ $totals['persons'] }}</td>
+
+                <td>{{ formatNumber($totals['amount']) }}</td>
+
+                @foreach ($items as $field => $label)
+                    <td>{{ formatNumber($totals[$field]) }}</td>
+                @endforeach
+            </tr>
+        </tfoot>
+    </table>
 
 
 
@@ -147,19 +150,8 @@
             <td style="width:33.33%; text-align:left; font-size:20px; vertical-align:top;">
                 <div style="direction:rtl; text-align:left;">
                     <br>
-                     آمر نظارت خانه
-                   
-                </div>
-            </td>
+                    آمر نظارت خانه
 
-               <!-- CENTER -->
-            <td style="width:33.33%; text-align:center; font-size:20px; vertical-align:top;">
-                <div style="direction:rtl; text-align:center;">
-                    <br>
-       					نام رئیس هیئت
-                        <br>
-                        <br>
-                        و قطعه مربوطه
                 </div>
             </td>
 
@@ -167,25 +159,36 @@
             <td style="width:33.33%; text-align:center; font-size:20px; vertical-align:top;">
                 <div style="direction:rtl; text-align:center;">
                     <br>
-       					نام  هیئت
-                        <br>
-                        <br>
-                        و قطعه مربوطه
+                    نام رئیس هیئت
+                    <br>
+                    <br>
+                    و قطعه مربوطه
                 </div>
             </td>
 
-             <!-- CENTER -->
+            <!-- CENTER -->
             <td style="width:33.33%; text-align:center; font-size:20px; vertical-align:top;">
                 <div style="direction:rtl; text-align:center;">
                     <br>
-       					نام  هیئت
-                        <br>
-                        <br>
-                        و قطعه مربوطه
+                    نام هیئت
+                    <br>
+                    <br>
+                    و قطعه مربوطه
                 </div>
             </td>
 
-          
+            <!-- CENTER -->
+            <td style="width:33.33%; text-align:center; font-size:20px; vertical-align:top;">
+                <div style="direction:rtl; text-align:center;">
+                    <br>
+                    نام هیئت
+                    <br>
+                    <br>
+                    و قطعه مربوطه
+                </div>
+            </td>
+
+
 
             <!-- RIGHT -->
             <td style="width:33.33%; text-align:right; font-size:20px; vertical-align:top;">

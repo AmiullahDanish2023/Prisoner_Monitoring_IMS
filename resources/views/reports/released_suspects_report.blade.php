@@ -8,7 +8,7 @@
 
     <div class="card shadow-sm rounded">
         <div class="card-body p-4" style="background: #fdfdfd; font-weight: 500;">
-            <form id="releasedSuspectForm" action="{{ route('reports.released.pdf') }}" method="POST" class="row g-3">
+            <form id="releasedSuspectForm" action="{{ route('reports.released.pdf') }}" method="POST" class="row g-3 " >
                 @csrf
 
                 <h4 class="text-center text-primary mb-3 fw-bold">
@@ -137,11 +137,8 @@
     <script>
         function resetReleasedForm() {
             const form = $('#releasedSuspectForm')[0];
-
-            // Reset all text inputs, selects, textareas
             form.reset();
 
-            // Reset hidden fields
             $('#report_main_key').val('');
             $('#report_db_name').val('');
 

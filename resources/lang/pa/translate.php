@@ -5,7 +5,7 @@ return [
 
     'dashboard' => 'ډیشبــورډ',
     'registration_meta' => 'ثبت',
-    'user part' => 'د کــارن بــرخه',
+    'user part' => 'د کارکوونکو بــرخه',
     'user management' => 'د کاروونــکو مـدیریت',
     'users' => 'کاروونکي',
     'permission' => 'صــلاحیتونه',
@@ -116,7 +116,7 @@ return [
 
 
     //suspect modal
-    'create_suspect' => 'د مظنون ثبت',
+    'create_suspect' => 'د نوي مظنون معلوماتو ثبتول',
     'gender' => 'جنسیت',
     'select_gender' => 'جنسیت وټاکئ',
     'male' => 'نارینه',
@@ -159,7 +159,7 @@ return [
     // Suspect Menu
     'suspect_management' => 'د مظنونینو مدیریت',
     'add_new_suspect' => 'د مظنون ثبتول او لیست',
-    'release_transfer_list' => 'د رهایی / انتقال شویو مظنونینو لیست',
+    'release_transfer_list' => 'د رهایی مظنونینو لیست',
     'add_reference' => 'د مراجعو اضافه کول',
 
     // Reports
@@ -171,7 +171,7 @@ return [
 
     // Livelihood
     'livelihood_management' => 'د اعاشې مدیریت',
-    'livelihood_plan' => 'د اعاشې پلان',
+    'livelihood_plan' => 'د اعاشې پلان جوړول',
     'livelihood_list' => 'د اعاشې لیست او راپور',
 
     // Users
@@ -201,7 +201,7 @@ return [
     'save' => 'ثبت کول',
   
     // home page
-    'all Suspects(male and female)' => 'ټول مظنونین (نارینه او ښځینه)',
+    'all Suspects' => 'ټول مظنونین ',
        'female' => 'ښځینه',
      'children' => 'ماشومان',
      'prisoners status' => 'د مظنونینو وضعییت',

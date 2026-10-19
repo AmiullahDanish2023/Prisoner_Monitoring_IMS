@@ -260,7 +260,7 @@ return [
 
 
   //suspect modal
-  'create_suspect' => 'ثبت مظنون جدید',
+  'create_suspect' => 'ثبت معلومات مظنون جدید',
   'gender' => 'جنسیت',
   'select_gender' => 'انتخاب جنسیت',
   'male' => 'مرد',
@@ -302,7 +302,7 @@ return [
   // Suspect Menu
   'suspect_management' => 'مدیریت مظنونین',
   'add_new_suspect' => 'ثبت مظنون جدید',
-  'release_transfer_list' => 'لیست رهایی / انتقال مظنونین',
+  'release_transfer_list' => 'لیست رهایی مظنونین',
   'add_reference' => 'اضافه نمودن مراجع',
 
   // Reports
@@ -314,7 +314,7 @@ return [
 
   // Livelihood
   'livelihood_management' => 'مدیریت اعاشه',
-  'livelihood_plan' => 'پلان اعاشه',
+  'livelihood_plan' => ' ساختن پلان اعاشه',
   'livelihood_list' => 'لیست و راپور اعاشه',
 
   // Users
@@ -344,7 +344,7 @@ return [
   'save' => 'ذخیره',
 
   // Home Page
-  'all Suspects(male and female)' => 'تمام مظنونین (مرد و زن)',
+  'all Suspects' => 'تمام مظنونین',
      'female' => 'زن',
      'children' => 'اطفال',
      'prisoners status' => 'وضعیت زندانیان',

@@ -10,6 +10,7 @@
     <meta property="og:type" content="article" />
 
     <link rel="shortcut icon" href="{{ asset('assets/moi_logo.png') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/bootstrap-icons/bootstrap-icons.css') }}">
     <!--begin::Fonts-->
     <!-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700" /> -->
     <!--end::Fonts-->
@@ -111,26 +112,14 @@
                                     id="password" autocomplete="off"
                                     class="form-control form-control-lg form-control-solid pe-10" />
 
-                                <!-- Eye Icon (SVG) -->
                                 <span onclick="togglePassword()"
                                     class="btn btn-sm btn-icon position-absolute translate-middle-y top-50 end-0 me-3">
 
-                                    <!-- Eye -->
-                                    <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
-                                        fill="currentColor" viewBox="0 0 16 16">
-                                        <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8z" />
-                                        <path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-                                    </svg>
+                                    <!-- 👁 Eye -->
+                                    <i id="eyeIcon" class="bi bi-eye fs-5"></i>
 
-                                    <!-- Eye Slash -->
-                                    <svg id="eyeSlashIcon" xmlns="http://www.w3.org/2000/svg" width="20"
-                                        height="20" fill="currentColor" viewBox="0 0 16 16" style="display:none;">
-                                        <path
-                                            d="M13.359 11.238C14.648 10.14 16 8 16 8s-3-5.5-8-5.5a7.028 7.028 0 0 0-3.41.902l1.49 1.49A5.978 5.978 0 0 1 8 3.5C12 3.5 14.5 8 14.5 8a13.133 13.133 0 0 1-2.04 2.593l.899.645z" />
-                                        <path
-                                            d="M11.297 9.176A3 3 0 0 0 6.824 4.703l1.073 1.073a1.5 1.5 0 0 1 2.124 2.124l1.276 1.276z" />
-                                        <path d="M3.354 2.646l10 10-.708.708-10-10 .708-.708z" />
-                                    </svg>
+                                    <!-- 🙈 Eye Slash -->
+                                    <i id="eyeSlashIcon" class="bi bi-eye-slash fs-5" style="display:none;"></i>
 
                                 </span>
 

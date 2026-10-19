@@ -6,7 +6,7 @@
         <!-- Header -->
         <div class="card-header d-flex justify-content-between align-items-center">
             <h4 class="card-title mb-0 fw-bold text-align-center">د مراجعو لیست</h4>
-            @can('Save New Suspect  Reference')
+            @can('Save New Suspect Reference')
                 <a href="{{ route('release-sources.create') }}" class="btn btn-primary btn-sm">
                     نوې مرجع اضافه کړئ
                 </a>
@@ -20,59 +20,87 @@
                     padding: 15px 20px !important;
                 }
 
-                /* ------------------ Table Styling ------------------ */
-                table.table {
-                    border-radius: 10px !important;
+                /* ------------------ Table Container ------------------ */
+                .table-responsive {
+                    border: 1px solid #6fa9e4 !important;
+                    border-radius: 10px;
                     overflow: hidden;
+                }
+
+                /* ------------------ Table Base ------------------ */
+                #source_table {
+                    width: 100%;
+                    border-collapse: collapse !important;
                     font-size: 14px;
                 }
 
-                table.table thead {
-                    background-color: #c1effa !important;
+                /* Strong Borders */
+                #source_table th,
+                #source_table td {
+                    border: 1px solid #6fa9e4 !important;
+                    padding: 10px;
+                    text-align: center;
+                    vertical-align: middle;
                 }
 
-                table.table thead th {
-                    font-weight: 700;
-                    color: #00394f;
+                /* ------------------ Header ------------------ */
+                #source_table thead th {
+                    background: #3f577c !important;
+                    color: #f0e3e3;
+                    font-weight: 600;
                 }
 
-                table.table tbody tr:hover {
-                    background-color: #f7fdff !important;
-                    transition: 0.2s ease-in-out;
+                .table-custom {
+                    border: 1px solid #5793cf;
+                }
+
+                .table-custom th,
+                .table-custom td {
+                    border: 1px solid #dee2e6;
+                }
+
+                .action-buttons a:hover {
+                    transform: scale(1.08);
+                    box-shadow: 0 0 12px rgba(0, 0, 0, 0.15);
+                }
+
+                #source_table tbody tr:hover {
+                    background-color: #020e14 !important;
+                }
+
+                /* Stripe fix */
+                #source_table.table-striped tbody tr:nth-of-type(odd) {
+                    background-color: #0e3964;
                 }
 
                 /* ------------------ Action Buttons ------------------ */
                 .action-buttons {
                     display: flex;
+                    justify-content: center;
                     gap: 6px;
                 }
 
                 .action-buttons a {
-                    padding: 5px 8px;
-                    border-radius: 5px;
-                    display: inline-flex;
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 6px;
+                    display: flex;
                     align-items: center;
                     justify-content: center;
-                    font-size: 13px;
+                    font-size: 14px;
                     color: #fff !important;
-                    text-decoration: none;
-                    transition: 0.2s ease;
+                    transition: all 0.2s ease;
                 }
 
+                /* Hover */
                 .action-buttons a:hover {
-                    transform: scale(1.05);
-                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
                 }
 
-                .edit-btn {
-                    background-color: #0dcaf0;
-                }
 
-                .delete-btn {
-                    background-color: #e26774;
-                }
 
-                /* Tooltip on hover */
+                /* Tooltip */
                 .action-buttons a[data-title] {
                     position: relative;
                 }
@@ -113,11 +141,11 @@
         <div class="card-body">
 
             <div class="table-responsive">
-                <table class="table table-bordered table-striped align-middle" id="source_table">
+                <table class="table table-bordered table-hover table-responsive align-middle" id="source_table">
                     <thead>
                         <tr>
-                            <th>نمبر</th>
-                            <th>نوم</th>
+                            <th>شمیره</th>
+                            <th>مرجع نوم</th>
                             <th>نېټه</th>
                             <th style="width: 120px;">عملیات</th>
                         </tr>

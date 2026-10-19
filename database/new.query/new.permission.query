@@ -1,0 +1,14 @@
+INSERT INTO `permissions`
+    (`name`, `name_fa`, `guard_name`, `created_at`, `updated_at`)
+VALUES
+    ('Goods Invoices Section', 'د اجناسو د بیلونو مدیریت برخه', 'web', NOW(), NOW()),
+    ('Goods Invoices Management', 'د اجناسو د بیلونو مدیریت', 'web', NOW(), NOW()),
+    ('Create Goods Invoice', 'د اجناسو نوی بیل ثبتول', 'web', NOW(), NOW()),
+    ('List Goods Invoices', 'د اجناسو د بیلونو لیست لیدل', 'web', NOW(), NOW()),
+    ('View Goods Invoice Details', 'د اجناسو د بیل تفصیلات لیدل', 'web', NOW(), NOW()),
+    ('Edit Goods Invoice', 'د اجناسو د بیل معلوماتو تغیرول', 'web', NOW(), NOW()),
+    ('Delete Goods Invoice', 'د اجناسو بیل حذف کول', 'web', NOW(), NOW()),
+    ('Change Goods Invoice Status', 'د اجناسو د بیل حالت بدلول', 'web', NOW(), NOW()),
+    ('Delete Goods Invoice Image', 'د اجناسو د بیل عکس حذف کول', 'web', NOW(), NOW()),
+    ('Goods Invoice Reports', 'د اجناسو د بیلونو راپور', 'web', NOW(), NOW()),
+    ('Print Goods Invoice Reports', 'د اجناسو د بیلونو راپور چاپ', 'web', NOW(), NOW());
