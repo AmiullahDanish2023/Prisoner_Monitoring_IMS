@@ -5,7 +5,6 @@
     <link rel="stylesheet" href="{{ asset('assets/bootstrap-icons/bootstrap-icons.css') }}" />
 
     <style>
-     
         .report-header {
             background: linear-gradient(135deg, #2c3e7a, #3f577c);
             color: #fff;
@@ -757,18 +756,16 @@
                     `;
                 } else if (reportType === 'images') {
                     html = `
-                        <tr>
-                            <th>شمېره</th>
-                            <th>بیل نمبر</th>
-                            <th>د دوکان نوم</th>
-                            <th>بیل نیټه</th> 
-                            <th>عکس</th>
-                            <th>ډاونلوډ / چاپ</th>
-                            
-                        </tr>
-                    `;
+        <tr>
+            <th style="width:5%;">شمېره</th>
+            <th style="width:15%;">بیل نمبر</th>
+            <th style="width:20%;">د دوکان نوم</th>
+            <th style="width:15%;">بیل نیټه</th> 
+            <th style="width:20%;">عکس</th>
+            <th style="width:25%;">ډاونلوډ / چاپ</th>
+        </tr>
+         `;
                 }
-
                 $('#reportTableHead').html(html);
             }
 
@@ -877,65 +874,73 @@
                     });
 
                 } else if (reportType === 'images') {
-                    data.forEach(function(image, index) {
+                    // د بیلونو د ګروپ کولو لپاره
+                    var groupedByBill = {};
 
-                        // ==========================================
-                        // ⭐ دلته مو د بیل شمسی نیټه (هجري) تنظیم کړه
-                        // ==========================================
+                    data.forEach(function(image) {
+                        if (!image.bill) return;
+                        var billId = image.bill.id;
+                        if (!groupedByBill[billId]) {
+                            groupedByBill[billId] = {
+                                bill: image.bill,
+                                images: []
+                            };
+                        }
+                        groupedByBill[billId].images.push(image);
+                    });
+
+                    var rowCounter = 1;
+
+                    for (var billId in groupedByBill) {
+                        var group = groupedByBill[billId];
+                        var bill = group.bill;
+                        var images = group.images;
+                        var totalImages = images.length;
+
                         var billDate = 'نشته';
-                        if (image.bill) {
-                            if (image.bill.bill_date_jalali) {
-                               
-                                billDate = image.bill.bill_date_jalali;
-                            } else if (image.bill.bill_date) {
-                                
-                                billDate = image.bill.bill_date.split(' ')[0];
-                            }
+                        if (bill.bill_date_jalali) {
+                            billDate = bill.bill_date_jalali;
+                        } else if (bill.bill_date) {
+                            billDate = bill.bill_date.split(' ')[0];
                         }
 
-                        var imageUrl = '/storage/' + image.image_path;
+                        images.forEach(function(image, index) {
+                            var imageUrl = '/storage/' + image.image_path;
 
-                        html += '<tr>' +
-                            '<td>' + (index + 1) + '</td>' +
+                            html += '<tr>';
+                            html += '<td>' + (rowCounter++) + '</td>';
 
-                            '<td><strong>' +
-                            (image.bill ? image.bill.bill_number : 'نشته') +
-                            '</strong></td>' +
+                            if (index === 0) {
+                                html += '<td rowspan="' + totalImages + '"><strong>' + (bill.bill_number ||
+                                    'نشته') + '</strong></td>';
+                                html += '<td rowspan="' + totalImages + '">' + (bill.shop_name || 'نشته') +
+                                    '</td>';
+                                html += '<td rowspan="' + totalImages + '"><strong>' + billDate +
+                                    '</strong></td>';
+                            }
 
-                            '<td>' +
-                            (image.bill ? image.bill.shop_name : 'نشته') +
-                            '</td>' +
+                            html += '<td>' +
+                                '<a href="' + imageUrl + '" target="_blank" title="د عکس لیدل">' +
+                                '<img src="' + imageUrl +
+                                '" style="width:70px;height:70px;object-fit:cover;border-radius:5px;border:1px solid #ccc;">' +
+                                '</a>' +
+                                '</td>';
 
-                            // ⬅️ اوس به شمسی نیټه (مثلاً 1405/07/19) ښکاره کړي
-                            '<td><strong>' + billDate + '</strong></td>' +
+                            html += '<td class="text-nowrap">' +
+                                '<a href="' + imageUrl +
+                                '" download class="btn btn-success btn-sm me-1" title="عکس ډاونلوډ کړئ">' +
+                                '<i class="bi bi-download"></i> ډاونلوډ' +
+                                '</a> ' +
+                                '<button type="button" class="btn btn-primary btn-sm" onclick="printImageDirect(\'' +
+                                imageUrl + '\')" title="د چاپ مخکتنه">' +
+                                '<i class="bi bi-printer"></i> چاپ' +
+                                '</button>' +
+                                '</td>';
 
-                            // د بیل د عکس مخکتنه
-                            '<td>' +
-                            '<a href="' + imageUrl + '" target="_blank" title="د عکس لیدل">' +
-                            '<img src="' + imageUrl + '" ' +
-                            'style="width:70px;height:70px;object-fit:cover;' +
-                            'border-radius:5px;border:1px solid #ccc;">' +
-                            '</a>' +
-                            '</td>' +
-
-                            // د ډاونلوډ او چاپ بټنونه
-                            '<td class="text-nowrap">' +
-                            '<a href="' + imageUrl + '" download ' +2
-                            '<i class="bi bi-download"></i> ډاونلوډ' +
-                            '</a> ' +
-
-                            '<button type="button" ' +
-                            'class="btn btn-primary btn-sm" ' +
-                            'onclick="window.open(\'' + imageUrl + '\', \'_blank\')" ' +
-                            'title="د چاپ مخکتنه">' +
-                            '<i class="bi bi-printer"></i> چاپ' +
-                            '</button>' +
-                            '</td>' +
-
-                            '</tr>';
-                    });
+                            html += '</tr>';
+                        });
+                    }
                 }
-
 
                 $('#reportTableBody').html(html);
             }
@@ -971,7 +976,6 @@
                     html = '<tr>' +
                         '<td colspan="5" class="text-end"><strong>ټول عکسونه:</strong></td>' +
                         '<td><strong>' + (summary.total_images || 0) + '</strong></td>' +
-                        '<td></td>' +
                         '</tr>';
                 } else {
                     html = '<tr>' +
@@ -1031,6 +1035,36 @@
             // پیل کې راپور جوړول
             // ============================================
             generateReport();
+
+            // د عکس مستقیم چاپ فنکشن
+            window.printImageDirect = function(imageUrl) {
+                var iframe = document.getElementById('printImageFrame');
+                if (!iframe) {
+
+                    $('body').append(
+                        '<iframe id="printImageFrame" style="display:none; width:0; height:0; border:0;"></iframe>'
+                    );
+                    iframe = document.getElementById('printImageFrame');
+                }
+                var doc = iframe.contentWindow.document;
+                doc.open();
+                doc.write(`
+                <html>
+                    <head>
+                        <title>د عکس چاپ</title>
+                        <style>
+                            @page { margin: 0; }
+                            body { margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+                            img { max-width: 100%; max-height: 100vh; object-fit: contain; }
+                        </style>
+                    </head>
+                    <body>
+                        <img src="${imageUrl}" onload="setTimeout(function(){ window.print(); }, 200);">
+                    </body>
+                </html>
+            `);
+                doc.close();
+            };
 
         }); // end document ready
     </script>
